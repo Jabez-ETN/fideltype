@@ -1,0 +1,1791 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FidelType v3.6 — Master Amharic Touch Typing</title><meta name="description" content="Learn Amharic touch typing with 25 guided lessons, an interactive keyboard, and private progress tracking. Free, browser-based practice."><meta name="theme-color" content="#142B3B"><script>try{if(localStorage.getItem("fideltype-theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script><style>
+:root{font-family:system-ui,'Noto Sans Ethiopic',sans-serif;color:#193044;background:#f3f6f8}*{box-sizing:border-box}body{margin:0}header{background:#142b3b;color:white;padding:20px max(18px,calc((100vw - 1000px)/2));display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}h1{margin:0;font-size:25px}header small{color:#efc579}nav{display:flex;gap:7px;flex-wrap:wrap}button,select{font:inherit;cursor:pointer}nav button{background:transparent;color:white;border:1px solid #557080;border-radius:9px;padding:9px 12px}nav button.active{background:#e9ba68;color:#172b3a;border-color:#e9ba68}main{max-width:1000px;margin:30px auto;padding:0 18px}.panel{background:white;border-radius:16px;padding:24px;box-shadow:0 8px 30px #142b3b0d;margin-bottom:20px}.muted{color:#627584}.hidden{display:none!important}.toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:20px 0}.btn{background:#173c53;color:white;border:0;border-radius:10px;padding:11px 18px}.btn.alt{background:#e8eff3;color:#193044}.passage{font-size:26px;line-height:2.1;letter-spacing:.15px;background:#f5f8fa;border-radius:12px;padding:20px;min-height:120px;white-space:pre-wrap;overflow-wrap:anywhere}.passage span.good{background:#d7f4e0;color:#126637}.passage span.bad{background:#ffdad9;color:#9d2621;text-decoration:underline}.passage span.current{border-bottom:3px solid #e9b866}textarea{display:block;width:100%;min-height:130px;border:2px solid #d9e3e8;border-radius:12px;padding:17px;font:24px/1.8 'Noto Sans Ethiopic',system-ui,sans-serif;resize:vertical;margin:18px 0}textarea:focus{outline:none;border-color:#357da1}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:#edf3f6;border-radius:12px;text-align:center;padding:14px 6px}.stat strong{font-size:27px;display:block}.stat span{font-size:13px;color:#536779}.lesson-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.lesson{padding:16px;border:1px solid #d9e3e8;border-radius:12px;text-align:left;background:#fff}.lesson:hover{border-color:#c08b39}.lesson strong{display:block;margin-bottom:7px}.history{width:100%;border-collapse:collapse}.history td,.history th{padding:10px;border-bottom:1px solid #e4eaed;text-align:left}.message{padding:14px;border-radius:10px;background:#fff5dc;margin-top:15px}.passage span.current{background:#fff0c5;border-radius:3px}.passage:focus-visible{outline:2px solid #357da1}textarea:disabled{background:#f3f6f8}.footer{text-align:center;color:#667987;padding:15px}select{padding:10px;border-radius:9px;border:1px solid #b7c8d2;background:white}@media(max-width:580px){.stats{grid-template-columns:repeat(2,1fr)}.passage{font-size:22px}.panel{padding:17px}}
+.keyboard-ref{margin:18px 0;padding:16px;background:#f5f8fa;border:1px solid #d9e3e8;border-radius:12px}.keyboard-ref img{width:100%;height:auto;display:block}.keyboard-ref p{font-size:14px;line-height:1.6}.keyboard-ref summary{cursor:pointer;font-weight:700}.keyboard-ref a{color:#173c53}
+.keyboard-workshop{margin:18px 0;padding:18px;background:#f5f8fa;border:1px solid #d9e3e8;border-radius:12px}
+.keyboard-workshop h3{margin:0 0 8px}.kb-options{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.kb-rows{display:flex;flex-direction:column;gap:5px;overflow-x:auto;padding-bottom:6px}
+.kb-row{display:flex;gap:5px;min-width:600px}
+.kb-key{flex:1;min-width:0;padding:12px 2px;border:1px solid #b9c9d1;background:white;border-radius:7px;text-align:center;font:600 13px system-ui;box-shadow:0 2px 0 #c5d2da;transition:background .1s}
+.kb-key.wide{flex:1.7}.kb-key.space{flex:6}.kb-key.pressed{background:#e9ba68;border-color:#a47622;box-shadow:0 1px 0 #a47622}
+.kb-key.known{border-bottom:3px solid #5b8b8d}
+.kb-key small{display:block;font-weight:400;font-size:12px;color:#627584}
+
+
+
+/* v1.6: ergonomic hand and finger guidance built into the key surface. */
+.keyboard-workshop{overflow:hidden}
+.kb-scroll{overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;border:1px solid #dce7ed;border-radius:14px;background:linear-gradient(150deg,#ecf4f8,#f9fcfd);padding:12px}
+.kb-stage{min-width:760px;position:relative;padding:5px 5px 8px;isolation:isolate}
+.kb-rows{overflow:visible;padding:0;gap:7px;position:relative;z-index:1}
+.kb-row{min-width:unset;gap:6px}
+.kb-key{min-height:56px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:5px 2px 3px;font:600 19px/1.15 'Noto Sans Ethiopic',system-ui,sans-serif;box-shadow:0 2px 0 #bfcfd7;transition:background .12s,border-color .12s}
+.kb-key .key-glyph{display:block;margin-top:1px;color:#1c4157}
+.kb-key .key-finger{display:block;font:700 9px/1.1 system-ui,sans-serif;letter-spacing:.2px;color:#3b5262;opacity:.9;margin-top:auto;border-radius:5px;padding:2px 4px;background:color-mix(in srgb,var(--finger-color,#c9d8df) 35%,white)}
+.kb-key[data-finger]{border-bottom:4px solid var(--finger-color,#becbd4)}
+.kb-key.home-key:before{content:'';position:absolute;top:3px;right:4px;border:2px solid #2a7480;width:6px;height:6px;border-radius:50%}
+.kb-key.home-demo{background:#dceff5;border-color:#5592a7;outline:2px solid #6a9eb1;outline-offset:-3px}
+.kb-key.pressed{background:#ffe5a9;border-color:#cb9639;outline:2px solid #db9835;outline-offset:-2px;transform:translateY(1px)}
+.hands-on-keys{pointer-events:none;position:absolute;inset:0;width:100%;height:100%;z-index:2;overflow:visible}
+.finger-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:7px 0 14px;font-size:13px}
+.finger-toolbar label{display:inline-flex;align-items:center;gap:5px;font-weight:600}
+.finger-toolbar button{font:600 12px system-ui,sans-serif;padding:8px 12px;border-radius:9px;border:1px solid #96b1bf;background:#e3eff4;color:#193c51}
+.hand-helper{font-weight:650;color:#244b62;background:#e4eef3;border-radius:8px;padding:8px 10px}
+.finger-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;margin:12px 0;font-size:12px}
+.finger-legend span{display:inline-flex;align-items:center;gap:5px}.finger-legend i{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--finger-color)}
+
+
+@media(max-width:580px){.keyboard-workshop{padding:12px}.finger-toolbar{gap:8px}.hand-helper{width:100%}.kb-scroll{padding:6px}}
+
+/* v1.7: bold, readable hand illustrations, with clear fingertips and palms. */
+
+.kb-rows{z-index:3}
+.kb-key .key-glyph,.kb-key .key-finger{position:relative;z-index:4}
+.hands-on-keys{z-index:2;overflow:hidden}
+
+
+/* v1.8: place hands UNDER the keyboard like typing.com, without covering keys. */
+
+.kb-scroll{padding:12px 12px 8px}
+.kb-rows{z-index:1 !important}
+.kb-key .key-glyph,.kb-key .key-finger{z-index:2}
+
+.hands-on-keys{position:static !important;display:block;width:100%;height:185px;overflow:visible;z-index:auto !important}
+@media(max-width:580px){.kb-stage,.hands-on-keys{height:165px}}
+
+/* v1.9: shaded, anatomically styled hands in their own separate area */
+
+.hands-on-keys{height:225px!important;max-height:none;overflow:visible}
+@media(max-width:580px){.hands-on-keys{height:215px!important}}
+
+/* v2.0: single scene, realistic hands reaching ONTO the physical keys. */
+.kb-stage{position:relative;min-width:760px;padding:5px 5px 145px!important;isolation:isolate}
+.kb-rows{position:relative;z-index:1!important}
+.hands-on-keys{position:absolute!important;inset:0!important;display:block;width:100%;height:100%!important;max-height:none!important;z-index:3!important;pointer-events:none;overflow:visible}
+.kb-key .key-glyph{position:relative;z-index:5!important;font-size:20px;display:block;background:#fffffff0;border-radius:4px;padding:1px 3px}
+.kb-key .key-finger{position:relative;z-index:5!important}
+.kb-key.pressed{z-index:2}
+.lesson-progress{background:#eaf3f6;padding:12px 14px;border-radius:10px;margin:14px 0;font-weight:650;color:#284b60}
+.lesson{display:flex;flex-direction:column;gap:8px;min-height:180px}.lesson-number{font-size:11px;text-transform:uppercase;letter-spacing:.65px;color:#657c8c;font-weight:750}.lesson-desc{font-size:13px;color:#35566b;line-height:1.45}.lesson-preview{font-size:13px;color:#7e8d97;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lesson-completed{font-size:12px;color:#24725c;font-weight:800;margin-top:auto}
+#nextLesson{margin-top:10px}
+@media(max-width:580px){.kb-stage{min-width:760px!important}.kb-scroll{overflow-x:auto}.hands-on-keys{height:100%!important}}
+
+/* v2.1 calibration, guided learning, and key anticipation */
+.calibration-panel{margin:18px 0;padding:18px;background:#eef5f8;border:1px solid #c8dce5;border-radius:13px}
+.calibration-panel h3{margin:0 0 8px}.cal-row{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:12px 0}
+.cal-row label{display:flex;flex-direction:column;gap:5px;font-weight:650;font-size:13px}
+.cal-row input{padding:10px;border:1px solid #a9c1cc;border-radius:8px;max-width:190px;font:22px 'Noto Sans Ethiopic',system-ui,sans-serif}
+.cal-count{font-size:13px;font-weight:700;color:#2b6175;margin-top:8px}
+.guided-panel{background:#fff6df;border-left:4px solid #d69c35;border-radius:9px;padding:13px;margin:12px 0;line-height:1.7}
+#guideFinger{font-weight:750;color:#225e73}
+.kb-key.suggested{outline:3px solid #148c81;outline-offset:0;background:#d8f6ee;box-shadow:0 0 0 3px #70bdb477}
+
+/* Curriculum v2.2: progressive level structure and mastery scoring */
+.curriculum-level{margin:22px 0 30px}.level-header{border-bottom:2px solid #dfebee;padding:0 2px 11px;margin-bottom:13px}
+.level-header h3{font-size:19px;margin:0 0 7px;color:#173c53}.level-header p{margin:0;color:#527183;font-size:13px}
+.lesson-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.lesson{min-height:172px}.lesson-passed{border-color:#6cb398;background:#f4fcf9}.lesson-locked{opacity:.52;background:#eef1f3;cursor:not-allowed}
+.lesson-locked:hover{border-color:#d9e3e8}.lesson-completed{line-height:1.5}
+.lesson-instructions{margin:10px 0;border-left:4px solid #2a98a1;background:#eaf4f6;padding:12px;border-radius:8px;line-height:1.55}
+
+/* v2.3: mastery dashboard and personalized mistake practice */
+.practice-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:13px 0}.practice-tools button{border:0;border-radius:10px;padding:11px 15px;background:#19677a;color:white;font-weight:700;cursor:pointer}.practice-tools button:disabled{opacity:.48;cursor:not-allowed}
+.mistake-report{margin:12px 0;padding:13px 15px;background:#f0f8fa;border:1px solid #d1e5eb;border-radius:11px;line-height:1.8}
+.mistake-report strong{color:#194b5b}.difficulty-tag{display:inline-flex;align-items:center;border-radius:20px;padding:3px 10px;background:#e5eef1;color:#28566b;margin:3px;font-weight:650}
+.achievements{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:15px 0}.achievement{padding:14px;border-radius:12px;border:1px solid #dce4e9;background:#f7fafb}.achievement.earned{background:#fff8e9;border-color:#e9c780}.achievement .medal{font-size:22px;display:block;margin-bottom:5px}.achievement small{display:block;color:#586e7b;margin-top:4px}
+.progress-overview{background:#eaf4f8;border-radius:12px;padding:15px;margin:12px 0;line-height:1.9}.progress-track{height:12px;border-radius:50px;background:#ccdee6;overflow:hidden}.progress-fill{height:100%;width:0;background:#258c90;transition:width .25s}.progress-number{font-weight:750;color:#19485b}
+.lesson-hint{padding:9px 12px;border-radius:9px;background:#fff7e6;margin:10px 0;font-size:14px}
+
+/* v2.4 dedicated calibration page */
+#calibration .calibration-panel{margin-top:20px}
+.calibration-intro{border:1px solid #d6e6ed;background:#f5f9fb;border-radius:12px;padding:16px 18px;line-height:1.7}
+.calibration-intro ol{margin:8px 0 0;padding-left:23px}
+#calibration #returnToPractice{margin-top:8px}
+@media(max-width:680px){nav button{padding:8px 9px}#calibration .cal-row label{width:100%}#calibration .cal-row input{max-width:none;width:100%}}
+
+/* v2.5 realistic hands refinement */
+.hands-on-keys{position:absolute!important;inset:0!important;display:block;width:100%;height:100%!important;max-height:none!important;z-index:3!important;pointer-events:none;overflow:visible}
+
+
+/* FidelType v3 landing experience */
+:root{--ft-navy:#142B3B;--ft-gold:#E9BA68;--ft-off:#F5F8FA;--ft-ink:#1c3341}
+html{scroll-behavior:smooth}body{background:#f5f8fa}.site-header{position:sticky;top:0;z-index:50;display:block;padding:0 26px;background:#142b3bf7;backdrop-filter:blur(14px);box-shadow:0 2px 20px #061b2920}
+.header-wrap{max-width:1180px;margin:auto;display:flex;align-items:center;gap:26px;justify-content:space-between;min-height:82px}
+.brand{border:0;color:#fff;background:transparent;font-size:23px;font-weight:800;letter-spacing:-1.1px;display:inline-flex;align-items:center;gap:2px;white-space:nowrap;padding:0}
+.brand span:last-child{color:#e9ba68}.brand-symbol{display:inline-flex;align-items:center;justify-content:center;background:#e9ba6817;color:#e9ba68!important;font-size:26px;width:42px;height:42px;border:1px solid #e9ba6844;border-radius:12px;box-shadow:0 0 22px #e9ba6820;margin-right:7px;letter-spacing:0}
+.site-nav{display:flex;align-items:center;gap:29px}.site-nav a{color:#d8e4ea;text-decoration:none;font-size:13px;font-weight:650;white-space:nowrap;transition:color .2s}.site-nav a:hover,.site-nav a:focus-visible{color:#e9ba68}
+.header-cta{border:0;background:#e9ba68;border-radius:10px;color:#142b3b;font-weight:800;font-size:13px;padding:14px 20px;white-space:nowrap;box-shadow:0 4px 20px #e9ba6823}.header-cta:hover,.landing-btn.primary:hover{background:#f2c984;transform:translateY(-2px)}
+.app-nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.app-nav button{border:1px solid #476171;border-radius:9px;padding:10px 13px;background:transparent;color:white;font-size:13px;font-weight:700}.app-nav button.active{background:#e9ba68;color:#142b3b;border-color:#e9ba68}
+main#mainContent:has(.landing-page:not(.hidden)){max-width:none;padding:0;margin:0}main#mainContent{max-width:1000px;padding:0 18px;margin:24px auto}
+.landing-page{font-family:Inter,system-ui,'Noto Sans Ethiopic',sans-serif;color:#142b3b;overflow:hidden}.landing-page *{box-sizing:border-box}
+.hero-shell{background:radial-gradient(ellipse at 92% 28%,#32546a 0,transparent 35%),linear-gradient(125deg,#142b3b,#193b50);color:#fff;position:relative}
+.hero-shell::before{content:'';position:absolute;inset:0;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:54px 54px;opacity:.025;pointer-events:none}
+.hero-grid{max-width:1180px;padding:90px 10px 106px;margin:auto;display:grid;grid-template-columns:1.02fr 1fr;align-items:center;gap:65px;position:relative}
+.hero-eyebrow,.section-kicker{font-size:11px;letter-spacing:2px;font-weight:900;color:#d7aa62}.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:24px}.eyebrow-dot{height:8px;width:8px;border-radius:50%;background:#e9ba68;box-shadow:0 0 0 5px #e9ba6820}
+.hero-copy h1{font-size:clamp(42px,4.6vw,66px);line-height:1.095;letter-spacing:-2.9px;margin:0 0 25px;font-weight:850;max-width:650px}.hero-copy h1 em{color:#e9ba68;font-style:normal}.hero-sub{font-size:17px;line-height:1.85;color:#cad8e0;max-width:555px;margin:0 0 31px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.landing-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:15px 22px;font-weight:800;font-size:13px;border:1px solid transparent;transition:transform .18s,background .18s;cursor:pointer;white-space:normal;text-align:center}.landing-btn.primary{background:#e9ba68;color:#142b3b}.landing-btn.outline{background:transparent;border-color:#688091;color:#fff}.landing-btn.outline:hover{background:#ffffff15}.landing-btn.navy{background:#142b3b;color:#fff}.landing-btn.navy:hover{background:#2c526a}
+.hero-trust{display:flex;align-items:center;gap:12px;color:#aebfca;font-size:12px;margin-top:34px}.trust-avatars{font-family:'Noto Sans Ethiopic',system-ui;font-size:14px;letter-spacing:-5px;background:#ffffff18;border:1px solid #ffffff28;border-radius:16px;padding:5px 13px 5px 6px;color:#ffd79b}
+.hero-visual{position:relative}.visual-glow{position:absolute;inset:-50px;background:radial-gradient(ellipse at center,#e9ba6830,transparent 65%);filter:blur(20px)}.preview-window{position:relative;background:#fff;color:#142b3b;border-radius:16px;overflow:hidden;transform:rotate(-1.2deg);box-shadow:0 28px 65px #04141e88;border:1px solid #d9e5eb}.preview-top{height:48px;border-bottom:1px solid #e8eff2;background:#f5f8fa;display:flex;gap:14px;align-items:center;padding:0 18px;font-size:11px;color:#718492}.window-dots{display:inline-flex;gap:5px}.window-dots i{width:8px;height:8px;border-radius:50%;background:#dfb9aa}.window-dots i:nth-child(2){background:#edcf8c}.window-dots i:nth-child(3){background:#a6cbb1}.preview-title{flex:1}.preview-status{font-size:9px;letter-spacing:.7px;color:#2b9876;font-weight:900}
+.preview-inner{padding:24px 25px 26px}.preview-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#6a7d88;font-weight:850;font-size:10px;letter-spacing:1.6px}.preview-tag{background:#eef4f8;border:1px solid #d8e4eb;padding:5px 9px;border-radius:6px;color:#315368;letter-spacing:0;font-size:10px}.preview-target{font-family:'Noto Sans Ethiopic',system-ui,sans-serif;font-size:clamp(22px,2.5vw,32px);font-weight:700;line-height:1.65;margin:23px 0 18px;word-break:break-word}.preview-right{color:#138f66;background:#d5f6e9}.preview-wrong{background:#ffe2df;color:#af3937}.preview-next{border-bottom:3px solid #e9ba68}.preview-input-label{font-size:11px;font-weight:700;color:#5a7080;display:block;margin-bottom:8px}#previewInput{width:100%;padding:12px 15px;border:1px solid #cfdee6;border-radius:9px;font-family:'Noto Sans Ethiopic',system-ui;font-size:19px;outline:none;background:#f9fbfc;color:#142b3b}#previewInput:focus{border-color:#d9a84d;box-shadow:0 0 0 3px #e9ba682c}
+.preview-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:17px 0}.preview-metrics>div{background:#f2f6f8;border-radius:9px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:4px}.preview-metrics strong{font-size:23px;font-weight:850;letter-spacing:-1px}.preview-metrics span{font-size:10px;color:#738692;font-weight:700}.preview-kb{border:1px solid #e1e9ee;border-radius:10px;padding:13px;background:#f9fbfc}.preview-kb-top{font-size:9px;letter-spacing:1.1px;font-weight:800;color:#728b9a;margin-bottom:10px}.preview-keys{display:flex;gap:5px}.preview-keys span{min-width:0;flex:1;background:#fff;border:1px solid #d1dfe8;border-bottom:3px solid #b5c8d3;border-radius:5px;text-align:center;padding:9px 0 6px;font-size:12px;font-weight:800}.preview-keys .key-lit{background:#fbe8c9;border-bottom-color:#e0a648;color:#7d5114}.preview-keys .space-key{flex:2.5;background:#edf4f7;font-size:9px;padding-top:12px}.preview-tip{font-size:10px;color:#81909b;margin:14px 0 0}.floating-pill{position:absolute;z-index:2;background:#fff;color:#142b3b;border:1px solid #e8eced;box-shadow:0 12px 30px #09182038;padding:11px 14px;border-radius:10px;font-weight:800;font-size:12px}.floating-pill-one{top:-26px;right:-18px;color:#b9812b}.floating-pill-two{bottom:-23px;left:-28px;display:flex;gap:10px;align-items:center}.floating-pill-two span{color:#0e8964;font-family:'Noto Sans Ethiopic',system-ui}
+.stats-strip{display:flex;justify-content:center;align-items:center;gap:0;background:#ecf2f5;border-bottom:1px solid #dfebf1}.stats-strip>div{min-width:210px;padding:30px 45px;display:flex;flex-direction:column;align-items:center;gap:4px}.stats-strip>div+div{border-left:1px solid #d4e1e8}.stats-strip strong{font-size:29px;letter-spacing:-1px}.stats-strip span{font-size:10px;letter-spacing:1.6px;font-weight:850;color:#718493}
+.landing-section{max-width:1180px;margin:0 auto;padding:102px 10px;scroll-margin-top:100px}.section-heading{text-align:center;margin-bottom:38px}.section-heading h2,.curriculum-head h2,.keyboard-guide h2,.closing-cta h2{font-size:clamp(30px,3.2vw,42px);line-height:1.17;letter-spacing:-1.7px;margin:14px 0}.section-heading p,.curriculum-head p,.keyboard-guide p{color:#627987;line-height:1.85;font-size:15px;margin:0}
+.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.feature-card{background:#fff;border:1px solid #e1eaee;border-radius:16px;padding:30px 25px;box-shadow:0 8px 28px #142b3b07;transition:transform .2s,box-shadow .2s}.feature-card:hover{transform:translateY(-5px);box-shadow:0 15px 30px #142b3b14}.feature-icon{font-size:29px;width:56px;height:56px;display:grid;place-items:center;border-radius:14px;color:#916326;background:#fff3de;margin-bottom:25px}.feature-card h3{font-size:17px;line-height:1.35;margin:0 0 14px;letter-spacing:-.3px}.feature-card p{font-size:13px;line-height:1.8;color:#6c7e89;margin:0}
+.curriculum-preview{background:#fff;border-radius:22px;padding:53px!important;border:1px solid #e3edf0;margin-bottom:40px}.curriculum-head{display:flex;align-items:end;justify-content:space-between;gap:22px;margin-bottom:29px}.journey-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.journey-grid>div{background:#f3f7f9;border:1px solid #e2ebee;border-radius:12px;display:flex;flex-direction:column;gap:13px;min-height:155px;padding:22px 16px}.journey-grid span{color:#be8840;font-size:12px;font-weight:900}.journey-grid strong{font-size:13px}.journey-grid small{font-family:'Noto Sans Ethiopic',system-ui;color:#668091;font-size:11px;margin-top:auto}
+.keyboard-guide{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}.keyboard-guide p{margin:0 0 25px}.guide-demo{border:1px solid #dbe8ee;background:linear-gradient(135deg,#e9f0f5,#fafcfd);border-radius:17px;padding:33px 22px;box-shadow:0 12px 35px #142b3b0c}.guide-demo>div{display:flex;gap:4px;margin:15px 0}.guide-demo kbd{background:#fff;box-shadow:0 3px 0 #b2c6d1;border:1px solid #cddde5;border-radius:7px;min-width:0;flex:1;text-align:center;font-family:inherit;font-weight:900;font-size:13px;padding:15px 2px}.guide-demo kbd:nth-child(4),.guide-demo kbd:nth-child(6){border-color:#e6b45c;box-shadow:0 3px 0 #e0b364;background:#fff4df}.guide-demo kbd.space-guide{flex:2;font-size:9px;padding-top:18px;background:#edf4f7}.guide-label{color:#8499a6;letter-spacing:1.1px;font-size:10px;font-weight:850}
+.faq{max-width:850px}.faq-stack{display:grid;gap:12px}.faq details{background:#fff;border:1px solid #e0e9ed;border-radius:12px;padding:21px 24px}.faq summary{font-size:15px;font-weight:750;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between}.faq summary::after{content:'+';font-size:25px;font-weight:400;color:#b18b51}.faq details[open] summary::after{content:'−'}.faq details p{font-size:14px;color:#66808d;line-height:1.8;margin:15px 0 0}
+.closing-cta{margin:30px auto 0;padding:76px 20px;text-align:center;background:#142b3b;color:#fff;position:relative;overflow:hidden}.closing-cta::after{content:'ፊ';position:absolute;font-size:350px;color:#ffffff06;right:10%;top:-80px;pointer-events:none}.closing-cta h2{max-width:720px;margin:19px auto}.closing-cta p{color:#bbccd5;margin:0 auto 28px;font-size:15px;line-height:1.8}.closing-cta .landing-btn{position:relative;z-index:1}
+.landing-footer{background:#0e202d;color:#dce7ec;padding:45px max(20px,calc((100% - 1180px)/2)) 25px}.footer-top{display:flex;align-items:start;justify-content:space-between;gap:22px;flex-wrap:wrap}.footer-brand{font-size:22px;font-weight:900}.footer-brand span{color:#e9ba68}.footer-top p{color:#879ba8;font-size:12px}.footer-links{display:flex;flex-direction:column;gap:14px}.footer-links a{color:#d8e3e8;font-size:12px;text-decoration:none}.footer-links a:hover{color:#e9ba68}.lang-label{display:flex;gap:11px;align-items:center;color:#d8e4eb;font-size:12px}.lang-label select{background:#233b4d;color:#fff;border-color:#476171;font-size:12px}.footer-bottom{border-top:1px solid #344858;padding-top:22px;margin-top:32px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:#879aa8;font-size:11px}
+.in-app .site-header{position:sticky}.in-app .header-wrap{max-width:1100px}.in-app main#mainContent{margin:25px auto}.in-app .app-footer{display:block}
+:focus-visible{outline:3px solid #f0b74e;outline-offset:3px}
+@media(max-width:1150px){.hero-grid,.landing-section{margin-left:30px;margin-right:30px}.hero-grid{gap:35px}.hero-copy h1{font-size:clamp(40px,4.7vw,59px)}.floating-pill-one{right:-8px}}
+@media(max-width:860px){.header-wrap{gap:12px;flex-wrap:wrap;padding:12px 0}.site-nav{order:3;width:100%;justify-content:center;gap:18px;flex-wrap:wrap}.hero-grid{grid-template-columns:1fr;padding-top:65px;padding-bottom:85px}.hero-copy{max-width:670px}.hero-visual{max-width:640px;width:100%;margin:auto}.features-grid{grid-template-columns:repeat(2,1fr)}.journey-grid{grid-template-columns:repeat(3,1fr)}.keyboard-guide{grid-template-columns:1fr;gap:28px}.app-nav{order:3;width:100%;justify-content:center}.header-cta{margin-left:auto}}
+@media(max-width:580px){.site-header{padding:0 15px}.header-wrap{min-height:70px}.brand{font-size:19px}.brand-symbol{width:36px;height:36px;font-size:23px}.header-cta{font-size:11px;padding:11px 12px}.site-nav{gap:14px}.site-nav a{font-size:11px}.hero-grid{margin:0 20px;padding:55px 0 75px;gap:45px}.hero-copy h1{font-size:43px;letter-spacing:-1.8px}.hero-sub{font-size:15px;line-height:1.7}.hero-actions{flex-direction:column;align-items:stretch}.landing-btn{width:100%;padding:14px 18px}.hero-visual{padding:0 4px}.preview-window{transform:none}.preview-inner{padding:17px}.preview-target{font-size:24px}.floating-pill{display:none}.stats-strip>div{min-width:0;padding:22px 9px;flex:1}.stats-strip strong{font-size:24px}.stats-strip span{font-size:8px;text-align:center}.landing-section{margin:0 17px;padding:70px 0}.features-grid{grid-template-columns:1fr}.feature-card{padding:24px}.curriculum-preview{padding:28px 18px!important;margin:0 17px 30px}.curriculum-head{flex-direction:column;align-items:stretch}.journey-grid{grid-template-columns:repeat(2,1fr)}.journey-grid>div{min-height:125px;padding:16px 12px}.journey-grid>div:last-child{grid-column:1/-1}.closing-cta{padding:64px 18px}.landing-footer{padding:40px 20px 24px}.preview-keys{gap:3px}.preview-keys span{font-size:10px}.preview-keys .space-key{font-size:8px}.app-nav button{font-size:11px;padding:8px 9px}}
+@media(prefers-reduced-motion:reduce){.landing-page *{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+
+/* v3.1: theme tokens and persistent accessible header preferences */
+:root{color-scheme:light;--ui-bg:#f5f8fa;--ui-surface:#ffffff;--ui-raised:#f2f6f9;--ui-border:#d9e5eb;--ui-text:#193044;--ui-subtle:#546e80;--ui-soft:#eaf3f7;--ui-accent:#e9ba68;--ui-success:#d7f4e0;--ui-error:#ffdad9;--ui-input:#ffffff}
+html[data-theme="dark"]{color-scheme:dark;--ui-bg:#0c1722;--ui-surface:#172938;--ui-raised:#203648;--ui-border:#3c5768;--ui-text:#edf5f9;--ui-subtle:#bbceda;--ui-soft:#1b3142;--ui-accent:#e9ba68;--ui-success:#244c40;--ui-error:#573b43;--ui-input:#112332}
+body{background:var(--ui-bg);color:var(--ui-text);transition:background .2s,color .2s}
+.site-header{background:#142b3bf7}.header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-left:auto}
+.header-lang{display:flex;gap:6px;align-items:center;color:#d6e6ee;font-size:11px;font-weight:700;white-space:nowrap}
+.header-lang select{background:#233d4e;border:1px solid #607b89;border-radius:9px;color:#fff;font-size:12px;padding:9px 6px;min-width:92px}
+.theme-toggle{width:39px;height:39px;flex:none;background:#244052;border:1px solid #557282;border-radius:10px;color:#fff;font-size:19px;display:grid;place-items:center;cursor:pointer;transition:background .15s}
+.theme-toggle:hover{background:#365a6c}
+.sound-toggle[aria-pressed="true"]{background:#e9ba68!important;color:#142b3b!important;border-color:#b88b42!important}
+html[data-theme="dark"] :is(.panel,.feature-card,.curriculum-preview,.faq details,.preview-window,.floating-pill){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+html[data-theme="dark"] :is(.panel h1,.panel h2,.panel h3,.landing-page,.landing-section,.section-heading h2,.journey-grid strong,.feature-card h3,.faq summary){color:var(--ui-text)}
+html[data-theme="dark"] :is(.muted,.footer,.preview-tip,.preview-heading,.preview-input-label,.feature-card p,.feature-card small,.section-heading p,.curriculum-head p,.keyboard-guide p,.faq details p,.journey-grid small,.lesson small,.lesson-progress,.cal-count){color:var(--ui-subtle)}
+html[data-theme="dark"] :is(.keyboard-ref,.keyboard-workshop,.calibration-panel,.calibration-intro,.lesson,.stat,.message,.guided-panel,.lesson-hint,.lesson-group,.practice-tools,.mistake-report,.achievement,.progress-overview,.progress-track,.kb-options,.hand-helper,.finger-toolbar button,.kb-key,.kb-stage,.preview-top,.preview-kb,.preview-metrics>div,.preview-kb-top,.preview-keys span,.preview-tag,.journey-grid>div,.stats-strip,.guide-demo,.guide-demo kbd){background:var(--ui-raised);color:var(--ui-text);border-color:var(--ui-border)}
+html[data-theme="dark"] :is(input,textarea,select,#previewInput,.cal-row input){background:var(--ui-input);color:var(--ui-text);border-color:var(--ui-border)}
+html[data-theme="dark"] :is(input,textarea)::placeholder{color:#a2b7c7}
+html[data-theme="dark"] :is(.passage,.preview-target){background:var(--ui-soft);color:var(--ui-text)}
+html[data-theme="dark"] :is(.stat span,.stat strong,.progress-number,.kb-key .key-glyph,.kb-key .key-finger strong,.feature-card p,.preview-metrics span,.guide-label,.preview-kb-top,.journey-grid span,.preview-status){color:var(--ui-subtle)}
+html[data-theme="dark"] :is(.lesson:hover,.lesson.home-demo,.kb-key.home-demo){border-color:#bd944f}
+html[data-theme="dark"] .btn.alt{background:#29475a;color:#f4f9fc}
+html[data-theme="dark"] .btn{background:#315a71;color:#fff}
+html[data-theme="dark"] .btn.sound-toggle[aria-pressed="true"]{background:#e9ba68;color:#142b3b}
+html[data-theme="dark"] .passage span.good{background:var(--ui-success);color:#b9f4cf}
+html[data-theme="dark"] .passage span.bad{background:var(--ui-error);color:#ffd8d8}
+html[data-theme="dark"] .passage span.current{background:#534325;color:#ffe0a3}
+html[data-theme="dark"] :is(.preview-right){background:#244c40;color:#b9f4cf}
+html[data-theme="dark"] :is(.preview-wrong){background:#573b43;color:#ffd8d8}
+html[data-theme="dark"] :is(.preview-next){border-bottom-color:#e9ba68}
+html[data-theme="dark"] .landing-page .hero-shell{background:radial-gradient(ellipse at 90% 25%,#263e54 0,transparent 38%),linear-gradient(125deg,#0c1926,#102d3d)}
+html[data-theme="dark"] .landing-page .hero-sub{color:#c6d7e2}
+html[data-theme="dark"] :is(.stats-strip,.feature-card,.faq details,.curriculum-preview){box-shadow:none}
+html[data-theme="dark"] .stats-strip>div+div{border-color:var(--ui-border)}
+html[data-theme="dark"] .guide-demo{background:linear-gradient(135deg,#203648,#1c2c3b)}
+html[data-theme="dark"] .preview-keys .key-lit,html[data-theme="dark"] .guide-demo kbd:nth-child(4),html[data-theme="dark"] .guide-demo kbd:nth-child(6){background:#72582f;color:#ffe3ac}
+html[data-theme="dark"] .preview-keys .space-key{background:#253f50;color:#eef5fa}
+html[data-theme="dark"] :is(.floating-pill-one,.floating-pill-two){background:#243949;color:#f0c17b}
+html[data-theme="dark"] .floating-pill-two span{color:#88dfb7}
+html[data-theme="dark"] .closing-cta{background:#0e2332;color:#fff;border-top:1px solid #3a5669}
+html[data-theme="dark"] .landing-footer{background:#091721}
+html[data-theme="dark"] .landing-btn.navy{background:#e9ba68;color:#142b3b}
+html[data-theme="dark"] .landing-btn.navy:hover{background:#f5ce88}
+html[data-theme="dark"] .keyboard-ref a{color:#f0c985}
+html[data-theme="dark"] .achievement.earned{background:#443827;border-color:#b49054}
+html[data-theme="dark"] .kb-key.suggested{background:#1b594c;color:#e4fff5}
+html[data-theme="dark"] .kb-key.pressed{background:#765c31;color:#fff}
+html[data-theme="dark"] .kb-scroll{background:linear-gradient(150deg,#223b4d,#132737);border-color:var(--ui-border)}
+html[data-theme="dark"] .preview-tag{background:#2b4355;color:#f4f9fc}
+html[data-theme="dark"] .preview-input-label{color:#d4e3eb}
+@media(max-width:1000px){.header-wrap{gap:13px}.header-actions{gap:6px}.header-cta{padding:11px 12px}.site-nav{gap:15px}}
+@media(max-width:580px){.header-wrap{gap:9px}.header-actions{margin-left:0;gap:7px;flex:1;justify-content:flex-end}.header-lang>span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.header-lang select{min-width:78px;max-width:88px;font-size:11px}.theme-toggle{width:36px;height:36px}.header-cta{padding:10px 8px;max-width:140px}.site-nav{order:3}}
+@media(prefers-reduced-motion:reduce){body,.theme-toggle{transition:none!important}}
+
+
+/* v3.2 — Immersive single-screen practice workspace */
+body.in-app:has(#test:not(.hidden)){overflow:hidden;height:100dvh}
+body.in-app:has(#test:not(.hidden)) #appFooter{display:none!important}
+body.in-app:has(#test:not(.hidden)) main#mainContent{max-width:1280px;width:100%;padding:0 12px;margin:8px auto 0}
+#test{height:calc(100dvh - var(--ft-header-height,82px) - 13px);margin:0;padding:10px 16px 8px;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:6px;border-radius:14px}
+#test.hidden{display:none!important}
+#test .practice-topbar{display:flex;align-items:stretch;gap:12px;min-height:66px;flex:none}
+#test .practice-controls{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px;justify-content:center}
+#test #heading{font-size:14px;margin:0;line-height:1.15;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:800;color:var(--ui-text)}
+#test .toolbar{margin:0;display:flex;align-items:center;flex-wrap:wrap;gap:5px 7px}
+#test .toolbar label{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--ui-subtle)}
+#test .toolbar select{padding:5px 23px 5px 7px;border-radius:7px;font-size:11px;max-width:148px;min-height:30px}
+#test .toolbar .btn{padding:7px 10px;min-height:30px;font-size:11px;border-radius:7px;font-weight:750;white-space:nowrap}
+#test .stats{display:grid;grid-template-columns:repeat(4,minmax(60px,1fr));gap:5px;align-self:center;flex:0 0 clamp(230px,36%,410px)}
+#test .stat{padding:7px 4px;background:var(--ui-raised);border:1px solid var(--ui-border);border-radius:9px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+#test .stat strong{font-size:clamp(16px,1.75vw,24px);line-height:1.15;font-weight:850;color:var(--ui-text)}
+#test .stat span{font-size:9px;font-weight:750;line-height:1.15;white-space:nowrap;color:var(--ui-subtle)}
+#test #target{font-size:clamp(20px,2.1vw,26px);line-height:1.68;padding:12px 16px;min-height:60px;max-height:96px;height:clamp(60px,11dvh,96px);overflow-y:auto;overflow-x:hidden;border:1px solid var(--ui-border);background:var(--ui-soft);border-radius:11px;scroll-behavior:smooth;flex:none;white-space:pre-wrap;overflow-wrap:anywhere}
+#test #target .current{scroll-margin:20px}
+#test #entry{width:100%;height:42px;min-height:42px;max-height:42px;flex:none;margin:0;padding:5px 14px;line-height:29px;font-size:20px;border:1.5px solid var(--ui-border);border-radius:9px;background:var(--ui-input);color:var(--ui-text);box-shadow:0 0 0 0 transparent;outline:none;font-family:'Noto Sans Ethiopic',system-ui,sans-serif}
+#test #entry:focus{border-color:#b28c50;box-shadow:0 0 0 3px #e9ba6839}
+#test .keyboard-workshop{margin:0;padding:0 7px 5px;border:1px solid var(--ui-border);background:var(--ui-raised);border-radius:12px;display:flex;flex:1 1 auto;min-height:0;overflow:hidden;flex-direction:column;gap:4px}
+#test #guidedPanel{border:none;background:transparent;display:flex;align-items:center;gap:6px 14px;margin:0;padding:5px 8px 1px;min-height:34px;flex:none;color:var(--ui-text)}
+#test .hud-chip{display:flex;align-items:baseline;gap:6px;padding-right:12px;border-right:1px solid var(--ui-border);white-space:nowrap}
+#test .hud-chip small{color:var(--ui-subtle);font-size:10px;font-weight:700}
+#test .hud-chip strong{font-size:13px;color:var(--ui-text);font-weight:850;line-height:1}
+#test #guideMessage{font:800 20px/1.1 'Noto Sans Ethiopic',system-ui,sans-serif;color:#bf8740}
+#test #activeFinger{font-size:12px;color:#bf8740}
+#test .hud-note{font-size:9px;margin-left:auto;color:var(--ui-subtle);text-align:right}
+#test #keyboardArea{min-height:0;flex:1 1 auto;display:flex;flex-direction:column}
+#test .kb-scroll{overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;background:linear-gradient(130deg,#edf5f9,#fafcfd);border:1px solid var(--ui-border);border-radius:10px;padding:4px 6px;flex:1;min-height:0}
+#test .kb-stage{--key-h:clamp(44px,6.1dvh,60px);width:100%;min-width:760px;position:relative;padding:2px 2px clamp(72px,11dvh,102px)!important;isolation:isolate}
+#test .kb-rows{gap:4px;overflow:visible;position:relative;z-index:1!important}
+#test .kb-row{min-width:unset;gap:4px}
+#test .kb-key{height:var(--key-h);min-height:var(--key-h);max-height:var(--key-h);padding:3px 1px 2px;border-radius:6px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;background:var(--ui-surface);border:1px solid var(--ui-border);box-shadow:0 2px 0 #a2b9c4a9;overflow:visible}
+#test .kb-key .key-physical{position:absolute;top:3px;left:5px;z-index:6;font:800 9px/1 system-ui,sans-serif;color:var(--ui-subtle);background:color-mix(in srgb,var(--ui-surface) 75%,transparent);padding:1px;border-radius:2px;max-width:calc(100% - 6px);overflow:hidden;white-space:nowrap}
+#test .kb-key .key-glyph{position:relative;z-index:6!important;font:750 clamp(15px,1.85vw,22px)/1.05 'Noto Sans Ethiopic',system-ui,sans-serif;color:var(--ui-text);background:color-mix(in srgb,var(--ui-surface) 86%,transparent);border-radius:4px;margin:6px 0 0;padding:1px 3px}
+#test .kb-key .key-finger{position:relative;z-index:6!important;margin-top:auto;font-size:8px;padding:1px 3px;line-height:1.05}
+#test .kb-key.home-key:before{z-index:6}
+#test .kb-key.home-demo{background:color-mix(in srgb,var(--ui-accent) 22%,var(--ui-surface));border-color:#ad8b55}
+#test .kb-key.pressed{background:color-mix(in srgb,var(--ui-accent) 44%,var(--ui-surface));border-color:#cf983e}
+#test .hands-on-keys{position:absolute!important;inset:0!important;z-index:3!important;pointer-events:none;overflow:hidden;height:100%!important;width:100%;max-height:none!important}
+#test .keyboard-settings{display:flex;align-items:center;gap:6px 13px;flex-wrap:wrap;justify-content:flex-start;min-height:30px;font-size:11px;color:var(--ui-text);font-weight:700;padding:1px 5px 2px;flex:none}
+#test .keyboard-settings label{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+#test .keyboard-settings select{padding:4px 6px;font-size:10px;max-width:210px;border:1px solid var(--ui-border);border-radius:6px;color:var(--ui-text);background:var(--ui-input)}
+#test .keyboard-settings input{accent-color:#c69546;margin:0}
+#test .keyboard-settings button{background:var(--ui-surface);border:1px solid var(--ui-border);border-radius:7px;color:var(--ui-text);padding:5px 9px;font-size:10px;font-weight:750}
+#test .practice-feedback{flex:none;display:flex;align-items:center;gap:7px;min-height:18px;max-height:75px;overflow:auto;font-size:11px}
+#test #inputStatus{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:var(--ui-subtle)}
+#test #result{margin:0;padding:8px;border-radius:7px;max-height:70px;overflow:auto;flex:2;min-width:0;font-size:12px}
+#test #mistakeReport{margin:0;padding:7px;flex:1;overflow:auto;max-height:70px;min-width:0;font-size:11px}
+#test #mistakeReport p{margin:0}
+#test #nextLesson{white-space:nowrap;padding:6px 10px;font-size:11px}
+/* Minimal, optional hand silhouettes (v3.3). No faux skin, tendons, or nails. */
+#test .vector-palm{fill:rgba(100,140,165,.18);stroke:rgba(70,115,145,.45);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#test .vector-finger{opacity:.68;transition:opacity .14s ease}
+#test .finger-silhouette{fill:rgba(100,140,165,.18);stroke:rgba(70,115,145,.45);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;transition:fill .15s ease,fill-opacity .15s ease}
+#test .vector-finger.active,#test .vector-finger.hinted{opacity:1}
+#test .vector-finger.active .finger-silhouette,#test .vector-finger.hinted .finger-silhouette{fill:var(--finger-color,#86c4af);fill-opacity:.55;stroke:var(--finger-color,#86c4af);stroke-opacity:.88;stroke-width:2}
+#test .finger-ring{fill:rgba(233,186,104,.10);stroke:#f0b247;stroke-width:2.6;opacity:0;filter:drop-shadow(0 0 5px rgba(241,178,71,.95));transition:opacity .17s ease}
+#test .vector-finger.active .finger-ring,#test .vector-finger.hinted .finger-ring{opacity:1}
+#test .vector-finger.hinted .finger-ring{stroke-dasharray:4 3}
+html[data-theme="dark"] #test :is(.keyboard-workshop,.stat,.kb-key){background:var(--ui-raised);border-color:var(--ui-border)}
+html[data-theme="dark"] #test .kb-scroll{background:linear-gradient(130deg,#152a3b,#223847)}
+html[data-theme="dark"] #test .kb-key .key-glyph{background:color-mix(in srgb,var(--ui-raised) 81%,transparent);color:#e9f5fd}
+html[data-theme="dark"] #test .kb-key .key-physical{background:#203748cc;color:#c1d5e0}
+html[data-theme="dark"] #test .hud-chip strong{color:#f0f7fb}
+html[data-theme="dark"] #test #guideMessage,html[data-theme="dark"] #test #activeFinger{color:#f6cc84}
+@media(max-height:790px) and (min-width:700px){#test{gap:4px;padding-top:7px;padding-bottom:4px}#test .practice-topbar{min-height:59px}#test .kb-stage{--key-h:clamp(39px,5.8dvh,54px);padding-bottom:clamp(62px,10dvh,85px)!important}#test .kb-rows{gap:3px}#test .kb-row{gap:3px}#test #target{height:clamp(56px,10dvh,80px)}#test #guidedPanel{min-height:31px}}
+@media(max-width:900px){#test .practice-topbar{flex-wrap:wrap;gap:5px}#test .stats{flex:1 1 100%;grid-template-columns:repeat(4,1fr)}#test .stat{padding:4px}#test .stat strong{font-size:16px}#test .toolbar .btn{padding:5px 8px}#test .hud-note{display:none}#test .kb-stage{--key-h:clamp(38px,5.5dvh,52px);padding-bottom:clamp(57px,9dvh,80px)!important}}
+@media(max-width:580px){body.in-app:has(#test:not(.hidden)){overflow:hidden;height:100dvh}
+body.in-app:has(#test:not(.hidden)) #appFooter{display:none!important}body.in-app:has(#test:not(.hidden)) main#mainContent{padding:0 5px;margin:4px auto}#test{padding:7px 6px 4px;gap:3px}#test .practice-topbar{min-height:0;gap:5px}#test .practice-controls{gap:3px}#test #heading{font-size:12px}#test .toolbar{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;gap:4px}#test .toolbar label{flex:none;font-size:9px}#test .toolbar select{max-width:105px;padding:4px 3px;min-height:28px}#test .toolbar .btn{font-size:10px;padding:5px 7px;min-height:28px;flex:none}#test .stats{gap:3px}#test .stat strong{font-size:15px}#test .stat span{font-size:8px}#test #target{font-size:18px;padding:7px 9px;min-height:42px;height:clamp(42px,8dvh,64px)}#test #entry{height:42px;min-height:42px}#test #guidedPanel{padding:3px 5px;gap:3px 7px;min-height:28px;overflow:hidden}#test .hud-chip{gap:4px;padding-right:6px}#test .hud-chip small{font-size:9px}#test .hud-chip strong{font-size:10px}#test #guideMessage{font-size:15px}#test .keyboard-settings{flex-wrap:nowrap;overflow-x:auto;gap:8px;font-size:10px;min-height:29px;padding:1px 2px}#test .keyboard-settings select{max-width:128px}#test .kb-stage{min-width:760px!important;--key-h:clamp(36px,5.5dvh,49px);padding-bottom:clamp(55px,9dvh,76px)!important}#test .kb-scroll{padding:3px}#test #inputStatus{font-size:10px}}
+@media(prefers-reduced-motion:reduce){#test .vector-finger,#test .finger-ring{transition:none!important}#test #target{scroll-behavior:auto}}
+
+
+/* On unusually short mobile viewports, preserve reachability instead of clipping hands. */
+@media(max-width:600px) and (max-height:750px){
+ body.in-app:has(#test:not(.hidden)){height:auto;overflow-y:auto}
+ #test{height:auto;min-height:calc(100dvh - var(--ft-header-height,82px) - 12px);overflow:visible}
+ #test .keyboard-workshop{flex:none;overflow:hidden}
+ #test #keyboardArea{flex:none}
+ #test .kb-scroll{height:auto;min-height:0;flex:none}
+ #test .keyboard-settings{flex-wrap:wrap}
+}
+@media(min-width:700px) and (max-height:680px){
+ #test .kb-stage{--key-h:clamp(30px,5dvh,40px);padding-bottom:clamp(44px,8dvh,58px)!important}
+}
+
+/* v3.3: compact by default; reserve hand space ONLY when Show Hands is enabled. */
+#test .kb-stage:not(.with-hands){padding-bottom:2px!important}
+#test .kb-stage.with-hands{padding-bottom:clamp(63px,10dvh,102px)!important}
+#test .kb-scroll{display:flex;align-items:center}
+#test .kb-stage{margin-inline:auto;flex:none}
+#test .hands-on-keys.hidden{display:none!important}
+#test .kb-key[data-finger]{border-bottom:1px solid var(--ui-border)}
+#test .kb-key[data-finger]::after{content:"";position:absolute;z-index:7;bottom:0;left:3px;right:3px;height:4px;border-radius:3px 3px 1px 1px;background:var(--finger-color);opacity:.92;pointer-events:none}
+#test .kb-key .key-finger{background:color-mix(in srgb,var(--finger-color,#aec7d4) 26%,var(--ui-surface));color:var(--ui-text);border:1px solid color-mix(in srgb,var(--finger-color,#aec7d4) 65%,transparent);border-radius:5px;padding:1px 4px;font-weight:850;font-size:9px}
+#test .kb-key.suggested{background:color-mix(in srgb,var(--finger-color,#86c4af) 23%,var(--ui-surface));border-color:color-mix(in srgb,var(--finger-color,#86c4af) 95%,#2a7c83);box-shadow:0 0 0 2px color-mix(in srgb,var(--finger-color,#86c4af) 70%,transparent),0 0 16px color-mix(in srgb,var(--finger-color,#86c4af) 56%,transparent)}
+#test .kb-key.pressed{background:color-mix(in srgb,var(--finger-color,#e9ba68) 39%,var(--ui-surface));border-color:#e8ad49;outline:2px solid #e8ad49;outline-offset:-2px;box-shadow:0 0 0 3px #e9ba68a6,0 0 20px #e9ba6899,0 2px 0 #bd9043!important;transform:translateY(1px)}
+#test .kb-key.suggested .key-finger,#test .kb-key.pressed .key-finger{background:var(--finger-color,#e9ba68);color:#132c3b;border-color:transparent;box-shadow:0 0 0 1px #ffffffa8}
+#test .finger-hud-badge{display:inline-flex;align-items:center;gap:5px;border:1px solid color-mix(in srgb,var(--finger-color,#86c4af) 68%,transparent);background:color-mix(in srgb,var(--finger-color,#86c4af) 30%,var(--ui-surface));color:var(--ui-text);padding:4px 9px;border-radius:999px;font-size:11px;font-weight:850;white-space:nowrap;line-height:1.1;transform-origin:center;box-shadow:0 1px 6px #132c3b18}
+#test .finger-hud-badge[hidden]{display:none!important}
+#test .finger-hud-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--finger-color,#86c4af);box-shadow:0 0 0 2px #fff8}
+#test .finger-hud-badge.pressing{animation:fingerBadgePulse .62s ease-in-out infinite alternate}
+#test .finger-hud-badge.hinted{animation:fingerBadgeHint .48s ease-out 1}
+@keyframes fingerBadgePulse{0%{box-shadow:0 0 0 0 var(--finger-color,#86c4af)}100%{box-shadow:0 0 0 4px color-mix(in srgb,var(--finger-color,#86c4af) 25%,transparent)}}
+@keyframes fingerBadgeHint{0%{transform:scale(.9);opacity:.5}100%{transform:scale(1);opacity:1}}
+@media(max-width:580px){#test .finger-hud-badge{font-size:9px;padding:3px 6px}#test .hud-chip{padding-right:4px}}
+@media(prefers-reduced-motion:reduce){#test .finger-hud-badge{animation:none!important}}
+
+
+/* v3.4 — local phonetic input and custom text, responsive and theme-aware */
+#test .phonetic-toggle{display:inline-flex;align-self:flex-start;align-items:center;gap:5px;border:1px solid var(--ui-border);border-radius:8px;padding:5px 8px;background:var(--ui-raised);color:var(--ui-text);font-weight:700;font-size:10px;max-width:380px;cursor:pointer;line-height:1.25}
+#test .phonetic-toggle input{accent-color:#c18a2e;flex:none;width:14px;height:14px;margin:0}
+#test .phonetic-toggle span{white-space:normal}
+#test .phonetic-toggle:has(input:checked){border-color:#d8a354;background:color-mix(in srgb,#e9ba68 20%,var(--ui-raised))}
+#test .phonetic-help{font-size:11px;line-height:1.25;background:color-mix(in srgb,#e9ba68 12%,var(--ui-raised));color:var(--ui-text);border:1px solid var(--ui-border);padding:5px 10px;border-radius:8px;flex:none}
+.custom-dialog{border:1px solid var(--ui-border);border-radius:18px;background:var(--ui-raised);color:var(--ui-text);box-shadow:0 24px 90px #05152270;max-width:min(660px,calc(100vw - 24px));width:100%;max-height:min(86dvh,850px);overflow:auto;padding:22px;font:inherit}
+.custom-dialog::backdrop{background:rgba(5,18,30,.72);backdrop-filter:blur(4px)}
+.custom-dialog form{display:flex;flex-direction:column;gap:13px;margin:0}
+.custom-dialog-head{display:flex;justify-content:space-between;align-items:start;gap:14px}
+.custom-dialog-head h2{margin:3px 0 0;font-size:21px;color:var(--ui-text)}
+.custom-kicker{font-size:10px;letter-spacing:1.4px;font-weight:800;color:#c48b39}
+.custom-close{border:1px solid var(--ui-border);border-radius:9px;color:var(--ui-text);background:var(--ui-soft);cursor:pointer;padding:7px 12px}
+.custom-dialog .muted{margin:0;line-height:1.6;color:var(--ui-subtle)}
+.custom-label{font-weight:700;font-size:13px}
+.custom-dialog textarea{width:100%;margin:0;min-height:125px;max-height:220px;resize:vertical;border:1px solid var(--ui-border);border-radius:10px;background:var(--ui-input);color:var(--ui-text);font:18px/1.7 'Noto Sans Ethiopic',system-ui,sans-serif;padding:12px}
+.custom-dialog textarea:focus{outline:2px solid #e9ba68}
+.custom-meter{font-size:12px;color:var(--ui-subtle);display:flex;justify-content:space-between;gap:10px}
+#customPassageError{color:#d35e4e;font-weight:700}
+.custom-recent{border-top:1px solid var(--ui-border);padding-top:10px}
+.custom-recent h3{font-size:14px;margin:0 0 10px}
+.custom-recent-list{display:grid;gap:7px;max-height:144px;overflow:auto}
+.custom-recent-item{border:1px solid var(--ui-border);color:var(--ui-text);background:var(--ui-soft);padding:9px 11px;border-radius:8px;text-align:left;font:14px/1.4 'Noto Sans Ethiopic',system-ui,sans-serif;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.custom-recent-item:hover,.custom-recent-item:focus{border-color:#d5a24a;outline:none}
+.custom-recent-empty{font-size:12px;color:var(--ui-subtle)}
+.custom-dialog-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+@media(max-width:900px){#test .practice-topbar{min-height:79px}#test .phonetic-toggle{max-width:330px}}
+@media(max-width:580px){.custom-dialog{padding:17px}.custom-dialog-head h2{font-size:19px}#test .phonetic-toggle{max-width:min(100%,368px);font-size:10px;padding:4px 6px}#test .phonetic-help{font-size:10px;max-height:44px;overflow:auto}}
+
+.passage span.pending{background:color-mix(in srgb,#e9ba68 22%,transparent);border-bottom:2px dashed #d69c35;color:inherit}
+/* v3.5 — low-profile reference and accessible feedback */
+#test .phonetic-help{position:relative;overflow:visible;max-height:none}
+#phoneticReferenceButton{border:1px solid var(--ui-border);border-radius:7px;background:var(--ui-input);color:var(--ui-text);font-weight:750;font-size:11px;padding:5px 9px;white-space:nowrap}
+.phonetic-reference{position:fixed;right:clamp(10px,3vw,42px);top:clamp(82px,12dvh,140px);z-index:120;width:min(370px,calc(100vw - 20px));max-height:min(72dvh,600px);padding:15px;border-radius:15px;background:var(--ui-surface);border:1px solid var(--ui-border);box-shadow:0 18px 60px #06162565;color:var(--ui-text);display:flex;flex-direction:column;gap:9px}
+.phonetic-reference.hidden{display:none!important}
+.reference-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:17px}
+.reference-heading button{border:1px solid var(--ui-border);border-radius:8px;background:var(--ui-soft);color:var(--ui-text);padding:5px 10px}
+.reference-note,.reference-coverage{font-size:11px;color:var(--ui-subtle);line-height:1.5;margin:0}
+.phonetic-reference label{font-size:11px;font-weight:700}
+.phonetic-reference input{border:1px solid var(--ui-border);border-radius:8px;padding:10px 12px;background:var(--ui-input);color:var(--ui-text);font-size:14px}
+.reference-list{overflow:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;min-height:30px}
+.reference-item{display:flex;gap:5px;align-items:center;justify-content:space-between;background:var(--ui-soft);border:1px solid var(--ui-border);padding:7px 9px;border-radius:8px}
+.reference-item code{color:var(--ui-subtle);font-size:11px}
+.reference-item span{font:700 18px 'Noto Sans Ethiopic',system-ui,sans-serif;color:var(--ui-text)}
+#test .phonetic-help button:focus-visible,.phonetic-reference :focus-visible{outline:2px solid #e9ba68;outline-offset:2px}
+@media(max-width:580px){.phonetic-reference{top:80px;right:10px;max-height:62dvh}.reference-list{grid-template-columns:repeat(3,minmax(0,1fr))}#test .phonetic-help{max-height:none}}
+
+/* v3.6 — MOBILE PRACTICE: natural document scrolling and compact key guide */
+.mobile-finger-guide,.full-keyboard-toggle{display:none}
+.mobile-finger-guide{border:1px solid var(--ui-border);border-radius:10px;background:var(--ui-soft);padding:10px;min-height:0}
+.mobile-guide-top{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--ui-text);font-size:12px;margin-bottom:9px}
+.mobile-guide-top span{color:var(--ui-subtle);font-size:10px}
+.mobile-guide-keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.mobile-key{border:1px solid var(--ui-border);border-bottom:4px solid var(--finger-color,#86c4af);border-radius:8px;min-width:0;background:var(--ui-surface);padding:7px 2px 4px;text-align:center;color:var(--ui-text)}
+.mobile-key strong{display:block;font-size:17px}.mobile-key small{font-size:9px;font-weight:750;color:var(--ui-subtle)}
+.mobile-key.pressed,.mobile-key.suggested{border-color:var(--finger-color,#e9ba68);background:color-mix(in srgb,var(--finger-color,#e9ba68) 27%,var(--ui-surface));box-shadow:0 0 0 2px color-mix(in srgb,var(--finger-color,#e9ba68) 50%,transparent)}
+.mobile-guide-status{min-height:19px;text-align:center;margin-top:8px;color:var(--ui-subtle);font-size:11px}
+@media(max-width:680px){
+ body.in-app:has(#test:not(.hidden)){height:auto!important;min-height:100dvh;overflow-y:auto!important;overflow-x:hidden}
+ body.in-app:has(#test:not(.hidden)) .site-header{position:relative;top:auto}
+ body.in-app:has(#test:not(.hidden)) main#mainContent{margin:6px auto!important;max-width:100%;padding:0 6px}
+ #test{height:auto!important;min-height:calc(100dvh - var(--ft-header-height,82px) - 14px);overflow:visible!important;display:flex;gap:8px;padding:12px 9px}
+ #test .practice-topbar{display:flex;flex-direction:column;flex:none;gap:7px}
+ #test .practice-controls{width:100%}
+ #test .toolbar{display:flex;flex-wrap:wrap!important;overflow:visible!important;gap:5px}
+ #test .toolbar label{flex:0 1 auto}
+ #test .stats{width:100%;flex:none;grid-template-columns:repeat(4,minmax(0,1fr))}
+ #test .stat{min-width:0}
+ #test #target{height:auto;min-height:70px;max-height:125px;overflow-y:auto}
+ #test .phonetic-help{max-height:none;overflow:visible}
+ #test .keyboard-workshop{display:flex;flex:none;min-height:0;overflow:visible;padding:6px;gap:6px}
+ #test #keyboardArea{display:flex;flex:none;min-height:0}
+ #test .mobile-finger-guide{display:block}
+ #test .kb-scroll{display:none;overflow-x:auto;max-width:100%;height:auto;min-height:0;flex:none;align-items:start}
+ #test.mobile-expanded .kb-scroll{display:flex}
+ #test .kb-stage{min-width:760px!important;width:760px!important;--key-h:48px;padding-bottom:2px!important}
+ #test .kb-stage.with-hands{padding-bottom:94px!important}
+ #test .keyboard-settings{flex-wrap:wrap;overflow:visible;min-height:0;gap:8px}
+ #test .full-keyboard-toggle{display:inline-block;background:var(--ui-surface);color:var(--ui-text);border:1px solid var(--ui-border);border-radius:7px;padding:7px 9px;font-size:11px;font-weight:750}
+ #test #guidedPanel{flex-wrap:wrap;overflow:visible;max-height:none}
+ #test .practice-feedback{flex-wrap:wrap;max-height:none;overflow:visible}
+ #test #inputStatus{white-space:normal;overflow:visible}
+ #test #result,#test #mistakeReport{max-height:none}
+ .onboard-dialog{width:calc(100vw - 24px)}
+}
+@media(max-width:350px){#test .toolbar select{max-width:112px}#test .toolbar .btn{font-size:10px;padding:7px 8px}.mobile-guide-top{flex-wrap:wrap}}
+/* v3.6 — PROGRESS, BACKUP AND ONBOARDING */
+.daily-dashboard,.backup-dashboard{border:1px solid var(--ui-border);background:var(--ui-raised);border-radius:14px;padding:18px;margin:18px 0;color:var(--ui-text)}
+.daily-dashboard h3,.backup-dashboard h3{margin:0 0 7px}.daily-dashboard p,.backup-dashboard p{margin:5px 0 12px;color:var(--ui-subtle);line-height:1.5}
+.daily-title{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.daily-dashboard label{display:inline-block;font-size:13px;font-weight:700;margin:8px 8px 10px 0}.daily-dashboard select{background:var(--ui-input);color:var(--ui-text);border:1px solid var(--ui-border)}
+.daily-track{height:12px;background:var(--ui-border);border-radius:99px;overflow:hidden;margin:8px 0 10px}.daily-track>div{width:0;height:100%;background:linear-gradient(90deg,#398e91,#e9ba68);transition:width .2s}
+#dailySummary,#recentTrend{font-size:13px;color:var(--ui-subtle);line-height:1.65}
+.backup-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:12px 0}
+.backup-file-label{display:inline-flex;align-items:center;cursor:pointer;padding:10px 13px;border:1px solid var(--ui-border);background:var(--ui-surface);border-radius:9px;font-weight:700;font-size:13px;color:var(--ui-text)}
+#backupFile{max-width:220px;font-size:12px;color:var(--ui-text)}
+.backup-preview{background:var(--ui-surface);border:1px solid var(--ui-border);border-radius:10px;padding:15px;margin:13px 0}
+.backup-preview strong{display:block;margin-bottom:10px}.backup-preview p{white-space:pre-line;line-height:1.7}
+#backupMessage{font-size:13px;min-height:19px;color:var(--ui-text)}
+.onboard-dialog{max-width:520px;width:calc(100vw - 30px);max-height:90dvh;border:1px solid var(--ui-border);background:var(--ui-surface);color:var(--ui-text);border-radius:18px;padding:0;box-shadow:0 25px 70px #06162588;overflow-y:auto}
+.onboard-dialog::backdrop{background:#071823b4;backdrop-filter:blur(4px)}
+.onboard-content{padding:24px}.onboard-header{display:flex;align-items:center;justify-content:space-between}.onboard-mark{display:grid;place-items:center;width:48px;height:48px;border-radius:12px;background:#e9ba6833;color:#c28a39;font:800 29px 'Noto Sans Ethiopic',system-ui}
+.onboard-header button{border:0;background:var(--ui-raised);color:var(--ui-text);border-radius:8px;padding:8px 12px;font-size:18px}
+.onboard-dialog h2{font-size:24px;margin:12px 0}.onboard-dialog p{color:var(--ui-subtle);font-size:14px;line-height:1.6}
+.onboard-dialog fieldset{border:0;padding:0;margin:19px 0}.onboard-dialog legend{font-weight:750;margin-bottom:10px}
+.onboard-choice{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--ui-border);border-radius:12px;padding:13px;cursor:pointer;margin-bottom:9px;background:var(--ui-raised)}
+.onboard-choice:has(input:checked){outline:2px solid #d9ac5a}.onboard-choice input{margin-top:5px;accent-color:#bd8b36}.onboard-choice strong,.onboard-choice small{display:block}.onboard-choice small{color:var(--ui-subtle);margin-top:5px;line-height:1.5}
+.onboard-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px}
+@media(prefers-reduced-motion:reduce){.daily-track>div{transition:none}}
+</style></head><body><header class="site-header">
+  <div class="header-wrap">
+    <button id="brandHome" class="brand" type="button" aria-label="FidelType home" data-i18n-aria="brandHomeAria"><span class="brand-symbol">ፊ</span> Fidel<span>Type</span></button>
+    <nav id="siteNav" class="site-nav" aria-label="Landing navigation" data-i18n-aria="landNavAria"><a href="#lessons-preview" data-i18n="navLessons">Lessons</a><a href="#features" data-i18n="navFeatures">Features</a><a href="#keyboard-guide" data-i18n="navKeyboard">Keyboard Guide</a><a href="#faq" data-i18n="navFaq">FAQ</a></nav>
+    <nav id="appNav" class="app-nav hidden" aria-label="App navigation" data-i18n-aria="appNavAria"><button type="button" data-page="test" data-i18n="appTest">Test</button><button type="button" data-page="lessons" data-i18n="appLessons">Lessons</button><button type="button" data-page="calibration" data-i18n="appCalibration">Calibration</button><button type="button" data-page="progress" data-i18n="appProgress">Progress</button></nav>
+    <div class="header-actions">
+      <label class="header-lang" for="langSelect"><span data-i18n="language">Language</span><select id="langSelect" aria-label="Language / ቋንቋ"><option value="en">English</option><option value="am">አማርኛ</option></select></label>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode">🌙</button>
+      <button class="header-cta" data-launch="test" type="button" data-i18n="startNow">Start Typing Now ↗</button>
+    </div>
+  </div>
+</header><main id="mainContent"><section id="home" class="landing-page" aria-label="FidelType landing page" data-i18n-aria="homeAria">
+ <div class="hero-shell">
+  <div class="hero-grid">
+   <div class="hero-copy">
+    <div class="hero-eyebrow"><span class="eyebrow-dot"></span> <span data-i18n="eyebrow">YOUR AMHARIC TYPING JOURNEY STARTS HERE</span></div>
+    <h1 data-i18n="heroTitle">Master Amharic Touch Typing, <em>One Fidel at a Time.</em></h1>
+    <p class="hero-sub" data-i18n="heroSub">A distraction-free, browser-based typing tutor designed for Ethiopic script. Learn letter families, track WPM accurately, and build muscle memory.</p>
+    <div class="hero-actions"><button type="button" class="landing-btn primary" data-launch="test" data-i18n="quickTest">Launch Quick Test (Free) ↗</button><button type="button" class="landing-btn outline" data-launch="lessons" data-i18n="explore">Explore Lessons →</button></div>
+    <div class="hero-trust"><span class="trust-avatars">ፊ ሀ ለ</span><span data-i18n="trust">No sign-up. No distractions. Just progress.</span></div>
+   </div>
+   <div class="hero-visual" aria-label="Interactive typing preview" data-i18n-aria="heroVisualAria">
+    <div class="visual-glow"></div>
+    <div class="preview-window">
+     <div class="preview-top"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="preview-title" data-i18n="previewWindowTitle">FidelType / quick-test</span><span class="preview-status" data-i18n="previewLive">● LIVE PREVIEW</span></div>
+     <div class="preview-inner">
+      <div class="preview-heading"><span data-i18n="previewMode">TYPING PRACTICE</span><span class="preview-tag" data-i18n="previewTag">አማርኛ · AM</span></div>
+      <p class="preview-target" id="previewTarget" lang="am" aria-label="Preview phrase" data-i18n-aria="previewPhraseAria">ሰላም እንደምን አላችሁ</p>
+      <label class="preview-input-label" for="previewInput" data-i18n="tryTyping">Try typing the phrase above</label>
+      <input id="previewInput" type="text" aria-label="Amharic preview typing input" data-i18n-aria="previewInputAria" lang="am" spellcheck="false" autocomplete="off" placeholder="እዚህ ይጻፉ…" aria-describedby="previewHelp" />
+      <div class="preview-metrics"><div><strong id="previewWpm">0</strong><span data-i18n="wpmLabel">WPM</span></div><div><strong id="previewAccuracy">100%</strong><span data-i18n="accuracy">Accuracy</span></div><div><strong id="previewProgress">0%</strong><span data-i18n="complete">Complete</span></div></div>
+      <div class="preview-kb"><div class="preview-kb-top" data-i18n="homeRow">HOME ROW · HAND POSITION</div><div class="preview-keys"><span>A</span><span>S</span><span>D</span><span class="key-lit">F</span><span class="space-key" data-i18n="spaceLabel">SPACE</span><span class="key-lit">J</span><span>K</span><span>L</span><span>;</span></div></div>
+      <p class="preview-tip" id="previewHelp" data-i18n="previewHint">✦ Enable an Amharic keyboard to try this live preview.</p>
+     </div>
+    </div>
+    <div class="floating-pill floating-pill-one">✦ <span data-i18n="floatingLevels">5 Learning Levels</span></div><div class="floating-pill floating-pill-two"><span>በትክክል</span> <b data-i18n="floatingAccuracy">Accuracy first</b></div>
+   </div>
+  </div>
+ </div>
+ <div class="stats-strip" aria-label="FidelType facts" data-i18n-aria="statsAria"><div><strong>25+</strong><span data-i18n="statLessons">GUIDED LESSONS</span></div><div><strong>100%</strong><span data-i18n="statFree">FREE TO USE</span></div><div><strong>0</strong><span data-i18n="statSetup">ACCOUNTS NEEDED</span></div></div>
+ <section id="features" class="landing-section"><div class="section-heading"><span class="section-kicker" data-i18n="featureKicker">BUILT FOR ETHIOPIC SCRIPT</span><h2 data-i18n="featureTitle">Everything you need to type with confidence.</h2><p data-i18n="featureSub">A thoughtful learning experience for the script you use every day.</p></div>
+ <div class="features-grid">
+ <article class="feature-card"><div class="feature-icon">⌨</div><h3 data-i18n="f1Title">Phonetic &amp; Native Input</h3><p data-i18n="f1Text">Practice using your operating system’s Amharic input method, including GFF Ge’ez, Power Ge’ez, or other installed layouts. Exact key mappings vary.</p></article>
+ <article class="feature-card"><div class="feature-icon">▤</div><h3 data-i18n="f2Title">Structured Curriculum</h3><p data-i18n="f2Text">Progress through 5 levels and 25 lessons, from Fidel families to words, sentences, and fluent writing.</p></article>
+ <article class="feature-card"><div class="feature-icon">✋</div><h3 data-i18n="f3Title">Real-Time Hand Guidance</h3><p data-i18n="f3Text">See physical keys and assigned fingers respond as you type. Calibrate direct-key character mappings for specific hints.</p></article>
+ <article class="feature-card"><div class="feature-icon">♧</div><h3 data-i18n="f4Title">Privacy First</h3><p data-i18n="f4Text">No login and no tracking account. The tutor runs locally, and practice progress stays in your browser.</p></article>
+ </div></section>
+ <section class="curriculum-preview landing-section" id="lessons-preview"><div class="curriculum-head"><div><span class="section-kicker" data-i18n="lessonsKicker">LEARN AT YOUR OWN PACE</span><h2 data-i18n="lessonsTitle">From your first Fidel to fluent typing.</h2><p data-i18n="lessonsSub">Five carefully structured levels. One rewarding journey.</p></div><button class="landing-btn navy" type="button" data-launch="lessons" data-i18n="viewLessons">View all lessons ↗</button></div><div class="journey-grid"><div><span>01</span><strong data-i18n="journey1">Fidel Foundations</strong><small>ሀ · ለ · መ · በ</small></div><div><span>02</span><strong data-i18n="journey2">Fidel Fluency</strong><small>ተ · ሰ · ነ · ከ</small></div><div><span>03</span><strong data-i18n="journey3">Words &amp; Spacing</strong><small>ቤት · ሰላም</small></div><div><span>04</span><strong data-i18n="journey4">Sentences</strong><small>ዛሬ ጥሩ ቀን ነው።</small></div><div><span>05</span><strong data-i18n="journey5">Mastery</strong><small data-i18n="journey5Sub">Practice &amp; progress</small></div></div></section>
+ <section id="keyboard-guide" class="keyboard-guide landing-section"><div><span class="section-kicker" data-i18n="guideKicker">GET COMFORTABLE</span><h2 data-i18n="guideTitle">Your keyboard. Your rhythm.</h2><p data-i18n="guideText">Start with home-row positioning, see an interactive hand guide, and optionally calibrate keys for your installed Amharic input method. Multi-key input sequences are not mapped automatically.</p><button class="landing-btn navy" type="button" data-launch="calibration" data-i18n="openGuide">Open Keyboard Guide ↗</button></div><div class="guide-demo" aria-label="Touch-typing home-row key diagram" data-i18n-aria="guideDemoAria"><span class="guide-label" data-i18n="leftHand">LEFT HAND</span><div><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd class="space-guide" data-i18n="spaceLabel">SPACE</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd><kbd>;</kbd></div><span class="guide-label" data-i18n="rightHand">RIGHT HAND</span></div></section>
+ <section id="faq" class="landing-section faq"><div class="section-heading"><span class="section-kicker" data-i18n="faqKicker">GOOD TO KNOW</span><h2 data-i18n="faqTitle">Frequently asked questions</h2></div><div class="faq-stack"><details><summary data-i18n="q1">Is FidelType really free?</summary><p data-i18n="a1">Yes. The tutor runs in your browser without an account or subscription.</p></details><details><summary data-i18n="q2">Does it work with Power Ge’ez and GFF Ge’ez?</summary><p data-i18n="a2">FidelType accepts Amharic text from your installed input method. Exact physical-key mappings can differ, so its illustrated key labels are not verified for every layout.</p></details><details><summary data-i18n="q3">Where is my progress stored?</summary><p data-i18n="a3">Scores and lesson progress are saved locally in your browser. Clearing browser data may remove them.</p></details><details><summary data-i18n="q4">Can I use FidelType offline?</summary><p data-i18n="a4">Yes. The downloaded HTML tutor works offline. External keyboard reference images and web links require internet.</p></details></div></section>
+ <section class="closing-cta"><div class="cta-lines"></div><span class="section-kicker" data-i18n="ctaKicker">YOUR NEXT CHAPTER STARTS HERE</span><h2 data-i18n="ctaTitle">Ready to increase your Ge’ez typing speed?</h2><p data-i18n="ctaText">A few minutes of practice today can make every keystroke more confident tomorrow.</p><button class="landing-btn primary" type="button" data-launch="test" data-i18n="ctaButton">Start typing for free ↗</button></section>
+ <footer class="landing-footer"><div class="footer-top"><div><div class="footer-brand"><span>ፊ</span> FidelType</div><p data-i18n="footerTag">Amharic touch typing, made simple.</p></div><div class="footer-links"><a href="https://github.com/dyacob/keyboards" target="_blank" rel="noopener noreferrer" data-i18n="github">GFF keyboard repository ↗</a><a href="https://github.com/dyacob/keyboards/blob/cb925e81fb37e48e867c39a25067eefbbd030a19/release/gff/gff_geez/source/images/GFF-Geez-OnScreen-Keyboard-Default-Layer-920w.png" target="_blank" rel="noopener noreferrer" data-i18n="resources">Keyboard resource ↗</a></div></div><div class="footer-bottom"><span>© <span id="landingYear">2026</span> FidelType. <span data-i18n="rights">Made for better typing.</span></span><span data-i18n="footerPrivacy">Privacy-first · Offline-friendly</span></div></footer>
+</section><section id="test" class="panel hidden" aria-labelledby="heading">
+ <div class="practice-topbar">
+  <div class="practice-controls">
+   <h2 id="heading">Amharic Typing Test</h2>
+   <div class="toolbar" aria-label="Typing test controls">
+    <label><span data-i18n="durationLabel">Duration</span><select id="duration"><option value="30">30 seconds</option><option value="60" selected>60 seconds</option><option value="120">120 seconds</option></select></label>
+    <label><span data-i18n="passageLabel">Passage</span><select id="passageChoice"><option value="0">Everyday Amharic</option><option value="1">Ethiopia</option><option value="2">Learning</option><option value="custom" data-i18n="customOption">✍ Custom…</option></select></label><button class="btn alt hidden" id="customEdit" type="button" data-i18n="customEdit">✎ Edit custom</button>
+    <button class="btn alt" id="restart" data-i18n="restart" title="Restart (Esc)">↻ Restart</button>
+    <button class="btn alt" id="next" data-i18n="nextPassage">Next passage</button>
+    <button class="btn alt sound-toggle" id="soundToggle" type="button" aria-pressed="false" data-i18n="soundOff">🔇 Sound off</button>
+   </div>
+   <label class="phonetic-toggle" title="Type Roman letters to produce Amharic Fidel without installing a keyboard"><input type="checkbox" id="phoneticToggle" aria-label="Built-in Phonetic Input (No OS Amharic keyboard needed)" aria-describedby="phoneticHelp"><span data-i18n="phoneticToggle">🔤 Built-in Phonetic Input (No OS Amharic keyboard needed)</span></label>
+  </div>
+  <div class="stats" aria-label="Live typing statistics">
+   <div class="stat"><strong id="clock">60</strong><span data-i18n="statSeconds">Seconds</span></div>
+   <div class="stat"><strong id="wpm">0</strong><span data-i18n="wpmLabel">WPM</span></div>
+   <div class="stat"><strong id="accuracy">100%</strong><span data-i18n="accuracy">Accuracy</span></div>
+   <div class="stat"><strong id="errors">0</strong><span data-i18n="statErrors">Errors</span></div>
+  </div>
+ </div>
+ <div class="passage" id="target" aria-label="Passage to type"></div>
+ <div class="phonetic-help hidden" id="phoneticHelp" role="status" aria-live="polite"><span data-i18n="phoneticHelp">Type sh → ሸ, th → ጠ, ts → ጸ, ny → ኘ, ch → ቸ, CH → ጨ. H → ሐ, S → ሠ, A → ዐ. Use - between adjacent Fidel.</span> <button type="button" id="phoneticReferenceButton" aria-expanded="false" aria-controls="phoneticReference" data-i18n="referenceButton">⌨ Phonetic chart</button></div>
+ <aside id="phoneticReference" class="phonetic-reference hidden" aria-label="Searchable phonetic typing reference" role="region">
+  <div class="reference-heading"><strong data-i18n="referenceTitle">Phonetic key chart</strong><button type="button" id="closePhoneticReference" aria-label="Close phonetic reference">✕</button></div>
+  <p class="reference-note" data-i18n="referenceNote">Type the Roman sequence shown. A longer sequence replaces its provisional character. Use - to separate adjacent Fidel.</p>
+  <label for="phoneticSearch" data-i18n="referenceSearchLabel">Find a Roman key or Amharic character</label>
+  <input id="phoneticSearch" type="search" autocomplete="off" placeholder="sh, ሸ, CH, ጨ…" />
+  <div id="phoneticReferenceList" class="reference-list"></div>
+  <div id="phoneticCoverage" class="reference-coverage" aria-live="polite"></div>
+ </aside>
+ <input id="entry" type="text" lang="am" dir="ltr" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" placeholder="እዚህ ይጻፉ…" aria-label="Type the displayed Amharic passage here" />
+ <section class="keyboard-workshop" aria-label="Keyboard learning and finger guidance">
+  <div class="guided-panel" id="guidedPanel" aria-live="polite">
+    <span class="hud-chip"><small data-i18n="hudNext">Next Fidel</small><strong id="guideMessage">—</strong></span>
+    <span class="hud-chip"><small data-i18n="hudTarget">Target key</small><strong id="hudTargetKey">Not mapped</strong></span>
+    <span class="hud-chip"><small data-i18n="hudFinger">Active finger</small><strong id="activeFinger">Home row</strong><span id="hudFingerBadge" class="finger-hud-badge" hidden></span></span>
+    <span class="hud-note" data-i18n="hudDisclaimer">Key labels are examples · Physical hints require calibration</span>
+  </div>
+  <div id="keyboardArea">
+   <div id="mobileFingerGuide" class="mobile-finger-guide" aria-label="Compact keyboard and finger guide">
+    <div class="mobile-guide-top"><strong data-i18n="mobileGuideTitle">Finger guide · Home row</strong><span data-i18n="mobileGuideNote">Keys light up as you type</span></div>
+    <div id="mobileGuideKeys" class="mobile-guide-keys"></div>
+    <div id="mobileGuideStatus" role="status" aria-live="polite" class="mobile-guide-status">A S D F · J K L ; · Space</div>
+   </div>
+   <div class="kb-scroll" aria-label="Interactive keyboard with optional minimalist hand guide">
+    <div class="kb-stage" id="keyboardStage">
+     <div id="keyboardRows" class="kb-rows" aria-label="Interactive physical keyboard"></div>
+     <svg id="handOverlay" class="hands-on-keys" aria-label="Optional simplified hand silhouettes for finger positioning" role="img" focusable="false"></svg>
+    </div>
+   </div>
+  </div>
+  <div class="keyboard-settings" aria-label="Keyboard display settings">
+    <label><span data-i18n="settingsLayout">Layout</span> <select id="layoutSelect" aria-label="Keyboard reference layout"><option value="gff">GFF Ge’ez (reference)</option><option value="power" selected>Power Ge’ez (unverified)</option><option value="generic">Physical QWERTY</option></select></label>
+    <label><input type="checkbox" id="keyboardVisible" checked> <span data-i18n="settingsKeyboard">Keyboard</span></label>
+    <label><input type="checkbox" id="handsVisible"> <span data-i18n="settingsHands">Hands</span></label>
+    <button type="button" class="home-btn" id="homePosition">Show home keys</button>
+    <button type="button" id="fullKeyboardToggle" class="full-keyboard-toggle" aria-expanded="false" aria-controls="keyboardStage" data-i18n="expandKeyboard">⌨ Show full keyboard</button>
+  </div>
+ </section>
+ <div class="practice-feedback" role="status" aria-live="polite">
+   <div id="inputStatus" class="muted">Ready. Select your Amharic input method, then type.</div>
+   <div id="result" class="message hidden" role="status"></div>
+   <div id="mistakeReport" class="mistake-report hidden" aria-live="polite"></div>
+   <button id="nextLesson" class="btn hidden" type="button">Next lesson →</button>
+ </div>
+</section>
+<dialog id="customPassageDialog" class="custom-dialog" aria-labelledby="customDialogTitle">
+ <form id="customPassageForm" method="dialog">
+  <div class="custom-dialog-head"><div><span class="custom-kicker" data-i18n="customKicker">YOUR OWN TEXT</span><h2 id="customDialogTitle" data-i18n="customTitle">✍ Custom Amharic passage</h2></div><button id="customCancelTop" class="custom-close" type="button" aria-label="Close custom passage editor">✕</button></div>
+  <p id="customDialogHelp" class="muted" data-i18n="customHelp">Paste or type an Amharic paragraph below. Line breaks become spaces for the one-line practice input. Recent passages stay on this device.</p>
+  <label for="customPassageText" class="custom-label" data-i18n="customField">Amharic passage</label>
+  <textarea id="customPassageText" lang="am" rows="5" maxlength="2000" required spellcheck="false" placeholder="የራስዎን የአማርኛ ጽሑፍ እዚህ ያስገቡ…"></textarea>
+  <div class="custom-meter"><span id="customCharacterCount">0 / 2,000</span><span id="customPassageError" role="alert"></span></div>
+  <div class="custom-recent"><h3 data-i18n="customRecent">Recent passages</h3><div id="customRecentList" class="custom-recent-list"></div></div>
+  <div class="custom-dialog-actions"><button type="button" class="btn alt" id="customCancel" data-i18n="customCancel">Cancel</button><button class="btn" id="customSave" type="submit" data-i18n="customStart">Save &amp; practice →</button></div>
+ </form>
+</dialog><section id="lessons" class="panel hidden"><h2 data-i18n="learnHeading">Learn Amharic Typing</h2><p class="muted" data-i18n="courseIntro">Follow 25 lessons across five levels. Pass each lesson to unlock the next. Earn up to three stars for speed and accuracy. During practice, calibrated keys and finger guidance are highlighted.</p><div class="lesson-progress" id="lessonProgress" aria-live="polite"></div><div class="practice-tools"><button id="mistakePractice" type="button" data-i18n="reviewButton">🎯 Practice my weak characters</button><span id="weakCharacters" class="muted">Practice history builds your personal review.</span></div><div id="lessonList" class="lesson-list"></div><p class="muted" data-i18n="courseTip">Tip: Set up an Amharic keyboard in your operating system. Keyboard layouts and transliteration methods vary by device.</p></section><section id="calibration" class="panel hidden" aria-labelledby="calHeading">
+<h2 id="calHeading" data-i18n="calHeading">🎯 Keyboard Setup & Calibration</h2>
+<p class="muted" data-i18n="calIntro">This is a separate workspace for learning how your physical keyboard produces Amharic characters. Use the same input method that you use for typing tests and lessons.</p>
+<div class="calibration-intro"><strong data-i18n="calHow">How it works</strong><ol><li data-i18n="calStep1">Enable your Amharic input method in your computer settings.</li><li data-i18n="calStep2">Choose the character you want to calibrate.</li><li data-i18n="calStep3">Click the input and type that character.</li><li data-i18n="calStep4">A mapping is saved only when one physical key directly produces the selected character. Multiple keys may not qualify.</li></ol></div>
+<details class="keyboard-ref"><summary>⌨ View GFF Ge’ez keyboard reference</summary><p><strong>Layout:</strong> GFF Ge’ez — default layer. This reference was supplied by the project owner. <strong>Important:</strong> GFF Ge’ez is not verified to match Power Ge’ez. Use it only if it matches your installed keyboard; otherwise use your own Power Ge’ez reference. The typing test itself accepts input from your operating system.</p><img src="https://raw.githubusercontent.com/dyacob/keyboards/cb925e81fb37e48e867c39a25067eefbbd030a19/release/gff/gff_geez/source/images/GFF-Geez-OnScreen-Keyboard-Default-Layer-920w.png" alt="GFF Ge’ez default keyboard layer showing Ethiopic characters assigned to keys" loading="lazy"><p><a href="https://raw.githubusercontent.com/dyacob/keyboards/cb925e81fb37e48e867c39a25067eefbbd030a19/release/gff/gff_geez/source/images/GFF-Geez-OnScreen-Keyboard-Default-Layer-920w.png" target="_blank" rel="noopener noreferrer">Open original keyboard reference image</a> · Requires internet to display.</p></details>
+<section class="calibration-panel" aria-label="Keyboard calibration">
+<h3 data-i18n="calPanelTitle">🎯 Keyboard setup & calibration</h3>
+<p class="muted" data-i18n="calPanelBody">Use your installed Amharic input method. Calibrate a character by pressing its physical key once. Only direct, single-key input is saved; multi-key sequences must be learned separately.</p>
+<div class="cal-row"><label><span data-i18n="calCharacterLabel">Character to learn</span> <select id="calTarget"></select></label><label><span data-i18n="calPress">Press the key here</span> <input id="calInput" type="text" lang="am" autocomplete="off" spellcheck="false" aria-label="Press the physical key for the selected character" placeholder="Type here" /></label><button class="btn alt" type="button" id="calClear" data-i18n="calClear">Clear mappings</button></div>
+<div id="calStatus" role="status" aria-live="polite" class="muted">Choose a character, then press its key once.</div>
+<div id="calCount" class="cal-count"></div>
+</section>
+<p class="muted" data-i18n="calInfo">If the input shows Latin letters, check that the correct Amharic keyboard is active. Tests still work without calibration.</p>
+<button type="button" class="btn" id="returnToPractice" data-i18n="returnTest">← Return to typing test</button>
+</section><section id="progress" class="panel hidden"><h2 data-i18n="progressHeading">Your Practice Progress</h2><p class="muted" data-i18n="progressIntro">Your results stay in this browser (local storage). They are not uploaded.</p><div id="summary"></div><div id="progressOverview" class="progress-overview"></div>
+<section class="daily-dashboard" aria-labelledby="dailyTitle">
+ <div class="daily-title"><div><h3 id="dailyTitle" data-i18n="dailyTitle">Your learning routine</h3><p data-i18n="dailyIntro">Track focused practice time, not idle time.</p></div><button type="button" id="continueLearning" class="btn" data-i18n="continueLearning">▶ Continue learning</button></div>
+ <label for="dailyGoal" data-i18n="dailyGoalLabel">Daily practice goal</label>
+ <select id="dailyGoal"><option value="0" data-i18n="noGoal">No daily goal</option><option value="5">5 min</option><option value="10">10 min</option><option value="15">15 min</option><option value="20">20 min</option></select>
+ <div class="daily-track" role="progressbar" id="dailyProgress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Daily practice progress"><div id="dailyProgressFill"></div></div>
+ <div id="dailySummary" role="status" aria-live="polite"></div><div id="recentTrend"></div>
+</section>
+<section class="backup-dashboard" aria-labelledby="backupTitle">
+ <h3 id="backupTitle" data-i18n="backupTitle">Data & Backup</h3><p data-i18n="backupIntro">Export a private JSON backup or safely restore one. Nothing is uploaded.</p>
+ <div class="backup-actions"><button id="backupExport" type="button" class="btn alt" data-i18n="backupExport">↓ Download backup</button><label class="backup-file-label" for="backupFile" data-i18n="backupChoose">Choose JSON backup</label><input id="backupFile" type="file" accept=".json,application/json" aria-label="Choose FidelType JSON backup"/><button id="reopenSetup" type="button" class="btn alt" data-i18n="reopenSetup">⚙ Setup guide</button></div>
+ <div id="backupMessage" role="status" aria-live="polite"></div>
+ <div id="backupPreview" class="backup-preview hidden" role="region" aria-label="Backup import preview">
+ <strong data-i18n="backupPreviewTitle">Review backup before importing</strong><p id="backupDetails"></p>
+ <div class="backup-actions"><button type="button" id="backupMerge" class="btn" data-i18n="backupMerge">Merge with my progress</button><button type="button" id="backupReplace" class="btn alt" data-i18n="backupReplace">Replace existing progress</button><button type="button" id="backupCancel" class="btn alt" data-i18n="backupCancel">Cancel</button></div>
+ </div>
+</section>
+<h3 data-i18n="achievementsHeader">🏅 Achievements</h3><div id="achievements" class="achievements"></div><h3 data-i18n="weakHeading">Characters to practice</h3><div id="progressWeak" class="mistake-report"></div><div style="overflow-x:auto"><table class="history"><thead><tr><th data-i18n="dateHead">Date</th><th data-i18n="exerciseHead">Exercise</th><th>WPM</th><th data-i18n="accuracy">Accuracy</th></tr></thead><tbody id="history"></tbody></table></div><div class="toolbar"><button class="btn alt" id="clear" data-i18n="clearHistory">Clear history</button><button class="btn alt" id="export" data-i18n="exportCSV">Export CSV</button></div></section></main><div class="footer app-footer hidden" id="appFooter" data-i18n="appFooterText">FidelType • Free Amharic typing practice • No account needed</div>
+<dialog id="onboardingDialog" class="onboard-dialog" aria-labelledby="onboardTitle" aria-describedby="onboardDesc">
+ <div class="onboard-content">
+ <div class="onboard-header"><span class="onboard-mark">ፊ</span><button id="onboardClose" type="button" aria-label="Close setup guide">✕</button></div>
+ <h2 id="onboardTitle" data-i18n="onboardTitle">Welcome to FidelType!</h2><p id="onboardDesc" data-i18n="onboardDesc">Choose how you would like to type Amharic. You can change this anytime during practice.</p>
+ <fieldset><legend data-i18n="onboardChoose">Choose your input method</legend><label class="onboard-choice"><input type="radio" name="inputMethod" value="phonetic" checked><span><strong data-i18n="onboardPhonetic">🔤 Built-in phonetic input</strong><small data-i18n="onboardPhoneticDesc">Type Roman letters: sh → ሸ, hu → ሁ. No installation required.</small></span></label>
+ <label class="onboard-choice"><input type="radio" name="inputMethod" value="native"><span><strong data-i18n="onboardNative">⌨ Installed Amharic keyboard</strong><small data-i18n="onboardNativeDesc">Use the Amharic input method already installed on your device.</small></span></label></fieldset>
+ <p class="onboard-tip" data-i18n="onboardTip">During a test, open Phonetic chart for key combinations. Start with Level 1 in Lessons.</p>
+ <div class="onboard-actions"><button type="button" id="onboardSkip" class="btn alt" data-i18n="onboardSkip">Skip for now</button><button type="button" id="onboardStart" class="btn" data-i18n="onboardStart">Save & start Level 1 →</button></div>
+ </div>
+</dialog><script>
+const passages=['ሰላም እንዴት ነህ? ዛሬ ጥሩ ቀን ነው። እኛ በየቀኑ በመለማመድ የጽሕፈት ችሎታችንን እናሻሽላለን።','ኢትዮጵያ በታሪክ፣ በባህል እና በቋንቋ የበለጸገች ሀገር ናት። አማርኛ በግዕዝ ፊደል ይጻፋል።','ትምህርት ለሕይወት አስፈላጊ ነው። በትዕግሥት እና በተደጋጋሚ ልምምድ አዳዲስ ክህሎቶችን ማዳበር እንችላለን።'];
+// Structured curriculum: 5 levels × 5 lessons. User input method stays device-controlled.
+const curriculum=[
+ {level:'01 · የፊደል መሠረት',label:'Fidel Foundations',min:90,speed:0,items:[
+ ['ሀ family — first encounter','ሀ ሁ ሂ ሃ ሄ ህ ሆ'],['ለ family — seven orders','ለ ሉ ሊ ላ ሌ ል ሎ'],['መ family — seven orders','መ ሙ ሚ ማ ሜ ም ሞ'],['በ family — seven orders','በ ቡ ቢ ባ ቤ ብ ቦ'],['Checkpoint · Foundation review','ሀ ለ መ በ ሁ ሉ ሙ ቡ ሂ ሊ ሚ ቢ']
+ ]},
+ {level:'02 · የፊደል ልምምድ',label:'Fidel Fluency',min:92,speed:2,items:[
+ ['ተ family — seven orders','ተ ቱ ቲ ታ ቴ ት ቶ'],['ሰ family — seven orders','ሰ ሱ ሲ ሳ ሴ ስ ሶ'],['ነ family — seven orders','ነ ኑ ኒ ና ኔ ን ኖ'],['ከ family — seven orders','ከ ኩ ኪ ካ ኬ ክ ኮ'],['Checkpoint · Mixed Fidel','ሰ ነ ከ ተ ሳ ና ካ ታ ስ ን ክ ት']
+ ]},
+ {level:'03 · ቃላት',label:'Words & Spacing',min:93,speed:3,items:[
+ ['Simple words','ቤት ሰው ልጅ ውሃ ቡና'],['Family words','እናት አባት ወንድም እህት'],['Study words','መጽሐፍ ትምህርት ትምህርት ቤት'],['Common expressions','ሰላም እንዴት ደህና አመሰግናለሁ'],['Checkpoint · Word practice','ቤት መጽሐፍ ቡና ሰላም እናት ውሃ ትምህርት']
+ ]},
+ {level:'04 · ዓረፍተ ነገሮች',label:'Sentences & Punctuation',min:94,speed:4,items:[
+ ['Short statement','ዛሬ ጥሩ ቀን ነው።'],['Learning sentence','እኔ አማርኛ እማራለሁ።'],['Daily sentence','እኔ ጠዋት ቡና እጠጣለሁ።'],['Two sentences','ዛሬ ትምህርት አለኝ። ነገ እማራለሁ።'],['Checkpoint · Sentence practice','ሰላም። እንዴት ነህ? እኔ ደህና ነኝ።']
+ ]},
+ {level:'05 · ብቃት',label:'Fluency & Mastery',min:95,speed:5,items:[
+ ['Everyday phrases','እንደምን አደርክ። እንደምን ዋልክ። አመሰግናለሁ።'],['Practice paragraph','አማርኛ መጻፍ በልምምድ ይሻሻላል። በየቀኑ ትንሽ ጊዜ እንለማመድ።'],['Reading & rhythm','ተማሪዎች በየቀኑ ያነባሉ። መምህራን ያስተምራሉ። ትምህርት ዕድል ይፈጥራል።'],['Long-form writing','የአማርኛ ፊደል መተየብ ጊዜና ትዕግሥት ይፈልጋል። ቀስ ብለን በትክክል ስንለማመድ ፍጥነታችን ይጨምራል።'],['Final challenge','በየቀኑ ልምምድ በማድረግ የአማርኛ መተየብ ችሎታችንን ማሳደግ እንችላለን። ትክክለኛነት ከፍጥነት ይቀድማል።']
+ ]}
+];
+const lessonMeta=curriculum.flatMap((level,levelIndex)=>level.items.map(([name,content],subIndex)=>({name,content,levelIndex,subIndex,min:level.min,speed:level.speed,id:`L${levelIndex+1}-${subIndex+1}`})));
+const lessons=lessonMeta.map(l=>[l.name,l.content]);
+const $=id=>document.getElementById(id);
+const segmenter=typeof Intl.Segmenter==='function'?new Intl.Segmenter('am',{granularity:'grapheme'}):null;
+const chars=s=>segmenter?Array.from(segmenter.segment(s),x=>x.segment):Array.from(s);
+// Exact-grapheme matching, except ASCII space and Ethiopic word separator are equivalent.
+// Do not normalize other punctuation or whitespace.
+const sameFidelUnit=(a,b)=>a===b||((a===' '||a==='፡')&&(b===' '||b==='፡'));
+const sequencesMatch=(a,b)=>{const left=chars(a),right=chars(b);return left.length===right.length&&left.every((ch,i)=>sameFidelUnit(ch,right[i]))};
+let phoneticEnabled=false,phoneticTail=null,phoneticDeferredIndex=null;
+let target='',kind='test',lessonName='',remaining=60,started=0,timer=null,finished=false,typed='',composing=false,finalElapsed=0,lessonMistakes=0,usedPaste=false,previousTyped='',sessionMistakes={};
+let passiveTrustFlag=false,passageSpans=[],renderedTarget=null,previousMarkCount=0;
+const duration=()=>kind==='lesson'?180:Number($('duration').value);
+const status=s=>$('inputStatus').textContent=s;
+function history(){try{const h=JSON.parse(localStorage.getItem('fideltype-history')||'[]');return Array.isArray(h)?h:[]}catch(e){return []}}
+function save(r){try{const h=history();h.unshift(r);localStorage.setItem('fideltype-history',JSON.stringify(h.slice(0,200)));return true}catch(e){return false}}
+// Optional, asset-free sounds. Audio is only activated after user interaction.
+let soundEnabled=false,soundContext=null,pendingSoundPaste=false;
+try{soundEnabled=localStorage.getItem('fideltype-sound-enabled')==='1'}catch(e){}
+function updateSoundToggle(){
+ const btn=$('soundToggle');if(!btn)return;
+ btn.setAttribute('aria-pressed',String(soundEnabled));
+ btn.dataset.i18n=soundEnabled?'soundOn':'soundOff';
+ const lang=$('langSelect')?.value||'en';
+ btn.textContent=landingTranslations?.[lang]?.[btn.dataset.i18n]||(soundEnabled?'🔊 Sound on':'🔇 Sound off');
+}
+function getAudioContext(){
+ if(!soundEnabled)return null;
+ const AudioEngine=window.AudioContext||window.webkitAudioContext;
+ if(!AudioEngine)return null;
+ try{
+  if(!soundContext)soundContext=new AudioEngine();
+  if(soundContext.state==='suspended')soundContext.resume().catch(()=>{});
+  return soundContext;
+ }catch(e){return null}
+}
+function playTypingSound(kind){
+ const ctx=getAudioContext();if(!ctx)return;
+ function note(freq,endFreq,start,duration,peak,type){
+  try{
+   const osc=ctx.createOscillator(),vol=ctx.createGain();
+   osc.type=type;osc.frequency.setValueAtTime(freq,start);
+   osc.frequency.exponentialRampToValueAtTime(endFreq,start+duration);
+   vol.gain.setValueAtTime(.0001,start);
+   vol.gain.exponentialRampToValueAtTime(Math.max(.0002,peak),start+.006);
+   vol.gain.exponentialRampToValueAtTime(.0001,start+duration);
+   osc.connect(vol);vol.connect(ctx.destination);osc.start(start);osc.stop(start+duration+.01);
+  }catch(e){}
+ }
+ const t=ctx.currentTime+.005;
+ if(kind==='correct')note(390,260,t,.042,.018,'triangle');
+ else if(kind==='wrong')note(130,75,t,.09,.038,'sine');
+ else if(kind==='success'){
+  note(523.25,523.25,t,.24,.045,'sine');
+  note(659.25,659.25,t+.11,.27,.042,'sine');
+  note(783.99,783.99,t+.23,.38,.038,'sine');
+ }
+}
+$('soundToggle').addEventListener('click',()=>{
+ soundEnabled=!soundEnabled;
+ try{localStorage.setItem('fideltype-sound-enabled',soundEnabled?'1':'0')}catch(e){}
+ if(soundEnabled)getAudioContext();
+ updateSoundToggle();
+});
+
+const appStrings={
+ en:{pasteWarning:'Pasted or dropped text is practice-only; no official scores or achievements.',pasteReason:'type without pasting or dropping text',unscoredNotice:'Practice-only result: not saved or counted toward achievements.',ready:'Ready. The timer starts when you type. Esc restarts.',typing:'Typing in progress. Red highlights indicate mismatches.',endMismatch:'The passage is full; correct the highlighted errors to finish.',lessonReady:'Lesson: finish within 3 minutes and type manually.',reviewReady:'Practice your frequently missed characters.',phoneticPending:'Keep typing to finish the Roman sequence.',unmapped:'Not mapped',coverageMissing:'Not supported in phonetic mode',referenceButton:'⌨ Phonetic chart',referenceTitle:'Phonetic key chart',referenceNote:'Type the Roman sequence shown. Long sequences replace provisional characters. Use - to separate adjacent Fidel.',referenceSearchLabel:'Search Roman keys or Amharic characters',completed:'Exercise finished. Select Restart to try again.',resetName:'Amharic Typing Test'},
+ am:{pasteWarning:'የተለጠፈ ወይም የተጣለ ጽሑፍ ለልምምድ ብቻ ነው፤ ውጤትና ሽልማት አይመዘገብም።',pasteReason:'ጽሑፍ ሳይለጥፉ ወይም ሳይጥሉ ይተይቡ',unscoredNotice:'ይህ የልምምድ ውጤት ብቻ ነው፤ አልተመዘገበም።',ready:'ዝግጁ ነዎት። ሲተይቡ ጊዜው ይጀምራል። Esc እንደገና ያስጀምራል።',typing:'ትየባው ቀጥሏል። በቀይ የተለዩት ስህተቶች ናቸው።',endMismatch:'የተሳሳቱ ፊደላትን በማስተካከል ይጨርሱ።',lessonReady:'ትምህርቱን በ3 ደቂቃ ውስጥ ያጠናቅቁ፤ ጽሑፍ አይለጥፉ።',reviewReady:'ብዙ ጊዜ የሚሳሱባቸውን ፊደላት ይለማመዱ።',phoneticPending:'የፎነቲክ ቅደም ተከተሉን ይጨርሱ።',unmapped:'ያልተመደበ',coverageMissing:'በፎነቲክ ሁኔታ አይደገፍም',referenceButton:'⌨ የፎነቲክ ሰንጠረዥ',referenceTitle:'የፎነቲክ ፊደል መመሪያ',referenceNote:'የተጻፈውን የሮማን ቁልፍ ይተይቡ። ተያያዥ ፊደላትን ለመለየት - ይጠቀሙ።',referenceSearchLabel:'የሮማን ቁልፍ ወይም የአማርኛ ፊደል ይፈልጉ',completed:'ልምምዱ ተጠናቋል። እንደገና ለመሞከር ጀምር ይጫኑ።',resetName:'የአማርኛ ትየባ ሙከራ'}
+};
+const appMessage=key=>appStrings[$('langSelect')?.value==='am'?'am':'en'][key]||appStrings.en[key]||key;
+function metrics(){
+  const a=chars(typed),b=chars(target);let correct=0,assessed=0;
+  const pendingAt=phoneticPending?.value?chars($('entry').value.slice(0,phoneticPending.start)).length:-1;
+  for(let i=0;i<a.length;i++){if(i===pendingAt&&!sameFidelUnit(a[i],b[i]))continue;assessed++;if(i<b.length&&sameFidelUnit(a[i],b[i]))correct++}
+  const errors=assessed-correct,accuracy=assessed?Math.round(correct/assessed*100):100;
+  const elapsed=started?(finished?finalElapsed:Math.min(duration()*1000,Date.now()-started))/60000:0;
+  const wpm=elapsed>0?Math.round(correct/5/elapsed):0;
+  return {correct,errors,accuracy,wpm,elapsedSeconds:Math.round(elapsed*60)};
+}
+function render(){
+ const b=chars(target),a=chars(typed),container=$('target');
+ if(renderedTarget!==target||passageSpans.length!==b.length){
+  renderedTarget=target;passageSpans=[];
+  const fragment=document.createDocumentFragment();
+  for(const ch of b){const span=document.createElement('span');span.textContent=ch;fragment.append(span);passageSpans.push(span)}
+  container.replaceChildren(fragment);previousMarkCount=0;
+ }
+ // Reclassify only the portion which changed, plus the current character.
+ const upper=Math.min(b.length,Math.max(previousMarkCount,a.length)+1);
+ for(let i=0;i<upper;i++){
+  const pendingAt=phoneticPending?.value&&i===chars($('entry').value.slice(0,phoneticPending.start)).length;
+  const nextClass=i<a.length?(pendingAt&&!sameFidelUnit(a[i],b[i])?'pending':sameFidelUnit(a[i],b[i])?'good':'bad'):(i===a.length?'current':'');
+  if(passageSpans[i].className!==nextClass)passageSpans[i].className=nextClass;
+ }
+ previousMarkCount=a.length;
+ const current=container.querySelector('.current');
+ if(current){const top=current.offsetTop-container.offsetTop;if(top<container.scrollTop||top+current.offsetHeight>container.scrollTop+container.clientHeight)container.scrollTop=Math.max(0,top-container.clientHeight/2)}
+ if(typeof updateGuidance==='function')updateGuidance();
+ const m=metrics();$('wpm').textContent=m.wpm;$('accuracy').textContent=m.accuracy+'%';$('errors').textContent=m.errors;$('clock').textContent=remaining;
+}
+function renderStatsOnly(){
+ const m=metrics();$('wpm').textContent=m.wpm;$('accuracy').textContent=m.accuracy+'%';$('errors').textContent=m.errors;$('clock').textContent=remaining;
+}
+function reset(){
+  clearInterval(timer);timer=null;started=0;finished=false;composing=false;finalElapsed=0;typed='';lessonMistakes=0;usedPaste=false;previousTyped='';sessionMistakes={};
+  $('entry').value='';phoneticPending=null;phoneticDeferredIndex=null;$('entry').disabled=false;$('target').scrollTop=0;$('result').classList.add('hidden');$('mistakeReport').classList.add('hidden');$('nextLesson').classList.add('hidden');
+  remaining=duration();
+  target=kind==='lesson'?lessons.find(x=>x[0]===lessonName)?.[1]||'':kind==='review'?buildReviewText():$('passageChoice').value==='custom'?(activeCustomPassage||passages[0]):passages[Number($('passageChoice').value)];
+  $('heading').textContent=kind==='lesson'?'Lesson '+(lessonMeta.findIndex(x=>x.name===lessonName)+1)+' / '+lessons.length+': '+lessonName:kind==='review'?'🎯 Personalized Review':'Amharic Typing Test';
+
+  status(kind==='lesson'?appMessage('lessonReady'):kind==='review'?appMessage('reviewReady'):appMessage('ready'));
+  render();
+}
+function finish(reason){
+  if(finished)return;
+  if(phoneticPending)finalizePhoneticPending();
+  finalElapsed=started?Math.min(duration()*1000,Date.now()-started):0;
+  remaining=reason==='time'?0:Math.max(0,Math.ceil((duration()*1000-finalElapsed)/1000));
+  finished=true;clearInterval(timer);timer=null;$('entry').disabled=true;
+  const m=metrics();
+  const lesson=lessonMeta.find(x=>x.name===lessonName);
+  const tries=chars(target).length+lessonMistakes;
+  const attemptAccuracy=kind==='lesson'?Math.round(100*chars(target).length/Math.max(chars(target).length,tries)):m.accuracy;
+  const passed=kind==='lesson'&&reason==='complete'&&!usedPaste&&attemptAccuracy>=lesson.min&&m.wpm>=lesson.speed;
+  const stars=passed?(attemptAccuracy>=98&&m.wpm>=Math.max(lesson.speed+3,6)?3:attemptAccuracy>=96&&m.wpm>=lesson.speed+1?2:1):0;
+  const saved=usedPaste?false:save({date:new Date().toLocaleString(),kind:kind==='lesson'?lessonName:kind==='review'?'Personalized review':$('passageChoice').value==='custom'?'Custom passage':'Typing test',wpm:m.wpm,accuracy:kind==='lesson'?attemptAccuracy:m.accuracy,passed:kind==='lesson'?passed:undefined,stars:kind==='lesson'?stars:undefined});
+  if(kind==='lesson'){
+    if(passed)saveLessonScore(lesson,stars,m.wpm,attemptAccuracy);
+    const reasons=[];if(reason!=='complete')reasons.push('complete the entire passage');if(attemptAccuracy<lesson.min)reasons.push(`reach ${lesson.min}% accuracy`);if(m.wpm<lesson.speed)reasons.push(`reach ${lesson.speed} WPM`);if(usedPaste)reasons.push(appMessage('pasteReason'));
+    $('result').textContent=(passed?`🏆 PASSED! ${'★'.repeat(stars)}${'☆'.repeat(3-stars)}  `:'🔁 Not passed yet. ')+`Speed: ${m.wpm} WPM · Attempt accuracy: ${attemptAccuracy}% · Mistakes: ${lessonMistakes}. `+(passed?'The next lesson is unlocked.':'Try again: '+reasons.join('; ')+'.')+(usedPaste?' '+appMessage('unscoredNotice'):(saved?'':' History could not be saved.'));
+    const index=lessonMeta.indexOf(lesson);$('nextLesson').classList.toggle('hidden',!passed||index===lessonMeta.length-1);
+  }else $('result').textContent=(reason==='complete'?'🎉 Passage completed accurately! ':'⏱ Time is up! ')+`Speed: ${m.wpm} WPM • Accuracy: ${m.accuracy}% • Errors: ${m.errors}.`+(usedPaste?' '+appMessage('unscoredNotice'):(saved?'':' Your browser blocked progress saving.'));
+  if(usedPaste){
+   $('result').textContent=appMessage('unscoredNotice')+' '+appMessage('pasteWarning');
+   $('wpm').textContent='—';
+  }
+  if(!usedPaste&&((kind==='lesson'&&passed)||(kind!=='lesson'&&reason==='complete'&&m.errors===0)))playTypingSound('success');
+  if(!usedPaste)commitMistakes(sessionMistakes);renderMistakeReport();refreshAchievements();
+  $('result').classList.remove('hidden');if($('langSelect').value==='am'&&!usedPaste){
+   $('result').textContent=(kind==='lesson'?(passed?'🏆 አልፈዋል! ':'🔁 እንደገና ይሞክሩ። '):reason==='complete'?'🎉 ጽሑፉ ተጠናቋል። ':'⏱ ጊዜው አልቋል። ')+`ፍጥነት: ${m.wpm} WPM · ትክክለኛነት: ${kind==='lesson'?attemptAccuracy:m.accuracy}% · ስህተቶች: ${kind==='lesson'?lessonMistakes:m.errors}`;
+  }
+  status(appMessage('completed'));render();if(usedPaste)$('wpm').textContent='—';
+
+}
+function tick(){
+  if(!started||finished)return;
+  remaining=Math.max(0,Math.ceil((started+duration()*1000-Date.now())/1000));
+  if(!remaining){finish('time');return}
+  renderStatsOnly();
+}
+function processInput(inputEvent){
+  if(finished||composing)return;
+  // Composition remains native when the system IME is used.
+  const max=chars(target).length;
+  let next=chars($('entry').value);
+  if(next.length>max){next=next.slice(0,max);$('entry').value=next.join('');phoneticPending=null;phoneticDeferredIndex=null}
+  const prev=chars(previousTyped),expected=chars(target);
+  let inputFeedback=null;
+  const addMistake=(i)=>{
+    if(kind==='lesson')lessonMistakes++;
+    const glyph=expected[i];if(glyph&&glyph.trim())sessionMistakes[glyph]=(sessionMistakes[glyph]||0)+1;
+  };
+  if(next.length>prev.length){
+    inputFeedback='correct';
+    for(let i=prev.length;i<next.length;i++){
+      if(!sameFidelUnit(next[i],expected[i])){
+        // A phonetic consonant is provisional: the next vowel may transform it in-place.
+        if((inputEvent?.phoneticProvisional||phoneticPending)&&i===next.length-1){
+          inputFeedback=null;
+          phoneticDeferredIndex=i;
+        }else{inputFeedback='wrong';addMistake(i)}
+      }
+    }
+  }else if(inputEvent?.phoneticReplacement&&next.length===prev.length&&next.join('')!==prev.join('')){
+    const i=next.length-1;
+    if(sameFidelUnit(next[i],expected[i])){
+      phoneticDeferredIndex=null;inputFeedback='correct';
+    }else if(inputEvent.phoneticProvisional||phoneticPending){phoneticDeferredIndex=i}
+    else{phoneticDeferredIndex=null;inputFeedback='wrong';addMistake(i)}
+  }
+  previousTyped=next.join('');typed=next.join('');
+  if(inputFeedback&&!pendingSoundPaste&&!['insertFromPaste','insertFromDrop','insertReplacementText'].includes(inputEvent?.inputType))playTypingSound(inputFeedback);
+  pendingSoundPaste=false;
+  if(!started&&next.length){started=Date.now();timer=setInterval(tick,100)}
+  if(started&&Date.now()-started>=duration()*1000){finish('time');return}
+  render();
+  if(next.length===max){
+    if(sequencesMatch(typed,target)){finish('complete')}
+    else status(appMessage('endMismatch'));
+  }else if(next.length)status(appMessage('typing'));
+  else status(appMessage('ready'));
+}
+$('entry').addEventListener('compositionstart',()=>{finalizePhoneticPending();composing=true});
+$('entry').addEventListener('compositionend',()=>{composing=false;processInput()});
+$('entry').addEventListener('input',e=>{ if(['insertFromPaste','insertFromDrop','insertReplacementText'].includes(e.inputType))markUnscoredInput(e.inputType);processInput(e);});
+function markUnscoredInput(reason){
+ pendingSoundPaste=true;usedPaste=true;status(appMessage('pasteWarning'));
+}
+$('entry').addEventListener('paste',()=>markUnscoredInput('paste'));
+$('entry').addEventListener('drop',()=>markUnscoredInput('drop'));
+$('entry').addEventListener('beforeinput',e=>{if(['insertFromPaste','insertFromDrop','insertReplacementText'].includes(e.inputType))markUnscoredInput(e.inputType)});
+$('restart').onclick=()=>{reset();$('entry').focus({preventScroll:true})};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('phoneticReference').classList.contains('hidden')&&!$('customPassageDialog').open&&!$('test').classList.contains('hidden')&&!composing&&!e.isComposing){e.preventDefault();$('restart').click()}});
+$('duration').onchange=()=>{reset()};
+$('passageChoice').onchange=()=>{
+ if($('passageChoice').value==='custom'){openCustomPassage(false);return}
+ lastStandardPassage=$('passageChoice').value;$('customEdit').classList.add('hidden');kind='test';reset();
+};
+$('next').onclick=()=>{
+ const current=$('passageChoice').value;
+ $('passageChoice').value=String(current==='custom'?0:(Number(current)+1)%passages.length);
+ lastStandardPassage=$('passageChoice').value;$('customEdit').classList.add('hidden');kind='test';reset();
+};
+
+
+// ---- FidelType v3.5: deterministic longest-onset phonetic parser ----
+// Explicit Fidel mappings, not a claim about any external/OS input method.
+// Uppercase H, S, A, CH distinguish Ethiopic series that sound similar.
+const phoneticFamilies={
+ h:'ሀሁሂሃሄህሆ', H:'ሐሑሒሓሔሕሖ',
+ l:'ለሉሊላሌልሎ', m:'መሙሚማሜምሞ',
+ s:'ሰሱሲሳሴስሶ', S:'ሠሡሢሣሤሥሦ',
+ sh:'ሸሹሺሻሼሽሾ', r:'ረሩሪራሬርሮ',
+ q:'ቀቁቂቃቄቅቆ', Q:'ቐቑቒቓቔቕቖ',
+ b:'በቡቢባቤብቦ',v:'ቨቩቪቫቬቭቮ',
+ t:'ተቱቲታቴትቶ', th:'ጠጡጢጣጤጥጦ',
+ ch:'ቸቹቺቻቼችቾ', CH:'ጨጩጪጫጬጭጮ',
+ n:'ነኑኒናኔንኖ', ny:'ኘኙኚኛኜኝኞ',
+ k:'ከኩኪካኬክኮ', gh:'ኸኹኺኻኼኽኾ',
+ w:'ወዉዊዋዌውዎ', A:'ዐዑዒዓዔዕዖ',
+ z:'ዘዙዚዛዜዝዞ', y:'የዩዪያዬይዮ',
+ d:'ደዱዲዳዴድዶ', j:'ጀጁጂጃጄጅጆ',
+ g:'ገጉጊጋጌግጎ', ts:'ጸጹጺጻጼጽጾ',
+ TS:'ፀፁፂፃፄፅፆ', f:'ፈፉፊፋፌፍፎ',
+ p:'ፐፑፒፓፔፕፖ', P:'ጰጱጲጳጴጵጶ'
+};
+const phoneticVowels={a:'አ',u:'ኡ',i:'ኢ',e:'ኤ',o:'ኦ',E:'እ'};
+const phoneticPunctuation={'.':'።',',':'፣',';':'፤','/':'፧','|':'፡','?':'?',' ':' ',':':'፦'};
+const phoneticOnsets=Object.keys(phoneticFamilies).sort((a,b)=>b.length-a.length||a.localeCompare(b));
+const phoneticMap=new Map(),romanByFidel=new Map(),phoneticPrefixes=new Set();
+for(const onset of phoneticOnsets){
+ const series=Array.from(phoneticFamilies[onset]);
+ const endings=['','u','i','a','E',"'",'o'];
+ for(let i=0;i<7;i++){
+  const roman=onset+endings[i];phoneticMap.set(roman,series[i]);
+  if(!romanByFidel.has(series[i]))romanByFidel.set(series[i],roman);
+ }
+ // Lowercase e is an accessible fifth-order alias except l + e, which is ለ.
+ phoneticMap.set(onset+'e',onset==='l'?series[0]:series[4]);
+ phoneticMap.set(onset+'6',series[5]);
+ phoneticMap.set(onset+'ee',series[4]);
+ for(const token of [onset,...endings.map(v=>onset+v),onset+'e',onset+'6',onset+'ee']){
+  for(let i=1;i<token.length;i++)phoneticPrefixes.add(token.slice(0,i));
+ }
+}
+// Historical aliases, without overriding distinct series.
+for(const [roman,eth] of Object.entries(phoneticVowels)){phoneticMap.set(roman,eth);romanByFidel.set(eth,roman)}
+for(const [roman,eth] of Object.entries(phoneticPunctuation)){
+ phoneticMap.set(roman,eth);
+ if(!romanByFidel.has(eth))romanByFidel.set(eth,roman);
+}
+phoneticMap.set('T','ጠ');phoneticMap.set('T'+"'",'ጥ');
+phoneticMap.set('le','ለ'); // Required first-order alias; lE is ሌ.
+for(const key of phoneticMap.keys())for(let i=1;i<key.length;i++)phoneticPrefixes.add(key.slice(0,i));
+// Prefer the explicit mnemonic alias le when offering help for ለ.
+romanByFidel.set('ለ','le');
+const romanToFidel=(token)=>phoneticMap.get(token)??null;
+const romanForFidel=(glyph)=>romanByFidel.get(glyph)??(glyph==='፧'?'/':null);
+const phoneticHasContinuation=roman=>{
+ for(const key of phoneticMap.keys())if(key.length>roman.length&&key.startsWith(roman))return true;
+ return false;
+};
+// Pending buffer represents a PROVISIONAL glyph. It is not a mistake until committed.
+let phoneticPending=null,phoneticFallback=false;
+function setPhoneticUI(){
+ $('phoneticToggle').checked=phoneticEnabled;
+ $('phoneticHelp').classList.toggle('hidden',!phoneticEnabled);
+ $('entry').lang=phoneticEnabled?'en':'am';
+ $('entry').placeholder=phoneticEnabled?'h, hu, hi, sh, ny, CH… → ሀ ሁ ሂ ሸ ኘ ጨ':'እዚህ ይጻፉ…';
+ $('phoneticToggle').setAttribute('aria-checked',String(phoneticEnabled));
+ $('phoneticReferenceButton').setAttribute('aria-disabled',String(!phoneticEnabled));
+ if(!phoneticEnabled)hideReference();
+ queueMicrotask(()=>{if(typeof updateGuidance==='function')updateGuidance()});
+}
+try{phoneticEnabled=localStorage.getItem('fideltype-phonetic-enabled')==='yes'}catch(e){}
+$('phoneticToggle').addEventListener('change',e=>{
+ finalizePhoneticPending();phoneticEnabled=e.target.checked;phoneticPending=null;
+ try{localStorage.setItem('fideltype-phonetic-enabled',phoneticEnabled?'yes':'no')}catch(e){}
+ setPhoneticUI();$('entry').focus({preventScroll:true});
+});
+function replaceInputRange(start,end,replacement,meta){
+ const input=$('entry');input.value=input.value.slice(0,start)+replacement+input.value.slice(end);
+ const pos=start+replacement.length;input.setSelectionRange(pos,pos);
+ processInput(meta||{inputType:'insertText'});
+}
+function updatePendingScore(){
+ phoneticDeferredIndex=null;
+ if(!phoneticPending?.value)return;
+ const a=chars($('entry').value),b=chars(target),i=chars($('entry').value.slice(0,phoneticPending.start)).length;
+ if(!sameFidelUnit(a[i],b[i]))phoneticDeferredIndex=i;
+}
+function finalizePhoneticPending(){
+ if(!phoneticPending)return;
+ if(phoneticPending.value && phoneticDeferredIndex!==null){
+  const i=phoneticDeferredIndex,a=chars($('entry').value),b=chars(target);
+  if(i<a.length&&b[i]&&!sameFidelUnit(a[i],b[i])){
+   if(kind==='lesson')lessonMistakes++;
+   if(b[i].trim())sessionMistakes[b[i]]=(sessionMistakes[b[i]]||0)+1;
+   playTypingSound('wrong');
+  }
+ }
+ phoneticPending=null;phoneticDeferredIndex=null;
+}
+function replacePendingValue(newToken,value){
+ const p=phoneticPending;
+ const start=p.start,end=start+p.value.length;
+ phoneticPending={start,roman:newToken,value};
+ replaceInputRange(start,end,value,{inputType:'insertText',phoneticReplacement:true,phoneticProvisional:phoneticHasContinuation(newToken)});
+ updatePendingScore();
+}
+function typeRomanSymbol(raw){
+ const input=$('entry');
+ let start=input.selectionStart,end=input.selectionEnd;
+ const continuable=phoneticPending&&start===end&&start===phoneticPending.start+phoneticPending.value.length;
+ if(!continuable||start!==end)finalizePhoneticPending();
+ if(raw==='-'){finalizePhoneticPending();return}
+ if(Object.prototype.hasOwnProperty.call(phoneticPunctuation,raw)){
+  finalizePhoneticPending();
+  replaceInputRange(start,end,phoneticPunctuation[raw],{inputType:'insertText'});return;
+ }
+ if(!/^[A-Za-z'6]$/.test(raw)){
+  finalizePhoneticPending();replaceInputRange(start,end,raw,{inputType:'insertText'});return;
+ }
+ const token=phoneticPending?phoneticPending.roman+raw:raw;
+ const value=romanToFidel(token);
+ if(value!==null){
+  if(phoneticPending){replacePendingValue(token,value)}
+  else{
+   phoneticPending={start,roman:token,value};
+   replaceInputRange(start,end,value,{inputType:'insertText',phoneticProvisional:phoneticHasContinuation(token)});
+   updatePendingScore();
+  }
+  return;
+ }
+ if(phoneticPrefixes.has(token)){
+  if(phoneticPending)replacePendingValue(token,'');
+  else{phoneticPending={start,roman:token,value:''};updatePendingScore()}
+  return;
+ }
+ if(phoneticPending){finalizePhoneticPending();start=input.selectionStart;end=input.selectionEnd}
+ const base=romanToFidel(raw);
+ if(base!==null){
+  phoneticPending={start,roman:raw,value:base};
+  replaceInputRange(start,end,base,{inputType:'insertText',phoneticProvisional:phoneticHasContinuation(raw)});
+  updatePendingScore();
+ }else if(phoneticPrefixes.has(raw)){
+  phoneticPending={start,roman:raw,value:''};updatePendingScore();
+ }else{
+  // Don't invent mappings: show unsupported raw characters in the input.
+  replaceInputRange(start,end,raw,{inputType:'insertText'});
+ }
+}
+function backwardPhonetic(){
+ if(!phoneticPending)return false;
+ const input=$('entry');
+ if(input.selectionStart!==input.selectionEnd||input.selectionStart!==phoneticPending.start+phoneticPending.value.length){finalizePhoneticPending();return false}
+ const p=phoneticPending,roman=p.roman.slice(0,-1);
+ if(!roman){phoneticPending=null;phoneticDeferredIndex=null;replaceInputRange(p.start,p.start+p.value.length,'',{inputType:'deleteContentBackward'});return true}
+ const value=romanToFidel(roman);
+ if(value!==null||phoneticPrefixes.has(roman)){
+  replacePendingValue(roman,value??'');return true;
+ }
+ phoneticPending=null;phoneticDeferredIndex=null;
+ replaceInputRange(p.start,p.start+p.value.length,'',{inputType:'deleteContentBackward'});return true;
+}
+$('entry').addEventListener('beforeinput',e=>{
+ if(!phoneticEnabled||finished||e.isComposing||composing)return;
+ if(e.inputType==='deleteContentBackward'){
+  if(e.cancelable&&phoneticPending&&backwardPhonetic()){e.preventDefault();return}
+  finalizePhoneticPending();return;
+ }
+ if(e.inputType!=='insertText'||!e.data||!e.cancelable){
+  if(e.inputType!=='insertText')finalizePhoneticPending();return;
+ }
+ const pieces=Array.from(e.data);
+ if(!pieces.every(ch=>/^[A-Za-z'6 ,.;?\/-|:]$/.test(ch)))return;
+ e.preventDefault();for(const ch of pieces)typeRomanSymbol(ch);
+});
+// Mobile browsers sometimes issue input without a cancelable beforeinput. Recover
+// a single inserted Roman range without modifying genuine system-IME compositions.
+let lastEntryValue='';
+$('entry').addEventListener('input',e=>{
+ if(!phoneticEnabled||composing||e.isComposing||finished)return;
+ if(e.inputType==='insertText'&&e.data&&/^[A-Za-z'6 ,.;?\/-|:]+$/.test(e.data)&&!phoneticFallback){
+  // Handled beforeinput doesn't emit a second native input event; this branch is fallback.
+  const input=$('entry'),end=input.selectionStart,from=end-e.data.length;
+  if(from>=0&&input.value.slice(from,end)===e.data){
+   const prefix=input.value.slice(0,from);
+   input.value=input.value.slice(0,from)+input.value.slice(end);input.setSelectionRange(from,from);
+   // Preserve all already-committed input; only transliterate the newly inserted span.
+   phoneticFallback=true;try{for(const symbol of e.data)typeRomanSymbol(symbol)}finally{phoneticFallback=false}
+  }
+ }
+},{capture:true});
+$('entry').addEventListener('click',finalizePhoneticPending);
+$('entry').addEventListener('keydown',e=>{
+ if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Delete','Tab'].includes(e.key))finalizePhoneticPending();
+ if(e.key==='Escape'&&!$('phoneticReference').classList.contains('hidden')){hideReference();e.stopPropagation();e.preventDefault()}
+});
+// Searchable reference — generated from the SAME mapping that handles typing.
+const sortedReference=[...phoneticMap.entries()].filter(([roman])=>!roman.includes('ee')&&!roman.includes('6')).sort((a,b)=>a[0].localeCompare(b[0]));
+function renderReference(){
+ const term=$('phoneticSearch').value.trim().toLocaleLowerCase();
+ const entries=sortedReference.filter(([roman,eth])=>!term||roman.toLocaleLowerCase().includes(term)||eth.includes(term));
+ const list=$('phoneticReferenceList');list.replaceChildren();
+ const frag=document.createDocumentFragment();
+ for(const [roman,eth] of entries.slice(0,160)){
+  const item=document.createElement('div');item.className='reference-item';
+  const code=document.createElement('code');code.textContent=roman;
+  const val=document.createElement('span');val.textContent=eth;
+  item.append(code,val);frag.append(item);
+ }
+ list.append(frag);
+ $('phoneticCoverage').textContent=`${entries.length} / ${sortedReference.length} combinations${entries.length>160?' · first 160 shown':''}`;
+}
+function hideReference(){$('phoneticReference').classList.add('hidden');$('phoneticReferenceButton').setAttribute('aria-expanded','false')}
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'&&!$('phoneticReference').classList.contains('hidden')){
+  e.preventDefault();e.stopImmediatePropagation();hideReference();$('phoneticReferenceButton').focus();
+ }
+},true);
+$('phoneticReferenceButton').addEventListener('click',()=>{
+ const opening=$('phoneticReference').classList.contains('hidden');
+ $('phoneticReference').classList.toggle('hidden',!opening);
+ $('phoneticReferenceButton').setAttribute('aria-expanded',String(opening));
+ if(opening){renderReference();$('phoneticSearch').focus()}
+});
+$('closePhoneticReference').addEventListener('click',()=>{hideReference();$('phoneticReferenceButton').focus()});
+$('phoneticSearch').addEventListener('input',renderReference);
+// Explicit coverage function supports runtime/automated audits without altering curriculum.
+function auditLessonCoverage(){
+ const charsNeeded=new Set(lessonMeta.flatMap(l=>chars(l.content)).filter(ch=>ch!==' '));
+ return [...charsNeeded].filter(ch=>!romanForFidel(ch));
+}
+setPhoneticUI();
+
+// ---- Local-only custom passages. Preserves built-in passages and lesson content. ----
+const customStorageKey='fideltype-custom-passages-v1';
+let customRecent=[],activeCustomPassage='',lastStandardPassage='0',customDialogCommitted=false,customEditingExisting=false;
+try{
+ const data=JSON.parse(localStorage.getItem(customStorageKey)||'[]');
+ if(Array.isArray(data))customRecent=data.filter(x=>typeof x==='string'&&x.trim()).slice(0,8);
+}catch(e){}
+function normalizeCustomText(raw){return raw.normalize('NFC').replace(/[\r\n\t]+/g,' ').replace(/\s+/g,' ').trim()}
+function saveCustomRecent(passage){
+ customRecent=[passage,...customRecent.filter(s=>s!==passage)].slice(0,8);
+ try{localStorage.setItem(customStorageKey,JSON.stringify(customRecent))}catch(e){ /* still usable this session */ }
+}
+function renderCustomRecent(){
+ const list=$('customRecentList');list.replaceChildren();
+ if(!customRecent.length){const p=document.createElement('p');p.className='custom-recent-empty';p.textContent=landingTranslations[$('langSelect').value]?.customNone||'No custom passages yet.';list.append(p);return}
+ for(const p of customRecent){
+  const b=document.createElement('button');b.type='button';b.className='custom-recent-item';b.textContent=p.length>100?p.slice(0,100)+'…':p;b.title=p;
+  b.addEventListener('click',()=>{$('customPassageText').value=p;updateCustomCount();$('customPassageText').focus()});list.append(b);
+ }
+}
+function updateCustomCount(){
+ const len=chars($('customPassageText').value).length;
+ $('customCharacterCount').textContent=len.toLocaleString()+' / 2,000';
+ $('customPassageError').textContent='';
+}
+function openCustomPassage(editingExisting=false){
+ customDialogCommitted=false;customEditingExisting=editingExisting;
+ $('customPassageText').value=activeCustomPassage||'';
+ updateCustomCount();renderCustomRecent();
+ const dialog=$('customPassageDialog');
+ if(!dialog.open){dialog.showModal();}
+ $('customPassageText').focus();
+}
+function dismissCustomPassage(){
+ if($('customPassageDialog').open)$('customPassageDialog').close();
+ if(!customDialogCommitted){$('passageChoice').value=customEditingExisting?'custom':lastStandardPassage;}
+}
+$('customPassageText').addEventListener('input',updateCustomCount);
+$('customCancel').addEventListener('click',dismissCustomPassage);
+$('customCancelTop').addEventListener('click',dismissCustomPassage);
+$('customEdit').addEventListener('click',()=>openCustomPassage(true));
+$('customPassageDialog').addEventListener('cancel',e=>{e.preventDefault();dismissCustomPassage()});
+$('customPassageForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const passage=normalizeCustomText($('customPassageText').value);
+ if(!passage){$('customPassageError').textContent=landingTranslations[$('langSelect').value]?.customRequired||'Please enter a passage.';return}
+ if(chars(passage).length>2000){$('customPassageError').textContent=landingTranslations[$('langSelect').value]?.customTooLong||'Limit: 2,000 characters after normalization.';return}
+ activeCustomPassage=passage;saveCustomRecent(passage);customDialogCommitted=true;
+ $('passageChoice').value='custom';$('customEdit').classList.remove('hidden');kind='test';$('customPassageDialog').close();reset();$('entry').focus({preventScroll:true});
+});
+
+function fitPractice(){
+ const header=document.querySelector('.site-header');
+ const headerHeight=header?.getBoundingClientRect().height||82;
+ document.documentElement.style.setProperty('--ft-header-height',Math.ceil(headerHeight)+'px');
+}
+fitPractice();
+function show(page){
+ const isHome=page==='home';
+ for(const p of ['home','test','lessons','calibration','progress'])$(p).classList.toggle('hidden',p!==page);
+ $('siteNav').classList.toggle('hidden',!isHome);$('appNav').classList.toggle('hidden',isHome);$('appFooter').classList.toggle('hidden',isHome);
+ document.querySelectorAll('#appNav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+ document.body.classList.toggle('in-app',!isHome);
+ if(page==='progress'){renderHistory();refreshAchievements()}
+ if(page==='lessons')buildLessonList();
+ window.scrollTo(0,0);
+ if(page==='test'){requestAnimationFrame(()=>{renderHands();fitPractice();$('entry').focus({preventScroll:true})})}
+}
+document.querySelectorAll('#appNav button').forEach(b=>b.onclick=()=>show(b.dataset.page));$('returnToPractice').onclick=()=>show('test');
+$('brandHome').addEventListener('click',()=>show('home'));
+document.querySelectorAll('[data-launch]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.launch)));
+
+const localizedLessonNames=[
+ 'ሀ ቤተሰብ — መጀመሪያ','ለ ቤተሰብ — ሰባቱ ቅርጾች','መ ቤተሰብ — ሰባቱ ቅርጾች','በ ቤተሰብ — ሰባቱ ቅርጾች','ምዕራፍ መጨረሻ — የመሠረት ልምምድ',
+ 'ተ ቤተሰብ — ሰባቱ ቅርጾች','ሰ ቤተሰብ — ሰባቱ ቅርጾች','ነ ቤተሰብ — ሰባቱ ቅርጾች','ከ ቤተሰብ — ሰባቱ ቅርጾች','ምዕራፍ መጨረሻ — ድብልቅ ፊደሎች',
+ 'ቀላል ቃላት','የቤተሰብ ቃላት','የትምህርት ቃላት','ተለመዱ አገላለጾች','ምዕራፍ መጨረሻ — ቃላት',
+ 'አጭር አረፍተ ነገር','የመማር አረፍተ ነገር','የዕለት ተዕለት አረፍተ ነገር','ሁለት አረፍተ ነገሮች','ምዕራፍ መጨረሻ — አረፍተ ነገሮች',
+ 'የዕለት ተዕለት አገላለጾች','የልምምድ አንቀጽ','ማንበብና የትየባ ምት','ረጅም ጽሑፍ','የመጨረሻ ፈተና'
+];
+const curriculumStorage='fideltype-curriculum-v1';
+function lessonScores(){try{const o=JSON.parse(localStorage.getItem(curriculumStorage)||'{}');return o&&typeof o==='object'&&!Array.isArray(o)?o:{}}catch(e){return {}}}
+function saveLessonScore(lesson,stars,wpm,accuracy){const scores=lessonScores(),prev=scores[lesson.id]||{};scores[lesson.id]={stars:Math.max(stars,prev.stars||0),wpm:Math.max(wpm,prev.wpm||0),accuracy:Math.max(accuracy,prev.accuracy||0),last:new Date().toISOString()};try{localStorage.setItem(curriculumStorage,JSON.stringify(scores))}catch(e){}}
+function unlocked(i,scores=lessonScores()){return i===0||Boolean(scores[lessonMeta[i-1].id]?.stars)}
+function launchLesson(i){if(!unlocked(i)){show('lessons');return}kind='lesson';lessonName=lessonMeta[i].name;reset();show('test');$('entry').focus()}
+function buildLessonList(){
+ const scores=lessonScores(),passed=lessonMeta.filter(l=>scores[l.id]?.stars).length,earned=lessonMeta.reduce((sum,l)=>sum+(scores[l.id]?.stars||0),0);
+ const am=$('langSelect').value==='am';
+ $('lessonProgress').textContent=am?`${passed} / ${lessonMeta.length} ትምህርቶች አልፈዋል · ${earned} / ${lessonMeta.length*3} ኮከቦች · ${Math.round(100*passed/lessonMeta.length)}% ተጠናቋል`:`${passed} / ${lessonMeta.length} lessons passed · ${earned} / ${lessonMeta.length*3} stars earned · ${Math.round(100*passed/lessonMeta.length)}% complete`;
+ $('lessonList').replaceChildren();
+ curriculum.forEach((level,levelIndex)=>{
+  const group=document.createElement('section');group.className='curriculum-level';
+  const heading=document.createElement('div');heading.className='level-header';
+  const name=document.createElement('h3');name.textContent=am?`ደረጃ ${levelIndex+1}: ${level.level}`:`Level ${levelIndex+1}: ${level.label} · ${level.level}`;
+  const requirements=document.createElement('p');requirements.textContent=am?`ለማለፍ: ${level.min}% ትክክለኛነት${level.speed?' + '+level.speed+' WPM':''} · 3 ደቂቃ`:`Pass each lesson: ${level.min}% accuracy${level.speed?' + '+level.speed+' WPM':''} · 3-minute limit`;
+  heading.append(name,requirements);group.append(heading);
+  const list=document.createElement('div');list.className='lesson-list';
+  level.items.forEach((entry,within)=>{
+    const i=levelIndex*5+within,lesson=lessonMeta[i],record=scores[lesson.id],open=unlocked(i,scores);
+    const b=document.createElement('button');b.className='lesson'+(open?'':' lesson-locked')+(record?.stars?' lesson-passed':'');b.disabled=!open;
+    const number=document.createElement('span');number.className='lesson-number';number.textContent=am?`ትምህርት ${i+1} / ${lessonMeta.length}`:`Lesson ${i+1} of ${lessonMeta.length}`;
+    const title=document.createElement('strong');title.textContent=am?(localizedLessonNames[i]||lesson.name):lesson.name;
+    const sample=document.createElement('span');sample.className='lesson-preview';sample.textContent=lesson.content;
+    const indicator=document.createElement('span');indicator.className='lesson-completed';indicator.textContent=record?.stars?`${'★'.repeat(record.stars)}${'☆'.repeat(3-record.stars)} · ${record.wpm} WPM · ${am?'ትክክለኛነት':'Best accuracy'} ${record.accuracy}%`:open?(am?'ልምምድ →':'Practice →'):(am?'🔒 የቀደመውን ትምህርት ያልፉ':'🔒 Pass previous lesson');
+    b.append(number,title,sample,indicator);b.onclick=()=>launchLesson(i);list.append(b);
+  });group.append(list);$('lessonList').append(group);
+ });
+}
+buildLessonList();
+$('nextLesson').onclick=()=>{const i=lessonMeta.findIndex(x=>x.name===lessonName);if(i>=0&&i+1<lessonMeta.length&&unlocked(i+1))launchLesson(i+1)};
+function renderHistory(){const h=history();$('summary').textContent=$('langSelect').value==='am'?(h.length?`${h.length} የተጠናቀቁ ልምምዶች · ከፍተኛ ፍጥነት: ${Math.max(...h.map(x=>x.wpm))} WPM`:'እስካሁን የተመዘገበ ውጤት የለም።'):(h.length?`${h.length} completed practices • Best speed: ${Math.max(...h.map(x=>x.wpm))} WPM`:'No results yet. Complete a test or lesson to begin.');$('history').replaceChildren(...h.map(r=>{const tr=document.createElement('tr');for(const v of [r.date,r.kind,r.wpm,r.accuracy+'%']){const td=document.createElement('td');td.textContent=v;tr.append(td)}return tr}))}
+$('clear').onclick=()=>{if(confirm('Delete all saved practice history in this browser?')){localStorage.removeItem('fideltype-history');renderHistory()}};$('export').onclick=()=>{const h=history();const csv=[['Date','Exercise','WPM','Accuracy'],...h.map(r=>[r.date,r.kind,r.wpm,r.accuracy])].map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));a.download='fideltype-progress.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+// v2.3 personal review and achievement tracking; persisted only in this browser.
+const mistakeStore='fideltype-mistakes-v1';
+function readMistakes(){try{const x=JSON.parse(localStorage.getItem(mistakeStore)||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch(e){return {}}}
+function commitMistakes(errors){if(!Object.keys(errors).length)return;const saved=readMistakes();for(const [ch,n] of Object.entries(errors))saved[ch]=Math.min(9999,(Number(saved[ch])||0)+n);try{localStorage.setItem(mistakeStore,JSON.stringify(saved))}catch(e){}}
+function weakList(){return Object.entries(readMistakes()).filter(([c,n])=>c.trim()&&Number(n)>0).sort((a,b)=>b[1]-a[1]).slice(0,12)}
+function buildReviewText(){const list=weakList().slice(0,6).map(x=>x[0]);return list.length?Array.from({length:4},()=>list.join(' ')).join('  '):'ሀ ለ መ በ ተ ሰ ነ ከ ወ አ';}
+function renderMistakeReport(){const el=$('mistakeReport');const entries=Object.entries(sessionMistakes).sort((a,b)=>b[1]-a[1]);el.replaceChildren();el.classList.remove('hidden');const strong=document.createElement('strong');strong.textContent=entries.length?($('langSelect').value==='am'?'የስህተት ግምገማ:':'Mistake review:'):($('langSelect').value==='am'?'ጥሩ ትክክለኛነት!':'Great accuracy!');el.append(strong);if(!entries.length){el.append(document.createTextNode($('langSelect').value==='am'?' በዚህ ልምምድ አዲስ ስህተት አልተመዘገበም።':' No new character mistakes in this exercise.'));return}for(const [ch,n] of entries.slice(0,8)){const span=document.createElement('span');span.className='difficulty-tag';span.textContent=`${ch} × ${n}`;el.append(span)}const p=document.createElement('p');p.textContent=$('langSelect').value==='am'?'ትምህርቶች → የሚያስቸግሩኝን ፊደላት ልለማመድ ይምረጡ።':'Visit Lessons → Practice my weak characters for targeted repetition.';el.append(p)}
+function launchReview(){kind='review';lessonName='';reset();show('test');$('entry').focus()}
+$('mistakePractice').onclick=launchReview;
+function refreshAchievements(){const scores=lessonScores(),passed=lessonMeta.filter(l=>scores[l.id]?.stars).length,stars=lessonMeta.reduce((a,l)=>a+(scores[l.id]?.stars||0),0),h=history(),fastest=h.reduce((max,r)=>Math.max(max,Number(r.wpm)||0),0);const awards=[['First Steps','Complete your first lesson',passed>=1],['Steady Learner','Pass 5 lessons',passed>=5],['Level One Master','Pass all first-level lessons',passed>=5],['Halfway There','Pass 13 lessons',passed>=13],['Fidel Master','Pass all 25 lessons',passed>=25],['Star Collector','Earn at least 30 stars',stars>=30],['Speed Builder','Reach 15 WPM in a practice',fastest>=15],['Practice Habit','Finish 10 exercises',h.length>=10]];
+ const am=$('langSelect').value==='am';
+ const awardsAm=[['የመጀመሪያ እርምጃ','የመጀመሪያውን ትምህርት ያልፉ'],['ቋሚ ተማሪ','5 ትምህርቶችን ያልፉ'],['የመጀመሪያ ደረጃ አሸናፊ','የመጀመሪያውን ደረጃ ያጠናቅቁ'],['ግማሽ መንገድ','13 ትምህርቶችን ያልፉ'],['የፊደል ባለሙያ','25 ትምህርቶችን ያልፉ'],['ኮከብ ሰብሳቢ','30 ኮከቦችን ያግኙ'],['ፈጣን ተያቢ','15 WPM ይድረሱ'],['የልምምድ ልማድ','10 ልምምዶችን ያጠናቅቁ']];
+ if(am)awards.forEach((award,i)=>{award[0]=awardsAm[i][0];award[1]=awardsAm[i][1]});
+ const display=$('achievements');display.replaceChildren();for(const [name,description,earned] of awards){const card=document.createElement('div');card.className='achievement'+(earned?' earned':'');const medal=document.createElement('span');medal.className='medal';medal.textContent=earned?'🏅':'🔒';const title=document.createElement('strong');title.textContent=name;const detail=document.createElement('small');detail.textContent=description;card.append(medal,title,detail);display.append(card)}
+ const overview=$('progressOverview');overview.replaceChildren();const headline=document.createElement('div');headline.className='progress-number';headline.textContent=am?`${passed} / 25 ትምህርቶች · ${stars} / 75 ኮከቦች · ${h.length} ልምምዶች`:`${passed} / 25 lessons passed · ${stars} / 75 stars · ${h.length} practice sessions`;const track=document.createElement('div');track.className='progress-track';const fill=document.createElement('div');fill.className='progress-fill';fill.style.width=`${passed/25*100}%`;track.append(fill);overview.append(headline,track);
+ const weak=weakList(),weakText=weak.length?weak.map(([ch,n])=>`${ch} (${n})`).join(' · '):'No recorded mistakes yet. Try a lesson to start your practice profile.';$('progressWeak').textContent=weakText;$('weakCharacters').textContent=weak.length?`Most frequent errors: ${weak.slice(0,5).map(([ch])=>ch).join(' · ')}`:'No mistakes recorded yet; review starts with basic Fidel.';
+}
+// Keyboard trainer: physical-key diagnostics, deliberately no unverified Ethiopic key mappings.
+const keyboardRows=[
+ [['Backquote','`'],['Digit1','1'],['Digit2','2'],['Digit3','3'],['Digit4','4'],['Digit5','5'],['Digit6','6'],['Digit7','7'],['Digit8','8'],['Digit9','9'],['Digit0','0'],['Minus','-'],['Equal','='],['Backspace','⌫',1.7]],
+ [['Tab','Tab',1.7],['KeyQ','Q'],['KeyW','W'],['KeyE','E'],['KeyR','R'],['KeyT','T'],['KeyY','Y'],['KeyU','U'],['KeyI','I'],['KeyO','O'],['KeyP','P'],['BracketLeft','['],['BracketRight',']'],['Backslash','\\']],
+ [['CapsLock','Caps',1.7],['KeyA','A'],['KeyS','S'],['KeyD','D'],['KeyF','F'],['KeyG','G'],['KeyH','H'],['KeyJ','J'],['KeyK','K'],['KeyL','L'],['Semicolon',';'],['Quote',"'"],['Enter','Enter',1.7]],
+ [['ShiftLeft','Shift',1.7],['KeyZ','Z'],['KeyX','X'],['KeyC','C'],['KeyV','V'],['KeyB','B'],['KeyN','N'],['KeyM','M'],['Comma',','],['Period','.'],['Slash','/'],['ShiftRight','Shift',1.7]],
+ [['ControlLeft','Ctrl',1.7],['AltLeft','Alt',1.7],['Space','Space',6],['AltRight','AltGr',1.7],['ControlRight','Ctrl',1.7]]
+];
+const FIDEL_LABELS={"KeyQ": "ቀ", "KeyW": "ወ", "KeyE": "እ", "KeyR": "ረ", "KeyT": "ተ", "KeyY": "የ", "KeyU": "ኡ", "KeyI": "ኢ", "KeyO": "ኦ", "KeyP": "ፐ", "KeyA": "አ", "KeyS": "ሰ", "KeyD": "ደ", "KeyF": "ፈ", "KeyG": "ገ", "KeyH": "ሀ", "KeyJ": "ጀ", "KeyK": "ከ", "KeyL": "ለ", "KeyZ": "ዘ", "KeyX": "ሸ", "KeyC": "ቸ", "KeyV": "ቨ", "KeyB": "በ", "KeyN": "ነ", "KeyM": "መ", "Comma": "፣", "Period": "።", "Slash": "፥", "Semicolon": "፤", "Quote": "፧", "BracketLeft": "ጠ", "BracketRight": "ጨ", "Backslash": "ኘ", "Digit1": "፩", "Digit2": "፪", "Digit3": "፫", "Digit4": "፬", "Digit5": "፭", "Digit6": "፮", "Digit7": "፯", "Digit8": "፰", "Digit9": "፱", "Digit0": "፲", "Minus": "፡", "Equal": "፦", "Backquote": "፨"};
+const keyEls=new Map();
+for(const row of keyboardRows){
+ const line=document.createElement('div');line.className='kb-row';
+ for(const [code,label,weight] of row){
+   const key=document.createElement('div');key.className='kb-key'+(weight===6?' space':weight?' wide':'');
+   key.style.flex=String(weight||1);key.dataset.code=code;
+   const physical=document.createElement('span');physical.className='key-physical';physical.textContent=label;physical.setAttribute('aria-hidden','true');key.append(physical);
+   const glyph=document.createElement('span');glyph.className='key-glyph';glyph.textContent=FIDEL_LABELS[code]||label;
+   key.append(glyph);
+   const fingerTag=document.createElement('small');fingerTag.className='key-finger';fingerTag.setAttribute('aria-hidden','true');key.append(fingerTag);
+   keyEls.set(code,key);line.append(key);
+ }
+ $('keyboardRows').append(line);
+}
+
+function showPhysicalKey(code,down){
+ const key=keyEls.get(code);if(key)key.classList.toggle('pressed',down);
+ // Physical key highlighting also drives the articulated hand guide.
+}
+document.addEventListener('keydown',e=>{if(e.repeat)return;showPhysicalKey(e.code,true)});
+document.addEventListener('keyup',e=>showPhysicalKey(e.code,false));
+window.addEventListener('blur',()=>keyEls.forEach(k=>k.classList.remove('pressed')));
+$('keyboardVisible').addEventListener('change',()=>{$('keyboardArea').classList.toggle('hidden',!$('keyboardVisible').checked)});
+$('layoutSelect').addEventListener('change',()=>{
+ const layout=$('layoutSelect').value;
+ $('layoutSelect').title=layout==='gff'?'GFF reference (illustrative labels)':layout==='power'?'Power Ge’ez (illustrative labels, mapping unverified)':'Physical QWERTY positions';
+ try{localStorage.setItem('fideltype-layout',layout)}catch(e){}
+});
+try{const savedLayout=localStorage.getItem('fideltype-layout');if(['gff','power','generic'].includes(savedLayout)){$('layoutSelect').value=savedLayout;$('layoutSelect').dispatchEvent(new Event('change'))}}catch(e){}
+
+
+// Ergonomic touch-typing finger assignments for physical QWERTY key positions.
+// They are not a translation map for Power Ge'ez, GFF Ge'ez, or any other IME.
+const fingerMap = {};
+const fingerNames = {
+ lp:'Left pinky',lr:'Left ring',lm:'Left middle',li:'Left index',lt:'Left thumb',
+ ri:'Right index',rm:'Right middle',rr:'Right ring',rp:'Right pinky',rt:'Right thumb'
+};
+const fingerColors={
+ lp:'#d59a9e',lr:'#d8b17e',lm:'#91b8da',li:'#86c4af',lt:'#b7a2d9',
+ ri:'#86c4af',rm:'#91b8da',rr:'#d8b17e',rp:'#d59a9e',rt:'#b7a2d9'
+};
+const fingerGroups = {
+ lp:'Backquote Digit1 KeyQ KeyA KeyZ Tab CapsLock ShiftLeft ControlLeft',
+ lr:'Digit2 KeyW KeyS KeyX',
+ lm:'Digit3 KeyE KeyD KeyC',
+ li:'Digit4 Digit5 KeyR KeyT KeyF KeyG KeyV KeyB',
+ lt:'Space AltLeft',
+ ri:'Digit6 Digit7 KeyY KeyU KeyH KeyJ KeyN KeyM',
+ rm:'Digit8 KeyI KeyK Comma',
+ rr:'Digit9 KeyO KeyL Period',
+ rp:'Digit0 Minus Equal KeyP BracketLeft BracketRight Backslash Semicolon Quote Slash Enter Backspace ShiftRight ControlRight',
+ rt:'AltRight'
+};
+Object.entries(fingerGroups).forEach(([finger,codes])=>codes.split(' ').forEach(code=>fingerMap[code]=finger));
+for(const [code,key] of keyEls){
+ const fid=fingerMap[code];
+ if(fid){
+  key.dataset.finger=fid;key.style.setProperty('--finger-color',fingerColors[fid]);
+  const number={p:5,r:4,m:3,i:2,t:1}[fid.charAt(1)];
+  const tag=(fid.charAt(0)==='l'?'L':'R')+number;
+  key.querySelector('.key-finger').textContent=code==='Space'?'L1 / R1':tag;
+  key.title=`${key.querySelector('.key-glyph').textContent} · ${code==='Space'?'Either thumb':fingerNames[fid]} · physical key ${code}`;
+  key.setAttribute('aria-label',key.title);
+ }
+ if(['KeyA','KeyS','KeyD','KeyF','KeyJ','KeyK','KeyL','Semicolon'].includes(code)){
+  key.classList.add('home-key');
+ }
+}
+// Lightweight, optional hand silhouettes for QWERTY finger positions.
+// These finger assignments are ergonomic hints, NOT verified Power Ge'ez mappings.
+const svgNS='http://www.w3.org/2000/svg';
+const activeFingerSet=new Set();
+let fingerParts={},handGeometry={},handFrame=0,hintedPhysicalCode=null;
+let activePhysicalCode=null;
+function svgEl(tag,attrs,parent){
+ const el=document.createElementNS(svgNS,tag);
+ Object.entries(attrs).forEach(([name,value])=>el.setAttribute(name,String(value)));
+ (parent||$('handOverlay')).append(el);return el;
+}
+function keyCenter(code){
+ const key=keyEls.get(code),stage=$('keyboardStage');if(!key)return {x:0,y:0};
+ const k=key.getBoundingClientRect(),s=stage.getBoundingClientRect();
+ return {x:k.left-s.left+k.width/2,y:k.top-s.top+k.height*.51};
+}
+const coord=(x,y)=>({x,y});
+function bezierAt(p0,p1,p2,p3,t){const u=1-t;return coord(u*u*u*p0.x+3*u*u*t*p1.x+3*u*t*t*p2.x+t*t*t*p3.x,u*u*u*p0.y+3*u*u*t*p1.y+3*u*t*t*p2.y+t*t*t*p3.y)}
+function tangentAt(p0,p1,p2,p3,t){const u=1-t;return coord(3*u*u*(p1.x-p0.x)+6*u*t*(p2.x-p1.x)+3*t*t*(p3.x-p2.x),3*u*u*(p1.y-p0.y)+6*u*t*(p2.y-p1.y)+3*t*t*(p3.y-p2.y))}
+function roundedFingerPath(points,width){
+ const [p0,p1,p2,p3]=points,left=[],right=[];
+ for(let i=0;i<=24;i++){
+  const t=i/24,p=bezierAt(p0,p1,p2,p3,t),v=tangentAt(p0,p1,p2,p3,t),len=Math.hypot(v.x,v.y)||1;
+  const n=coord(-v.y/len,v.x/len),radius=width*(1-.20*t);
+  left.push(coord(p.x+n.x*radius,p.y+n.y*radius));right.push(coord(p.x-n.x*radius,p.y-n.y*radius));
+ }
+ const v=tangentAt(p0,p1,p2,p3,1),len=Math.hypot(v.x,v.y)||1;
+ const cap=coord(p3.x+v.x/len*width*.8,p3.y+v.y/len*width*.8);
+ return `M ${left[0].x} ${left[0].y} `+left.slice(1).map(p=>`L ${p.x} ${p.y}`).join(' ')+` Q ${cap.x} ${cap.y} ${right.at(-1).x} ${right.at(-1).y} `+right.slice(0,-1).reverse().map(p=>`L ${p.x} ${p.y}`).join(' ')+' Z';
+}
+function fingerPoints(data,tip){
+ const base=data.base,dx=tip.x-base.x,dy=base.y-tip.y,thumb=data.fid.endsWith('t');
+ return [base,coord(base.x+dx*(thumb?.34:.16),base.y-dy*(thumb?.16:.31)),coord(tip.x-dx*(thumb?.17:.07),tip.y+dy*(thumb?.20:.18)),tip];
+}
+function paintFinger(data,tip){
+ const path=roundedFingerPath(fingerPoints(data,tip),data.width);
+ data.el.body.setAttribute('d',path);
+ data.el.ring.setAttribute('cx',tip.x);data.el.ring.setAttribute('cy',tip.y);
+}
+function simplePalmPath(cx,palmY,dir,scale){
+ const X=x=>(cx+dir*x*scale).toFixed(2),Y=y=>(palmY+y*scale).toFixed(2);
+ return `M ${X(-67)} ${Y(-10)} C ${X(-73)} ${Y(-39)} ${X(-56)} ${Y(-69)} ${X(-24)} ${Y(-73)} C ${X(6)} ${Y(-79)} ${X(30)} ${Y(-66)} ${X(44)} ${Y(-40)} C ${X(51)} ${Y(-28)} ${X(57)} ${Y(-27)} ${X(68)} ${Y(-19)} Q ${X(77)} ${Y(-12)} ${X(65)} ${Y(3)} C ${X(51)} ${Y(21)} ${X(43)} ${Y(46)} ${X(42)} ${Y(84)} Q ${X(0)} ${Y(94)} ${X(-38)} ${Y(84)} C ${X(-37)} ${Y(43)} ${X(-57)} ${Y(22)} ${X(-67)} ${Y(-10)} Z`;
+}
+function fingerVisual(parent,fid){
+ const group=svgEl('g',{class:'vector-finger','data-finger':fid,style:`--finger-color:${fingerColors[fid]}`},parent);
+ const body=svgEl('path',{class:'finger-silhouette'},group);
+ const ring=svgEl('circle',{class:'finger-ring',r:14},group);
+ return {group,body,ring};
+}
+function renderHands(){
+ const svg=$('handOverlay'),stage=$('keyboardStage');
+ if(!$('handsVisible').checked){
+  svg.classList.add('hidden');stage.classList.remove('with-hands');
+  cancelAnimationFrame(handFrame);handFrame=0;svg.replaceChildren();handGeometry={};fingerParts={};return;
+ }
+ stage.classList.add('with-hands');svg.classList.remove('hidden');
+ const width=stage.offsetWidth,height=stage.offsetHeight;
+ if(!width||!height)return;
+ cancelAnimationFrame(handFrame);handFrame=0;
+ svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.replaceChildren();fingerParts={};handGeometry={};
+ const homeGroups=[
+  {side:'left',codes:['KeyA','KeyS','KeyD','KeyF'],fingers:['lp','lr','lm','li'],dir:1},
+  {side:'right',codes:['KeyJ','KeyK','KeyL','Semicolon'],fingers:['ri','rm','rr','rp'],dir:-1}
+ ];
+ const rowY=keyCenter('Space').y;
+ homeGroups.forEach(({side,codes,fingers,dir})=>{
+  const positions=codes.map(keyCenter),xs=positions.map(p=>p.x),cx=(Math.min(...xs)+Math.max(...xs))/2;
+  const palmY=Math.min(height-62,rowY+87);
+  const scale=Math.min(1,Math.max(.77,(Math.max(...xs)-Math.min(...xs))/166));
+  svgEl('path',{class:'vector-palm',d:simplePalmPath(cx,palmY,dir,scale)},svg);
+  fingers.forEach((fid,i)=>{
+   const base=coord(cx+(positions[i].x-cx)*.72,palmY+[-62,-71,-75,-66][i]*scale);
+   const rest=coord(positions[i].x,positions[i].y+8);
+   const group=svgEl('g',{class:'digit-container'},svg),el=fingerVisual(group,fid);
+   handGeometry[fid]={fid,base,rest,current:{...rest},width:[9.4,11,11.9,11.3][i]*scale,el,group};fingerParts[fid]=[el.group,el.ring];
+   paintFinger(handGeometry[fid],rest);
+  });
+  // Each thumb rests on the nearest portion of Space, without crossing the keyboard.
+  const thumbId=side==='left'?'lt':'rt',X=x=>cx+dir*x*scale,Y=y=>palmY+y*scale,space=keyCenter('Space');
+  const spaceRect=keyEls.get('Space').getBoundingClientRect(),stageRect=stage.getBoundingClientRect();
+  const leftEdge=spaceRect.left-stageRect.left;
+  const thumbBase=coord(X(45),Y(8));
+  const rest=coord(leftEdge+spaceRect.width*(side==='left'?.17:.83),space.y);
+  const group=svgEl('g',{class:'digit-container thumb-container'},svg),el=fingerVisual(group,thumbId);
+  handGeometry[thumbId]={fid:thumbId,base:thumbBase,rest,current:{...rest},width:11*scale,el,group};fingerParts[thumbId]=[el.group,el.ring];
+  paintFinger(handGeometry[thumbId],rest);
+ });
+ syncHandPose(true);
+}
+function desiredFingerPose(data){
+ let code=null;
+ if(activePhysicalCode==='Space'&&data.fid.endsWith('t'))code='Space';
+ else if(activePhysicalCode&&fingerMap[activePhysicalCode]===data.fid)code=activePhysicalCode;
+ else if(hintedPhysicalCode&&fingerMap[hintedPhysicalCode]===data.fid)code=hintedPhysicalCode;
+ if(!code)return {...data.rest};
+ const p=keyCenter(code);
+ if(code==='Space'){const rect=keyEls.get('Space').getBoundingClientRect(),stage=$('keyboardStage').getBoundingClientRect();p.x=rect.left-stage.left+rect.width*(data.fid==='lt'?.17:.83)}
+ return p;
+}
+function syncHandPose(immediate=false){
+ if(!Object.keys(handGeometry).length)return;
+ cancelAnimationFrame(handFrame);handFrame=0;
+ const start=performance.now(),length=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:175;
+ const records=Object.values(handGeometry).map(data=>({data,from:{...data.current},to:desiredFingerPose(data)}));
+ records.forEach(({data})=>{
+  const isPressed=activePhysicalCode&&(fingerMap[activePhysicalCode]===data.fid||(activePhysicalCode==='Space'&&data.fid.endsWith('t')));
+  const isSuggested=!activePhysicalCode&&hintedPhysicalCode&&fingerMap[hintedPhysicalCode]===data.fid;
+  data.el.group.classList.toggle('active',Boolean(isPressed||isSuggested));
+  data.el.group.classList.toggle('hinted',Boolean(isSuggested));
+ });
+ function frame(now){
+  const t=immediate||!length?1:Math.min(1,(now-start)/length),e=1-Math.pow(1-t,3);
+  for(const {data,from,to} of records){
+   const pos=coord(from.x+(to.x-from.x)*e,from.y+(to.y-from.y)*e);
+   paintFinger(data,pos);data.current=pos;
+  }
+  if(t<1)handFrame=requestAnimationFrame(frame);else handFrame=0;
+ }
+ if(immediate||!length)frame(start+length);else handFrame=requestAnimationFrame(frame);
+}
+function highlightFinger(fid,on){if(on)activeFingerSet.add(fid);else activeFingerSet.delete(fid);syncHandPose()}
+function refreshFingerLabel(){
+ const pressed=Boolean(activePhysicalCode);
+ const fid=pressed?(activePhysicalCode==='Space'?'lt':fingerMap[activePhysicalCode]):(hintedPhysicalCode?fingerMap[hintedPhysicalCode]:null);
+ const badge=$('hudFingerBadge');
+ const fingerCodes={p:5,r:4,m:3,i:2,t:1};
+ $('activeFinger').textContent=fid?(pressed?'Pressed':'Suggested'):'Home row';
+ badge.hidden=!fid;
+ badge.classList.toggle('pressing',Boolean(fid&&pressed));
+ badge.classList.toggle('hinted',Boolean(fid&&!pressed));
+ if(fid){
+  const tag=(fid[0]==='l'?'L':'R')+fingerCodes[fid[1]];
+  badge.style.setProperty('--finger-color',fingerColors[fid]);
+  badge.textContent=activePhysicalCode==='Space'?'Either thumb (L1 / R1)':`${fingerNames[fid]} (${tag})`;
+  badge.setAttribute('aria-label',badge.textContent);
+ }else{badge.textContent='';badge.removeAttribute('aria-label')}
+}
+document.addEventListener('keydown',e=>{
+ if(!fingerMap[e.code])return;
+ // Either thumb may press Space. Highlight both as an acceptable choice.
+ if($('test').classList.contains('hidden'))return;
+ if(e.code==='Space'){activePhysicalCode=e.code;activeFingerSet.add('lt');activeFingerSet.add('rt');syncHandPose();refreshFingerLabel();return;}
+ activePhysicalCode=e.code;activeFingerSet.add(fingerMap[e.code]);syncHandPose();refreshFingerLabel();
+});
+document.addEventListener('keyup',e=>{
+ if(!fingerMap[e.code])return;
+ if(e.code==='Space'){activeFingerSet.delete('lt');activeFingerSet.delete('rt')}
+ else activeFingerSet.delete(fingerMap[e.code]);
+ activePhysicalCode=null;syncHandPose();refreshFingerLabel();
+});
+window.addEventListener('blur',()=>{
+ activeFingerSet.clear();activePhysicalCode=null;syncHandPose(true);refreshFingerLabel();
+});
+function setHandVisibility(enabled,savePreference=false){
+ $('handsVisible').checked=Boolean(enabled);
+ $('keyboardStage').classList.toggle('with-hands',Boolean(enabled));
+ $('handOverlay').classList.toggle('hidden',!enabled);
+ if(savePreference){try{localStorage.setItem('fideltype-show-hands',enabled?'yes':'no')}catch(e){}}
+ renderHands();fitPractice();
+}
+$('handsVisible').addEventListener('change',()=>setHandVisibility($('handsVisible').checked,true));
+// Opt in only: prior "no" and missing storage both mean no hands.
+let savedHandPreference=false;
+try{savedHandPreference=localStorage.getItem('fideltype-show-hands')==='yes'}catch(e){}
+$('handsVisible').checked=savedHandPreference;
+$('keyboardStage').classList.toggle('with-hands',savedHandPreference);
+$('handOverlay').classList.toggle('hidden',!savedHandPreference);
+$('homePosition').addEventListener('click',()=>{
+ const codes=['KeyA','KeyS','KeyD','KeyF','KeyJ','KeyK','KeyL','Semicolon'];
+ const displaying=!codes.some(code=>keyEls.get(code)?.classList.contains('home-demo'));
+ codes.forEach(code=>keyEls.get(code)?.classList.toggle('home-demo',displaying));
+ $('homePosition').textContent=displaying?($('langSelect').value==='am'?'መሠረታዊ ቁልፎችን ደብቅ':'Hide home keys'):($('langSelect').value==='am'?'መሠረታዊ ቁልፎችን አሳይ':'Show home keys');
+ refreshFingerLabel();
+});
+// Draw when the layout is measured; redraw on responsive resize.
+window.addEventListener('resize',()=>{renderHands();fitPractice()});
+if(typeof ResizeObserver!=='undefined')new ResizeObserver(renderHands).observe($('keyboardStage'));
+renderHands();
+
+// v2.1: conservative, user-trained mapping for direct one-key Ethiopic input.
+const calCharacters=['ሀ','ለ','መ','በ','ተ','ሰ','ነ','አ','ከ','ወ','የ','ደ','ገ','ፈ','ረ','ሸ','ቀ','ዘ','ጀ','ቸ','ጠ','ሉ','ሊ','ላ','ሌ','ል','ሎ','ሙ','ሚ','ማ','ሜ','ም','ሞ','ሁ','ሂ','ሃ','ሄ','ህ','ሆ','ቡ','ቢ','ባ','ቤ','ብ','ቦ','ቱ','ቲ','ታ','ቴ','ት','ቶ','።','፣'];
+const calSelect=$('calTarget');
+for(const ch of calCharacters){const o=document.createElement('option');o.value=ch;o.textContent=ch;calSelect.append(o)}
+let calibrated={};
+try{const x=JSON.parse(localStorage.getItem('fideltype-calibration-v1')||'{}');if(x&&typeof x==='object'&&!Array.isArray(x))calibrated=x}catch(e){}
+function saveCalibration(){try{localStorage.setItem('fideltype-calibration-v1',JSON.stringify(calibrated))}catch(e){$('calStatus').textContent=$('langSelect').value==='am'?'የቁልፍ ማስተካከያው በዚህ ጊዜ ብቻ ይሰራል፤ ድር አሳሽዎ አላስቀመጠውም።':'Mappings work for this session, but your browser could not save them.'}}
+function updateCalCount(){$('calCount').textContent=$('langSelect').value==='am'?`${Object.keys(calibrated).length} የአንድ ቁልፍ ግንኙነቶች ተቀምጠዋል።`:`${Object.keys(calibrated).length} verified single-key mappings saved in this browser.`}
+updateCalCount();
+let calKey=null,calKeys=0,calComposing=false,calStart='';
+$('calInput').addEventListener('focus',()=>{calKey=null;calKeys=0;calStart='';$('calInput').value=''});
+$('calInput').addEventListener('keydown',e=>{
+ if(e.code==='Tab'||e.code==='Escape')return;
+ if(['Shift','Control','Alt','Meta'].includes(e.key))return;
+ if(e.code==='Backspace'){calKey=null;calKeys=0;return}
+ calKeys++;if(calKeys===1)calKey=e.code;
+});
+$('calInput').addEventListener('compositionstart',()=>{calComposing=true});
+$('calInput').addEventListener('compositionend',()=>{calComposing=false;finishCalibration()});
+$('calInput').addEventListener('input',()=>{if(!calComposing)finishCalibration()});
+function finishCalibration(){
+ const actual=$('calInput').value,expected=calSelect.value;
+ if(!actual)return;
+ const units=chars(actual);
+ if(units.length!==1||calKeys!==1||!calKey||actual!==expected||!keyEls.has(calKey)){
+  $('calStatus').textContent=$('langSelect').value==='am'?`አልተቀመጠም። ${expected} ይጠበቅ ነበር፤ ${actual} ተጻፈ። ሌላ ቁልፍ ወይም የግቤት ዘዴ ይሞክሩ።`:`Not saved. Expected ${expected}; received ${actual}. This may use multiple keystrokes or an input method. Try a direct key or choose another character.`;
+ }else{
+  calibrated[expected]=calKey;saveCalibration();
+  $('calStatus').textContent=$('langSelect').value==='am'?`ተቀምጧል: ${expected} → ${calKey} · ${fingerNames[fingerMap[calKey]]||'ያልተመደበ'}`:`Saved: ${expected} → physical key ${calKey}. Finger: ${fingerNames[fingerMap[calKey]]||'not assigned'}.`;
+ }
+ $('calInput').value='';calKey=null;calKeys=0;updateCalCount();updateGuidance();
+}
+calSelect.addEventListener('change',()=>{$('calInput').value='';calKey=null;calKeys=0;$('calStatus').textContent=$('langSelect').value==='am'?`${calSelect.value} የሚጽፈውን ቁልፍ አንድ ጊዜ ይጫኑ።`:`Press the key that produces ${calSelect.value} once.`});
+$('calClear').addEventListener('click',()=>{if(confirm($('langSelect').value==='am'?'ሁሉንም የተቀመጡ የቁልፍ ግንኙነቶች ያጥፉ?':'Clear all learned keyboard mappings?')){calibrated={};saveCalibration();updateCalCount();updateGuidance();$('calStatus').textContent=$('langSelect').value==='am'?'የተቀመጡ ቁልፎች ጠፍተዋል።':'Mappings cleared.'}});
+function updateGuidance(){
+ const a=chars(typed),b=chars(target);
+ const pendingIndex=phoneticPending?.value?chars($('entry').value.slice(0,phoneticPending.start)).length:-1;
+ const expectedIndex=pendingIndex>=0&&!sameFidelUnit(a[pendingIndex],b[pendingIndex])?pendingIndex:a.length;
+ const ch=b[expectedIndex];
+ $('guideMessage').textContent=ch||'✓';
+ const romanHint=phoneticEnabled&&ch?romanForFidel(ch):null;
+ const code=!phoneticEnabled&&ch?(calibrated[ch]||null):null;
+ const label=phoneticEnabled?(romanHint?'🔤 '+romanHint:appMessage('coverageMissing')):code?(keyEls.get(code)?.querySelector('.key-physical')?.textContent||code):appMessage('unmapped');
+ $('hudTargetKey').textContent=label;
+ keyEls.forEach(k=>k.classList.remove('suggested'));
+ if(code&&keyEls.has(code))keyEls.get(code).classList.add('suggested');
+ if(hintedPhysicalCode!==code){hintedPhysicalCode=code;syncHandPose()}
+ if(!activePhysicalCode)refreshFingerLabel();
+}
+
+// Show the standard home-row positions immediately for beginners.
+$('homePosition').click();
+
+reset();refreshAchievements();
+
+// Landing-page preview: independent from the full test and its saved results.
+const previewPhrase='ሰላም እንደምን አላችሁ';
+const previewInput=$('previewInput');
+let previewStarted=0;
+function updateLandingPreview(){
+ const entered=chars(previewInput.value),correct=chars(previewPhrase),max=correct.length;
+ if(entered.length&&!previewStarted)previewStarted=performance.now();
+ if(!entered.length)previewStarted=0;
+ const count=Math.min(entered.length,max);
+ const right=entered.slice(0,count).filter((c,i)=>sameFidelUnit(c,correct[i])).length;
+ const accuracy=count?Math.round(right/count*100):100;
+ const durationMinutes=previewStarted?Math.max((performance.now()-previewStarted)/60000,1/60):0;
+ const speed=durationMinutes?Math.round(right/5/durationMinutes):0;
+ $('previewWpm').textContent=String(speed);
+ $('previewAccuracy').textContent=accuracy+'%';
+ $('previewProgress').textContent=Math.round(count/max*100)+'%';
+ const tgt=$('previewTarget');tgt.replaceChildren();
+ correct.forEach((char,i)=>{const el=document.createElement('span');el.textContent=char;if(i<count)el.className=sameFidelUnit(entered[i],char)?'preview-right':'preview-wrong';else if(i===count)el.className='preview-next';tgt.append(el)});
+ if(entered.length>max)previewInput.value=entered.slice(0,max).join('');
+}
+previewInput.addEventListener('input',updateLandingPreview);
+previewInput.addEventListener('compositionend',updateLandingPreview);
+updateLandingPreview();
+$('landingYear').textContent=new Date().getFullYear();
+const landingTranslations={
+ en:{navLessons:'Lessons',navFeatures:'Features',navKeyboard:'Keyboard Guide',navFaq:'FAQ',startNow:'Start Typing Now ↗',eyebrow:'YOUR AMHARIC TYPING JOURNEY STARTS HERE',heroTitle:'Master Amharic Touch Typing, One Fidel at a Time.',heroSub:'A distraction-free, browser-based typing tutor designed for Ethiopic script. Learn letter families, track WPM accurately, and build muscle memory.',quickTest:'Launch Quick Test (Free) ↗',explore:'Explore Lessons →',trust:'No sign-up. No distractions. Just progress.',previewMode:'TYPING PRACTICE',tryTyping:'Try typing the phrase above',accuracy:'Accuracy',complete:'Complete',homeRow:'HOME ROW · HAND POSITION',previewHint:'✦ Enable an Amharic keyboard to try this live preview.',statLessons:'GUIDED LESSONS',statFree:'FREE TO USE',statSetup:'ACCOUNTS NEEDED',featureKicker:'BUILT FOR ETHIOPIC SCRIPT',featureTitle:'Everything you need to type with confidence.',featureSub:'A thoughtful learning experience for the script you use every day.',f1Title:'Phonetic & Native Input',f1Text:'Practice using your operating system’s Amharic input method, including GFF Ge’ez, Power Ge’ez, or other installed layouts. Exact key mappings vary.',f2Title:'Structured Curriculum',f2Text:'Progress through 5 levels and 25 lessons, from Fidel families to words, sentences, and fluent writing.',f3Title:'Real-Time Hand Guidance',f3Text:'See physical keys and assigned fingers respond as you type. Calibrate direct-key character mappings for specific hints.',f4Title:'Privacy First',f4Text:'No login and no tracking account. The tutor runs locally, and practice progress stays in your browser.',lessonsKicker:'LEARN AT YOUR OWN PACE',lessonsTitle:'From your first Fidel to fluent typing.',lessonsSub:'Five carefully structured levels. One rewarding journey.',viewLessons:'View all lessons ↗',guideKicker:'GET COMFORTABLE',guideTitle:'Your keyboard. Your rhythm.',guideText:'Start with home-row positioning, see an interactive hand guide, and optionally calibrate keys for your installed Amharic input method. Multi-key input sequences are not mapped automatically.',openGuide:'Open Keyboard Guide ↗',faqTitle:'Frequently asked questions',q1:'Is FidelType really free?',a1:'Yes. The tutor runs in your browser without an account or subscription.',q2:'Does it work with Power Ge’ez and GFF Ge’ez?',a2:'FidelType accepts Amharic text from your installed input method. Exact physical-key mappings can differ, so its illustrated key labels are not verified for every layout.',q3:'Where is my progress stored?',a3:'Scores and lesson progress are saved locally in your browser. Clearing browser data may remove them.',q4:'Can I use FidelType offline?',a4:'Yes. The downloaded HTML tutor works offline. External keyboard reference images and web links require internet.',ctaTitle:'Ready to increase your Ge’ez typing speed?',ctaText:'A few minutes of practice today can make every keystroke more confident tomorrow.',ctaButton:'Start typing for free ↗',footerTag:'Amharic touch typing, made simple.',github:'GFF keyboard repository ↗',resources:'Keyboard resource ↗',rights:'Made for better typing.',language:"Language",previewWindowTitle:"FidelType / quick-test",previewLive:"● LIVE PREVIEW",previewTag:"አማርኛ · AM",wpmLabel:"WPM",spaceLabel:"SPACE",floatingLevels:"5 Learning Levels",floatingAccuracy:"Accuracy first",journey1:"Fidel Foundations",journey2:"Fidel Fluency",journey3:"Words & Spacing",journey4:"Sentences",journey5:"Mastery",journey5Sub:"Practice & progress",leftHand:"LEFT HAND",rightHand:"RIGHT HAND",faqKicker:"GOOD TO KNOW",ctaKicker:"YOUR NEXT CHAPTER STARTS HERE",footerPrivacy:"Privacy-first · Offline-friendly",heroVisualAria:"Interactive typing preview",statsAria:"FidelType facts",guideDemoAria:"Home-row typing keyboard diagram",previewPhraseAria:"Amharic typing preview phrase",previewInputAria:"Amharic preview typing input",homeAria:"FidelType landing page",landNavAria:"Landing navigation",brandHomeAria:"FidelType home",appNavAria:"App navigation",soundOn:"🔊 Sound on",soundOff:"🔇 Sound off",themeToDark:"Switch to dark mode",themeToLight:"Switch to light mode",appTest:"Test",appLessons:"Lessons",appCalibration:"Calibration",appProgress:"Progress",durationLabel:"Duration",passageLabel:"Passage",restart:"↻ Restart",nextPassage:"Next passage",learnHeading:"Learn Amharic Typing",calHeading:"🎯 Keyboard Setup & Calibration",progressHeading:"Your Practice Progress",returnTest:"← Return to typing test",statSeconds:"Seconds",statErrors:"Errors",hudNext:"Next Fidel",hudTarget:"Target key",hudFinger:"Active finger",hudDisclaimer:"Key labels are examples · Physical hints require calibration",settingsLayout:"Layout",settingsKeyboard:"Keyboard",settingsHands:"Hands",phoneticToggle:"🔤 Built-in Phonetic Input (No OS Amharic keyboard needed)",phoneticHelp:"Type sh → ሸ, th → ጠ, ts → ጸ, ny → ኘ, ch → ቸ, CH → ጨ. H → ሐ, S → ሠ, A → ዐ. Use - between adjacent Fidel.",customOption:"✍ Custom…",customKicker:"YOUR OWN TEXT",customTitle:"✍ Custom Amharic passage",customHelp:"Paste or type an Amharic paragraph below. Line breaks become spaces for the one-line practice input. Recent passages stay on this device.",customField:"Amharic passage",customRecent:"Recent passages",customNone:"No custom passages yet.",customCancel:"Cancel",customStart:"Save & practice →",customEdit:"✎ Edit custom",customRequired:"Please enter a passage.",customTooLong:"Limit: 2,000 characters after normalization."},
+ am:{navLessons:'ትምህርቶች',navFeatures:'ባህሪያት',navKeyboard:'የቁልፍ ሰሌዳ መመሪያ',navFaq:'ጥያቄዎች',startNow:'አሁን ይጀምሩ ↗',eyebrow:'የአማርኛ ትየባ ጉዞዎ እዚህ ይጀምራል',heroTitle:'የአማርኛ ትየባን በየፊደሉ ይማሩ።',heroSub:'ለግዕዝ ፊደል የተዘጋጀ በድር አሳሽ የሚሰራ የትየባ መማሪያ። የፊደል ቤተሰቦችን ይማሩ፣ ፍጥነትዎን ይለኩ እና በተደጋጋሚ ይለማመዱ።',quickTest:'ነፃ የትየባ ሙከራ ይጀምሩ ↗',explore:'ትምህርቶችን ይመልከቱ →',trust:'ምዝገባ የለም። ትኩረት የሚከፋፍል ነገር የለም።',previewMode:'የትየባ ልምምድ',tryTyping:'ከላይ ያለውን ጽሑፍ ይተይቡ',accuracy:'ትክክለኛነት',complete:'የተጠናቀቀ',homeRow:'መሠረታዊ የጣት አቀማመጥ',previewHint:'✦ የአማርኛ ቁልፍ ሰሌዳ በማንቃት ይሞክሩ።',statLessons:'የትየባ ትምህርቶች',statFree:'ሙሉ በሙሉ ነፃ',statSetup:'የሚያስፈልግ መለያ',featureKicker:'ለግዕዝ ፊደል የተዘጋጀ',featureTitle:'በእምነት ለመተየብ የሚያስፈልግዎ ሁሉ።',featureSub:'ለዕለታዊ ትየባዎ የተዘጋጀ የመማሪያ ተሞክሮ።',f1Title:'የአማርኛ ቁልፍ ሰሌዳ ድጋፍ',f1Text:'በመሣሪያዎ የተጫነውን የአማርኛ ግቤት ዘዴ ይጠቀሙ። የቁልፍ አቀማመጥ ሊለያይ ይችላል።',f2Title:'ደረጃ በደረጃ ትምህርቶች',f2Text:'ከፊደል ቤተሰቦች እስከ ዓረፍተ ነገሮች ድረስ 5 ደረጃዎችና 25 ትምህርቶች።',f3Title:'በቀጥታ የጣት መመሪያ',f3Text:'ሲተይቡ የሚንቀሳቀሱ የቁልፍና የጣት መመሪያዎች።',f4Title:'ግላዊነት ቅድሚያ',f4Text:'መመዝገብ አያስፈልግም። የልምምድ ውጤቶችዎ በድር አሳሽዎ ይቀመጣሉ።',lessonsKicker:'በራስዎ ፍጥነት ይማሩ',lessonsTitle:'ከመጀመሪያው ፊደል እስከ ብቃት።',lessonsSub:'አምስት ደረጃዎች፣ አንድ የመማር ጉዞ።',viewLessons:'ሁሉንም ትምህርቶች ይመልከቱ ↗',guideKicker:'የቁልፍ ሰሌዳ መመሪያ',guideTitle:'የእርስዎ ቁልፍ ሰሌዳ፣ የእርስዎ ፍጥነት።',guideText:'የጣት አቀማመጥን ይማሩ፣ የእጅ መመሪያውን ይመልከቱ እና ከፈለጉ ቁልፎችን ያስተካክሉ።',openGuide:'የቁልፍ ሰሌዳ መመሪያ ↗',faqTitle:'ተደጋጋሚ ጥያቄዎች',q1:'FidelType ነፃ ነው?',a1:'አዎ። ምዝገባ ወይም ክፍያ አያስፈልግም።',q2:'ከPower Ge’ez እና GFF Ge’ez ጋር ይሰራል?',a2:'በመሣሪያዎ ከተጫነ የአማርኛ ግቤት ዘዴ ጽሑፍን ይቀበላል። የቁልፍ አቀማመጥ ሊለያይ ይችላል።',q3:'እድገቴ የት ይቀመጣል?',a3:'የትምህርት ውጤቶች በድር አሳሽዎ ይቀመጣሉ።',q4:'ከኢንተርኔት ውጪ መጠቀም እችላለሁ?',a4:'አዎ። የወረደው HTML ፋይል ከኢንተርኔት ውጪ ይሰራል።',ctaTitle:'የአማርኛ ትየባ ፍጥነትዎን ለማሳደግ ዝግጁ ነዎት?',ctaText:'በየቀኑ ለጥቂት ደቂቃዎች መለማመድ ትልቅ ለውጥ ያመጣል።',ctaButton:'ነፃ ልምምድ ይጀምሩ ↗',footerTag:'የአማርኛ ትየባ መማሪያ።',github:'የGFF ቁልፍ ሰሌዳ ማከማቻ ↗',resources:'የቁልፍ ሰሌዳ መረጃ ↗',rights:'ለተሻለ ትየባ የተዘጋጀ።',language:"ቋንቋ",previewWindowTitle:"FidelType / ፈጣን ሙከራ",previewLive:"● ቀጥታ ሙከራ",previewTag:"አማርኛ · AM",wpmLabel:"ቃላት/ደቂቃ",spaceLabel:"ክፍተት",floatingLevels:"5 የትምህርት ደረጃዎች",floatingAccuracy:"ትክክለኛነት ቅድሚያ",journey1:"የፊደል መሠረቶች",journey2:"የፊደል ልምምድ",journey3:"ቃላትና ክፍተት",journey4:"ዓረፍተ ነገሮች",journey5:"የትየባ ብቃት",journey5Sub:"ልምምድና እድገት",leftHand:"ግራ እጅ",rightHand:"ቀኝ እጅ",faqKicker:"ማወቅ የሚጠቅምዎት",ctaKicker:"ቀጣዩን እርምጃ አሁን ይጀምሩ",footerPrivacy:"ግላዊነትን የሚያከብር · ከኢንተርኔት ውጪ ይሰራል",heroVisualAria:"በቀጥታ የትየባ ሙከራ",statsAria:"ስለ FidelType መረጃ",guideDemoAria:"የመሠረታዊ ቁልፎች የጣት መመሪያ",previewPhraseAria:"የአማርኛ የትየባ ናሙና",previewInputAria:"ለአማርኛ የትየባ ሙከራ ግቤት",homeAria:"የFidelType መነሻ ገጽ",landNavAria:"የመነሻ ገጽ አሰሳ",brandHomeAria:"የFidelType መነሻ ገጽ",appNavAria:"የመተግበሪያ አሰሳ",soundOn:"🔊 ድምፅ በርቷል",soundOff:"🔇 ድምፅ ጠፍቷል",themeToDark:"ወደ ጨለማ ገጽታ ቀይር",themeToLight:"ወደ ብርሃን ገጽታ ቀይር",appTest:"የትየባ ሙከራ",appLessons:"ትምህርቶች",appCalibration:"የቁልፍ ማስተካከያ",appProgress:"እድገት",durationLabel:"ቆይታ",passageLabel:"ጽሑፍ",restart:"↻ እንደገና",nextPassage:"ቀጣይ ጽሑፍ",learnHeading:"የአማርኛ ትየባ ይማሩ",calHeading:"🎯 የቁልፍ ሰሌዳ ማስተካከያ",progressHeading:"የልምምድ እድገትዎ",returnTest:"← ወደ ትየባ ሙከራ ተመለስ",statSeconds:"ሰከንዶች",statErrors:"ስህተቶች",hudNext:"ቀጣይ ፊደል",hudTarget:"የታለመ ቁልፍ",hudFinger:"ንቁ ጣት",hudDisclaimer:"የፊደል ምልክቶች ማሳያ ናቸው · የቁልፍ መመሪያ ማስተካከያ ይፈልጋል",settingsLayout:"የቁልፍ አቀማመጥ",settingsKeyboard:"ቁልፍ ሰሌዳ",settingsHands:"እጆች",phoneticToggle:"🔤 አብሮ የተሰራ የፎነቲክ ግቤት (የአማርኛ ቁልፍ ሰሌዳ አያስፈልግም)",phoneticHelp:"sh → ሸ፣ th → ጠ፣ ts → ጸ፣ ny → ኘ፣ ch → ቸ፣ CH → ጨ። H → ሐ፣ S → ሠ፣ A → ዐ። ሁለት ፊደላትን ለመለየት - ይጠቀሙ።",customOption:"✍ የራሴ ጽሑፍ…",customKicker:"የራስዎ ጽሑፍ",customTitle:"✍ የራሴ የአማርኛ ጽሑፍ",customHelp:"የአማርኛ ጽሑፍ ያስገቡ ወይም ይለጥፉ። አዲስ መስመሮች ወደ ክፍተት ይቀየራሉ። የቅርብ ጊዜ ጽሑፎች በድር አሳሽዎ ይቀመጣሉ።",customField:"የአማርኛ ጽሑፍ",customRecent:"የቅርብ ጊዜ ጽሑፎች",customNone:"እስካሁን የተቀመጠ ጽሑፍ የለም።",customCancel:"ሰርዝ",customStart:"አስቀምጥና ጀምር →",customEdit:"✎ የራሴን ጽሑፍ አርትዕ",customRequired:"እባክዎ ጽሑፍ ያስገቡ።",customTooLong:"ከተስተካከለ በኋላ ከ2,000 ቁምፊዎች በላይ መሆን አይችልም።"}
+};
+// Persistent appearance preference; the same control works on the home and app pages.
+function updateThemeToggle(){
+ const dark=document.documentElement.dataset.theme==='dark';
+ const btn=$('themeToggle');if(!btn)return;
+ const lang=$('langSelect')?.value==='am'?'am':'en';
+ btn.textContent=dark?'☀️':'🌙';
+ btn.setAttribute('aria-pressed',String(dark));
+ const label=landingTranslations?.[lang]?.[dark?'themeToLight':'themeToDark']||(dark?'Switch to light mode':'Switch to dark mode');
+ btn.setAttribute('aria-label',label);btn.title=label;
+ document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#0c1722':'#142B3B');
+}
+$('themeToggle').addEventListener('click',()=>{
+ const dark=document.documentElement.dataset.theme==='dark';
+ document.documentElement.dataset.theme=dark?'light':'dark';
+ try{localStorage.setItem('fideltype-theme',dark?'light':'dark')}catch(e){}
+ updateThemeToggle();
+});
+
+// v3.5 translation additions for the searchable reference and phonetic messages.
+for(const lang of ['en','am'])Object.assign(landingTranslations[lang],{
+ referenceButton:appStrings[lang].referenceButton,
+ referenceTitle:appStrings[lang].referenceTitle,
+ referenceNote:appStrings[lang].referenceNote,
+ referenceSearchLabel:appStrings[lang].referenceSearchLabel
+});
+
+const extraStaticTranslations={
+ en:{courseIntro:'Follow 25 lessons across five levels. Pass each lesson to unlock the next. Earn up to three stars for speed and accuracy.',reviewButton:'🎯 Practice my weak characters',courseTip:'Use a native Amharic keyboard or the built-in phonetic fallback. Input sequences depend on your layout.',calIntro:'Learn which physical keys generate Amharic characters in your installed keyboard layout.',calHow:'How it works',calStep1:'Enable your Amharic keyboard in system settings.',calStep2:'Choose the character to calibrate.',calStep3:'Click the input and type the character.',calPanelTitle:'🎯 Keyboard setup & calibration',calPanelBody:'Only single-key direct input can be calibrated. Multi-key phonetic sequences are explained in the practice reference chart.',calClear:'Clear mappings',calCharacterLabel:'Character to learn',calPress:'Press its key here',progressIntro:'Scores stay in this browser and are never uploaded.',achievementsHeader:'🏅 Achievements',weakHeading:'Characters to practice',clearHistory:'Clear history',exportCSV:'Export CSV',dateHead:'Date',exerciseHead:'Exercise',appFooterText:'FidelType • Free Amharic typing practice • No account required'},
+ am:{courseIntro:'በአምስት ደረጃዎች ውስጥ 25 ትምህርቶችን ይከተሉ። ቀጣዩን ለመክፈት የቀደመውን ያልፉ። በፍጥነትና በትክክለኛነት እስከ ሶስት ኮከቦች ያግኙ።',reviewButton:'🎯 የሚያስቸግሩኝን ፊደላት ልለማመድ',courseTip:'የአማርኛ ቁልፍ ሰሌዳ ወይም አብሮ የተሰራውን የፎነቲክ ግቤት ይጠቀሙ።',calIntro:'በተጫነው የአማርኛ ቁልፍ ሰሌዳ ላይ ፊደሎች የሚገኙባቸውን ቁልፎች ይመርምሩ።',calHow:'እንዴት ይሰራል?',calStep1:'በመሣሪያዎ ላይ የአማርኛ የጽሑፍ ግቤት ያንቁ።',calStep2:'ማስተካከል የሚፈልጉትን ፊደል ይምረጡ።',calStep3:'በጽሑፍ መስኩ ላይ ተጭነው ፊደሉን ይተይቡ።',calPanelTitle:'🎯 የቁልፍ ሰሌዳ ማስተካከያ',calPanelBody:'በአንድ ቁልፍ ብቻ የሚገቡ ፊደሎችን ማስተካከል ይቻላል። ብዙ ቁልፎች የሚፈልጉ ፊደሎችን በፎነቲክ መመሪያ ይመልከቱ።',calClear:'የተቀመጡ ቁልፎችን አጥፋ',calCharacterLabel:'የሚማሩት ፊደል',calPress:'የፊደሉን ቁልፍ ይጫኑ',progressIntro:'ውጤቶችዎ በዚህ ድር አሳሽ ብቻ ይቀመጣሉ። አይላኩም።',achievementsHeader:'🏅 ስኬቶች',weakHeading:'የሚለማመዱ ፊደሎች',clearHistory:'የቀድሞ ውጤቶችን አጥፋ',exportCSV:'ወደ CSV አውርድ',dateHead:'ቀን',exerciseHead:'ልምምድ',appFooterText:'FidelType • ነፃ የአማርኛ ትየባ ልምምድ • መመዝገብ አያስፈልግም'}
+};
+for(const lang of ['en','am'])Object.assign(landingTranslations[lang],extraStaticTranslations[lang]);
+Object.assign(landingTranslations.en,{calStep4:'A mapping is saved only if one physical key directly produces the character. Multi-key methods may not qualify.',calInfo:'If the input shows Latin letters, check that your Amharic keyboard is active. Tests still work without calibration.'});
+Object.assign(landingTranslations.am,{calStep4:'አንድ ቁልፍ ብቻ ፊደሉን ካመነጨ ማስተካከያው ይቀመጣል። ብዙ ቁልፎች የሚፈልጉ ዘዴዎች ላይ ላይሰራ ይችላል።',calInfo:'በጽሑፍ መስኩ የላቲን ፊደሎች ከታዩ የአማርኛ ቁልፍ ሰሌዳዎን ያረጋግጡ። ያለ ማስተካከያም መተየብ ይቻላል።'});
+
+function setLandingLanguage(lang){
+ const phrases=landingTranslations[lang]||landingTranslations.en;
+ for(const el of document.querySelectorAll('[data-i18n]')){
+  const key=el.dataset.i18n;
+  if(key in phrases){
+   if(key==='heroTitle'){
+    const title=lang==='am'?['የአማርኛ ትየባን ','በየፊደሉ ይማሩ።']:['Master Amharic Touch Typing, ','One Fidel at a Time.'];
+    el.replaceChildren(document.createTextNode(title[0]),Object.assign(document.createElement('em'),{textContent:title[1]}));
+   }else el.textContent=phrases[key]
+  }
+ }
+ for(const el of document.querySelectorAll('[data-i18n-aria]')){
+  const text=phrases[el.dataset.i18nAria];if(text)el.setAttribute('aria-label',text);
+ }
+ document.documentElement.lang=lang==='am'?'am':'en';
+ $('langSelect').value=lang;
+ updateSoundToggle();updateThemeToggle();
+ if(typeof setPhoneticUI==='function')setPhoneticUI();
+ if(typeof buildLessonList==='function'&&!$('lessons').classList.contains('hidden'))buildLessonList();
+ if(typeof refreshAchievements==='function'&&!$('progress').classList.contains('hidden'))refreshAchievements();
+ if(!$('test').classList.contains('hidden')){
+  if(finished){status(appMessage('completed'));if(usedPaste)$('result').textContent=appMessage('unscoredNotice')+' '+appMessage('pasteWarning')}
+  else status(typed?appMessage('typing'):appMessage('ready'));
+ }
+ updateCalCount();
+ if(document.querySelector('#homePosition')){
+  const pressed=document.querySelector('#homePosition').textContent.toLowerCase().includes('hide')||document.querySelector('#homePosition').textContent.includes('ደብቅ');
+  $('homePosition').textContent=pressed?(lang==='am'?'መሠረታዊ ቁልፎችን ደብቅ':'Hide home keys'):(lang==='am'?'መሠረታዊ ቁልፎችን አሳይ':'Show home keys');
+ }
+ try{localStorage.setItem('fideltype-landing-language',lang)}catch(e){}
+}
+$('langSelect').addEventListener('change',e=>setLandingLanguage(e.target.value));
+try{setLandingLanguage(localStorage.getItem('fideltype-landing-language')==='am'?'am':'en')}catch(e){setLandingLanguage('en')}
+// ===== FidelType v3.6 · Mobile, data portability, and daily learning =====
+const v36Text={
+ en:{mobileGuideTitle:'Finger guide · Home row',mobileGuideNote:'Keys light up as you type',expandKeyboard:'⌨ Show full keyboard',collapseKeyboard:'⌨ Hide full keyboard',dailyTitle:'Your learning routine',dailyIntro:'Track focused practice time, not idle time.',continueLearning:'▶ Continue learning',dailyGoalLabel:'Daily practice goal',noGoal:'No daily goal',backupTitle:'Data & Backup',backupIntro:'Export a private JSON backup or safely restore one. Nothing is uploaded.',backupExport:'↓ Download backup',backupChoose:'Choose JSON backup',reopenSetup:'⚙ Setup guide',backupPreviewTitle:'Review backup before importing',backupMerge:'Merge with my progress',backupReplace:'Replace existing progress',backupCancel:'Cancel',onboardTitle:'Welcome to FidelType!',onboardDesc:'Choose how you would like to type Amharic. You can change this anytime during practice.',onboardChoose:'Choose your input method',onboardPhonetic:'🔤 Built-in phonetic input',onboardPhoneticDesc:'Type Roman letters: sh → ሸ, hu → ሁ. No installation required.',onboardNative:'⌨ Installed Amharic keyboard',onboardNativeDesc:'Use the Amharic input method already installed on your device.',onboardTip:'During a test, open Phonetic chart for key combinations. Start with Level 1 in Lessons.',onboardSkip:'Skip for now',onboardStart:'Save & start Level 1 →'},
+ am:{mobileGuideTitle:'የጣት መመሪያ · መሠረታዊ ቁልፎች',mobileGuideNote:'ሲተይቡ ቁልፎች ይበራሉ',expandKeyboard:'⌨ ሙሉ ቁልፍ ሰሌዳ አሳይ',collapseKeyboard:'⌨ ሙሉ ቁልፍ ሰሌዳ ደብቅ',dailyTitle:'የትምህርት ልማድዎ',dailyIntro:'ያለ እንቅስቃሴ ጊዜ ሳይቆጠር የልምምድ ጊዜን ይከታተሉ።',continueLearning:'▶ ትምህርት ቀጥል',dailyGoalLabel:'ዕለታዊ የልምምድ ግብ',noGoal:'ዕለታዊ ግብ የለም',backupTitle:'መረጃ እና ምትኬ',backupIntro:'የግል መረጃዎን ወደ JSON ያውርዱ ወይም በደህና ይመልሱ። ወደ ሌላ ቦታ አይላክም።',backupExport:'↓ ምትኬ አውርድ',backupChoose:'የJSON ምትኬ ምረጥ',reopenSetup:'⚙ የመጀመሪያ መመሪያ',backupPreviewTitle:'ከማስገባትዎ በፊት ምትኬውን ይመልከቱ',backupMerge:'ከነባር እድገት ጋር አዋህድ',backupReplace:'ነባር እድገትን ተካ',backupCancel:'ሰርዝ',onboardTitle:'ወደ FidelType እንኳን ደህና መጡ!',onboardDesc:'በየትኛው መንገድ አማርኛ መተየብ እንደሚፈልጉ ይምረጡ። በኋላ መለወጥ ይችላሉ።',onboardChoose:'የግቤት ዘዴ ይምረጡ',onboardPhonetic:'🔤 አብሮ የተሰራ ፎነቲክ',onboardPhoneticDesc:'የሮማን ፊደሎችን ይጠቀሙ፦ sh → ሸ፣ hu → ሁ። ምንም መጫን አያስፈልግም።',onboardNative:'⌨ በመሣሪያው የተጫነ የአማርኛ ቁልፍ ሰሌዳ',onboardNativeDesc:'በመሣሪያዎ ያለውን የአማርኛ የጽሑፍ ግቤት ይጠቀሙ።',onboardTip:'በትየባ ላይ የፎነቲክ ሰንጠረዥን ይክፈቱ፤ በትምህርቶች ውስጥ ከደረጃ 1 ይጀምሩ።',onboardSkip:'ለአሁን ዝለል',onboardStart:'አስቀምጥና ደረጃ 1 ጀምር →'}
+};
+for(const lang of ['en','am'])Object.assign(landingTranslations[lang],v36Text[lang]);
+const tr36=(en,am)=>$('langSelect').value==='am'?am:en;
+
+// Small phone: key+finger hints use normal flow and never require sideways scrolling.
+const miniCodes=['KeyA','KeyS','KeyD','KeyF','KeyJ','KeyK','KeyL','Semicolon','Space'];
+const miniEls=new Map();
+for(const code of miniCodes){
+ const k=keyEls.get(code);if(!k)continue;
+ const tile=document.createElement('div');tile.className='mobile-key';tile.style.setProperty('--finger-color',fingerColors[fingerMap[code]]||'#b7a2d9');
+ const keyLabel=document.createElement('strong');keyLabel.textContent=k.querySelector('.key-physical')?.textContent||(code==='Space'?'Space':code);
+ const fingerLabel=document.createElement('small');fingerLabel.textContent=k.querySelector('.key-finger')?.textContent||'L1/R1';
+ tile.append(keyLabel,fingerLabel);$('mobileGuideKeys').append(tile);miniEls.set(code,tile);
+}
+let expandedMobileKeyboard=false;
+try{expandedMobileKeyboard=localStorage.getItem('fideltype-mobile-full-keyboard')==='yes'}catch(e){}
+function applyMobileKeyboard(open,persist=false){
+ expandedMobileKeyboard=Boolean(open);$('test').classList.toggle('mobile-expanded',expandedMobileKeyboard);
+ $('fullKeyboardToggle').setAttribute('aria-expanded',String(expandedMobileKeyboard));
+ $('fullKeyboardToggle').dataset.i18n=expandedMobileKeyboard?'collapseKeyboard':'expandKeyboard';
+ $('fullKeyboardToggle').textContent=v36Text[$('langSelect').value][$('fullKeyboardToggle').dataset.i18n];
+ if(persist)try{localStorage.setItem('fideltype-mobile-full-keyboard',expandedMobileKeyboard?'yes':'no')}catch(e){}
+}
+$('fullKeyboardToggle').addEventListener('click',()=>applyMobileKeyboard(!expandedMobileKeyboard,true));
+applyMobileKeyboard(expandedMobileKeyboard);
+function refreshMobileGuide(){
+ for(const [code,tile] of miniEls){tile.classList.toggle('pressed',activePhysicalCode===code);tile.classList.toggle('suggested',hintedPhysicalCode===code)}
+ const current=activePhysicalCode||hintedPhysicalCode;
+ const finger=current?fingerMap[current]:null;
+ $('mobileGuideStatus').textContent=finger?`${fingerNames[finger]} · ${current.replace(/^Key/,'')}`:'A S D F · J K L ; · Space';
+}
+// Existing key handlers fire before these; wait until the same event has updated the active code.
+document.addEventListener('keydown',()=>queueMicrotask(refreshMobileGuide));
+document.addEventListener('keyup',()=>queueMicrotask(refreshMobileGuide));
+$('entry').addEventListener('input',()=>queueMicrotask(refreshMobileGuide));
+
+// Count active practice seconds only while the user is actively typing in a visible, focused exercise.
+const practiceTimeKey='fideltype-practice-minutes-v1';
+const dailyGoalKey='fideltype-daily-goal-v1';
+const todayLocal=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
+function readPracticeTime(){try{const v=JSON.parse(localStorage.getItem(practiceTimeKey)||'{}');return v&&typeof v==='object'&&!Array.isArray(v)?v:{}}catch(e){return {}}}
+let practiceTimeData=readPracticeTime(),lastPracticeActivity=0,unflushedSeconds=0;
+// Phonetic mode calls processInput() directly without dispatching an input event.
+// Count those genuine typing interactions as well as native IME input.
+const processInputBeforeDailyTracking=processInput;
+processInput=function(event){
+ if(!finished&&!usedPaste&&document.activeElement===$('entry'))lastPracticeActivity=Date.now();
+ return processInputBeforeDailyTracking(event);
+};
+const activeInput=()=>{lastPracticeActivity=Date.now()};
+$('entry').addEventListener('input',activeInput);
+$('entry').addEventListener('compositionend',activeInput);
+function flushPracticeTime(){
+ if(!unflushedSeconds)return;
+ unflushedSeconds=0;
+ try{localStorage.setItem(practiceTimeKey,JSON.stringify(practiceTimeData))}catch(e){/* localStorage unavailable; current session stays in memory */}
+}
+function practiceSecond(){
+ if(!started||finished||$('test').classList.contains('hidden'))return;
+ if(document.visibilityState!=='visible'||!document.hasFocus()||document.activeElement!==$('entry'))return;
+ if(Date.now()-lastPracticeActivity>12000)return;
+ const date=todayLocal();practiceTimeData[date]=Math.min(86400,Math.round(Number(practiceTimeData[date])||0)+1);unflushedSeconds++;
+ if(unflushedSeconds>=5)flushPracticeTime();
+}
+setInterval(practiceSecond,1000);
+window.addEventListener('pagehide',flushPracticeTime);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)flushPracticeTime()});
+const persistedDailyGoal=()=>{try{const n=Number(localStorage.getItem(dailyGoalKey));return [0,5,10,15,20].includes(n)?n:0}catch(e){return 0}};
+$('dailyGoal').value=String(persistedDailyGoal());
+$('dailyGoal').addEventListener('change',()=>{try{localStorage.setItem(dailyGoalKey,$('dailyGoal').value)}catch(e){}renderDailyDashboard()});
+function nextAvailableLesson(){const scores=lessonScores();return Math.max(0,lessonMeta.findIndex((lesson,i)=>unlocked(i,scores)&&!scores[lesson.id]?.stars))}
+$('continueLearning').addEventListener('click',()=>{const index=nextAvailableLesson();if(lessonMeta.some((_,i)=>unlocked(i)&&!lessonScores()[lessonMeta[i].id]?.stars))launchLesson(index);else show('lessons')});
+function renderDailyDashboard(){
+ const am=$('langSelect').value==='am',goal=Number($('dailyGoal').value)||0;
+ const done=Math.round(Number(practiceTimeData[todayLocal()])||0),total=Object.values(practiceTimeData).reduce((a,b)=>a+(Number(b)||0),0);
+ const progress=goal?Math.min(100,Math.round(done/(goal*60)*100)):0;
+ $('dailyProgress').setAttribute('aria-valuenow',String(progress));$('dailyProgressFill').style.width=progress+'%';
+ const passed=lessonMeta.filter(l=>lessonScores()[l.id]?.stars).length;
+ $('dailySummary').textContent=am?`ዛሬ: ${(done/60).toFixed(1)} ደቂቃ · ጠቅላላ: ${(total/60).toFixed(1)} ደቂቃ · ${passed} / 25 ትምህርቶች${goal?' · ዕለታዊ ግብ: '+progress+'%':''}`:`Today: ${(done/60).toFixed(1)} min · Total focused time: ${(total/60).toFixed(1)} min · ${passed}/25 lessons passed${goal?' · Daily goal: '+progress+'%':''}`;
+ const records=history().filter(x=>Number.isFinite(Number(x.wpm))&&Number(x.wpm)>=0);
+ if(records.length>=6){const avg=a=>Math.round(a.reduce((n,r)=>n+Number(r.wpm),0)/a.length),recent=avg(records.slice(0,5)),previous=avg(records.slice(5,10));$('recentTrend').textContent=am?`የቅርብ ጊዜ አማካይ: ${recent} WPM · ከቀድሞው: ${recent-previous>=0?'+':''}${recent-previous} WPM`:`Recent 5-test average: ${recent} WPM · Change from previous practices: ${recent-previous>=0?'+':''}${recent-previous} WPM`}
+ else $('recentTrend').textContent=am?'የፍጥነት ለውጥ ለማሳየት ተጨማሪ ልምምዶችን ያጠናቅቁ።':'Complete at least six practices to compare your recent typing speed.';
+}
+
+// Strict, local-only backup format. No dynamic HTML injection; render preview with textContent.
+const backupFormat='FidelType-local-backup',backupVersion=1;
+const backupRules={
+ 'fideltype-history':'history','fideltype-curriculum-v1':'scores','fideltype-mistakes-v1':'mistakes',
+ 'fideltype-custom-passages-v1':'custom','fideltype-calibration-v1':'calibration',
+ 'fideltype-theme':['light','dark'],'fideltype-sound-enabled':['0','1'],
+ 'fideltype-show-hands':['yes','no'],'fideltype-phonetic-enabled':['yes','no'],
+ 'fideltype-layout':['gff','power','generic'],'fideltype-landing-language':['en','am'],
+ [dailyGoalKey]:['0','5','10','15','20'],[practiceTimeKey]:'practice',
+ 'fideltype-onboarding-seen':['yes','no'],'fideltype-mobile-full-keyboard':['yes','no']
+};
+const backupKeys=Object.keys(backupRules),isPlain=x=>x!==null&&typeof x==='object'&&!Array.isArray(x)&&Object.getPrototypeOf(x)===Object.prototype;
+const numeric=(v,min,max)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max;
+function validateDataValue(key,value){
+ const rule=backupRules[key];
+ if(Array.isArray(rule))return typeof value==='string'&&rule.includes(value);
+ if(rule==='history')return Array.isArray(value)&&value.length<=200&&value.every(r=>isPlain(r)&&Object.keys(r).every(k=>['date','kind','wpm','accuracy','passed','stars'].includes(k))&&typeof r.date==='string'&&r.date.length<=100&&typeof r.kind==='string'&&r.kind.length<=220&&numeric(r.wpm,0,1000)&&numeric(r.accuracy,0,100)&&('passed' in r?typeof r.passed==='boolean':true)&&('stars' in r?numeric(r.stars,0,3):true));
+ if(rule==='scores')return isPlain(value)&&Object.keys(value).length<=25&&Object.entries(value).every(([id,v])=>/^L[1-5]-[1-5]$/.test(id)&&isPlain(v)&&Object.keys(v).every(k=>['stars','wpm','accuracy','last'].includes(k))&&numeric(v.stars,0,3)&&numeric(v.wpm,0,1000)&&numeric(v.accuracy,0,100)&&typeof v.last==='string'&&v.last.length<=80);
+ if(rule==='mistakes')return isPlain(value)&&Object.keys(value).length<=250&&Object.entries(value).every(([g,n])=>g.length>0&&g.length<=12&&!['__proto__','constructor','prototype'].includes(g)&&numeric(n,0,9999));
+ if(rule==='custom')return Array.isArray(value)&&value.length<=8&&value.every(p=>typeof p==='string'&&p.length<=4000&&chars(p).length<=2000);
+ if(rule==='calibration')return isPlain(value)&&Object.keys(value).length<=250&&Object.entries(value).every(([char,code])=>chars(char).length===1&&typeof code==='string'&&/^[A-Za-z][A-Za-z0-9]{0,30}$/.test(code));
+ if(rule==='practice')return isPlain(value)&&Object.keys(value).length<=730&&Object.entries(value).every(([date,seconds])=>/^\d{4}-\d{2}-\d{2}$/.test(date)&&numeric(seconds,0,86400)&&Number.isInteger(seconds));
+ return false;
+}
+function exportBackup(){
+ flushPracticeTime();const records={};
+ for(const key of backupKeys){try{const raw=localStorage.getItem(key);if(raw===null)continue;const rule=backupRules[key],value=typeof rule==='string'?JSON.parse(raw):raw;if(validateDataValue(key,value))records[key]=value}catch(e){/* skip an already corrupted old value */}}
+ const backup={format:backupFormat,version:backupVersion,exportedAt:new Date().toISOString(),records};
+ const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`FidelType-backup-${todayLocal()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ $('backupMessage').textContent=tr36('Backup downloaded. Keep it somewhere private.','ምትኬው ወርዷል። በግል ቦታ ያስቀምጡት።');
+}
+$('backupExport').addEventListener('click',exportBackup);
+let pendingBackup=null;
+function parseBackup(source){
+ if(!isPlain(source)||source.format!==backupFormat||source.version!==backupVersion||!isPlain(source.records))throw Error('Unsupported FidelType backup format or version.');
+ const keys=Object.keys(source.records);
+ if(!keys.length)throw Error('The backup has no data.');
+ for(const key of keys){if(!Object.hasOwn(backupRules,key))throw Error(`Unexpected backup field: ${key}`);if(!validateDataValue(key,source.records[key]))throw Error(`Invalid data in ${key}`)}
+ return source;
+}
+function backupSummary(backup){const r=backup.records,h=r['fideltype-history']||[],scores=r['fideltype-curriculum-v1']||{},custom=r['fideltype-custom-passages-v1']||[],cal=r['fideltype-calibration-v1']||{},minutes=r[practiceTimeKey]||{};
+ return tr36(`Exported: ${backup.exportedAt||'date unknown'}\n${h.length} exercises · ${Object.values(scores).filter(x=>x.stars>0).length} passed lessons · ${custom.length} custom passages · ${Object.keys(cal).length} calibrated keys · ${Math.round(Object.values(minutes).reduce((n,v)=>n+v,0)/60)} focused minutes.\nImport mode will be selected below. Nothing has been changed yet.`,`የምትኬ ቀን: ${backup.exportedAt||'አልታወቀም'}\n${h.length} ልምምዶች · ${Object.values(scores).filter(x=>x.stars>0).length} የተጠናቀቁ ትምህርቶች · ${custom.length} ጽሑፎች · ${Object.keys(cal).length} ቁልፎች · ${Math.round(Object.values(minutes).reduce((n,v)=>n+v,0)/60)} ደቂቃ።\nእስካሁን ምንም አልተለወጠም።`);
+}
+$('backupFile').addEventListener('change',async e=>{
+ pendingBackup=null;$('backupPreview').classList.add('hidden');const file=e.target.files?.[0];if(!file)return;
+ if(file.size>2_000_000){$('backupMessage').textContent=tr36('Backup file exceeds 2 MB.','ምትኬው ከ2 MB በላይ ነው።');return}
+ try{const parsed=parseBackup(JSON.parse(await file.text()));pendingBackup=parsed;$('backupDetails').textContent=backupSummary(parsed);$('backupPreview').classList.remove('hidden');$('backupMessage').textContent=tr36('Valid backup. Choose Merge or Replace to continue.','ትክክለኛ ምትኬ ነው። አዋህድ ወይም ተካ ይምረጡ።')}
+ catch(error){$('backupMessage').textContent=tr36('Backup rejected: ','ምትኬው ተከልክሏል: ')+error.message}
+});
+function mergeBackupValue(key,current,incoming){
+ if(current===undefined)return incoming;
+ const rule=backupRules[key];
+ if(rule==='history'){const merged=[],seen=new Set();for(const item of [...current,...incoming]){const id=JSON.stringify(item);if(!seen.has(id)){seen.add(id);merged.push(item)}}return merged.slice(0,200)}
+ if(rule==='scores'){const result={...incoming,...current};for(const [id,v] of Object.entries(incoming)){if(current[id]){const old=current[id];result[id]={stars:Math.max(old.stars,v.stars),wpm:Math.max(old.wpm,v.wpm),accuracy:Math.max(old.accuracy,v.accuracy),last:old.last>v.last?old.last:v.last}}}return result}
+ if(rule==='mistakes'||rule==='practice'){const result={...incoming,...current};for(const [k,v] of Object.entries(incoming))result[k]=Math.max(Number(current[k])||0,Number(v)||0);return result}
+ if(rule==='custom')return [...new Set([...current,...incoming])].slice(0,8);
+ if(rule==='calibration')return {...incoming,...current};
+ return current; // preferences: user's existing settings take precedence
+}
+function importBackup(mode){
+ if(!pendingBackup)return;const replacement=mode==='replace';const question=replacement?tr36('Replace the current FidelType data with this backup? This removes local records not in the backup.','የአሁኑን የFidelType መረጃ በዚህ ምትኬ ይተኩ?'):tr36('Merge this backup into your current progress? Existing settings and higher scores will be retained.','ይህን ምትኬ ከአሁኑ እድገትዎ ጋር ያዋህዱ?');
+ if(!confirm(question))return;
+ const previous={},next={};
+ try{
+  for(const key of backupKeys){previous[key]=localStorage.getItem(key);const rule=backupRules[key],raw=previous[key];let current;
+   if(raw!==null){try{const parsed=typeof rule==='string'?JSON.parse(raw):raw;if(validateDataValue(key,parsed))current=parsed}catch(e){}}
+   let value;if(Object.hasOwn(pendingBackup.records,key))value=replacement?pendingBackup.records[key]:mergeBackupValue(key,current,pendingBackup.records[key]);else if(!replacement&&current!==undefined)value=current;
+   if(value!==undefined&&!validateDataValue(key,value))throw Error('Invalid merged data: '+key);
+   next[key]=value===undefined?null:(typeof rule==='string'?JSON.stringify(value):value);
+  }
+  for(const key of backupKeys){if(next[key]===null)localStorage.removeItem(key);else localStorage.setItem(key,next[key])}
+ }catch(error){for(const [key,val] of Object.entries(previous))try{if(val===null)localStorage.removeItem(key);else localStorage.setItem(key,val)}catch(e){}$('backupMessage').textContent=tr36('Import failed. Previously saved data has been retained where browser storage permits.','ምትኬውን ማስገባት አልተቻለም። የቀድሞው መረጃ ተጠብቋል።');return}
+ practiceTimeData=readPracticeTime();unflushedSeconds=0;customRecent=Array.isArray(pendingBackup.records[customStorageKey])?JSON.parse(localStorage.getItem(customStorageKey)||'[]'):customRecent;
+ try{calibrated=JSON.parse(localStorage.getItem('fideltype-calibration-v1')||'{}')}catch(e){}
+ $('dailyGoal').value=String(persistedDailyGoal());
+ try{soundEnabled=localStorage.getItem('fideltype-sound-enabled')==='1';setHandVisibility(localStorage.getItem('fideltype-show-hands')==='yes');
+ const lang=localStorage.getItem('fideltype-landing-language')==='am'?'am':'en';document.documentElement.dataset.theme=localStorage.getItem('fideltype-theme')==='dark'?'dark':'light';
+ phoneticEnabled=localStorage.getItem('fideltype-phonetic-enabled')==='yes';$('phoneticToggle').checked=phoneticEnabled;setPhoneticUI();setLandingLanguage(lang);
+ applyMobileKeyboard(localStorage.getItem('fideltype-mobile-full-keyboard')==='yes');}catch(e){}
+ pendingBackup=null;$('backupPreview').classList.add('hidden');$('backupFile').value='';
+ buildLessonList();renderHistory();refreshAchievements();renderDailyDashboard();
+ $('backupMessage').textContent=tr36('Import complete. Your saved progress is now available.','ምትኬው ተመልሷል። እድገትዎ ዝግጁ ነው።');
+}
+$('backupMerge').addEventListener('click',()=>importBackup('merge'));
+$('backupReplace').addEventListener('click',()=>importBackup('replace'));
+$('backupCancel').addEventListener('click',()=>{pendingBackup=null;$('backupPreview').classList.add('hidden');$('backupFile').value=''});
+
+// Beginner onboarding; existing students are not interrupted.
+const onboardKey='fideltype-onboarding-seen';
+function showOnboarding(){const dialog=$('onboardingDialog');if(!dialog.open)dialog.showModal()}
+function dismissOnboarding(){try{localStorage.setItem(onboardKey,'yes')}catch(e){}if($('onboardingDialog').open)$('onboardingDialog').close()}
+$('reopenSetup').addEventListener('click',showOnboarding);
+$('onboardSkip').addEventListener('click',dismissOnboarding);
+$('onboardClose').addEventListener('click',dismissOnboarding);
+$('onboardingDialog').addEventListener('cancel',()=>{try{localStorage.setItem(onboardKey,'yes')}catch(e){}});
+$('onboardStart').addEventListener('click',()=>{
+ const method=document.querySelector('input[name="inputMethod"]:checked')?.value||'phonetic';
+ phoneticEnabled=method==='phonetic';$('phoneticToggle').checked=phoneticEnabled;
+ try{localStorage.setItem('fideltype-phonetic-enabled',phoneticEnabled?'yes':'no')}catch(e){}
+ setPhoneticUI();dismissOnboarding();launchLesson(0);
+});
+try{
+ if(localStorage.getItem(onboardKey)!=='yes'&&!localStorage.getItem('fideltype-history')&&!localStorage.getItem('fideltype-curriculum-v1'))
+  requestAnimationFrame(()=>{if(!$('onboardingDialog').open)showOnboarding()});
+}catch(e){}
+const olderSetLandingLanguage=setLandingLanguage;
+setLandingLanguage=function(lang){olderSetLandingLanguage(lang);applyMobileKeyboard(expandedMobileKeyboard);if(!$('progress').classList.contains('hidden'))renderDailyDashboard()};
+const earlierShow=show;
+show=function(page){if(page!=='test')flushPracticeTime();earlierShow(page);if(page==='progress')renderDailyDashboard();if(page==='test')queueMicrotask(refreshMobileGuide)};
+
+updateThemeToggle();
+// v3.6 reliability enhancements are defined below.
+show('home');
+
+</script></body></html>
+
